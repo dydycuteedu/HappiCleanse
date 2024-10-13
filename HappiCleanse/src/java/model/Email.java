@@ -4,10 +4,7 @@
  */
 package model;
 
-/**
- *
- * @author codevn
- */
+
 public class Email {
 
     private String from, to, fromPassword, content, subject;

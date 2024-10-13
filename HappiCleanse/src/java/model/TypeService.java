@@ -4,25 +4,49 @@
  */
 package model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
-/**
- *
- * @author codevn
- */
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
 public class TypeService {
-
+//phan loai service
     private int idTypeService;
     private String nameTypeService;
     private String colorTypeService;
+
+    public TypeService(int idTypeService, String nameTypeService, String colorTypeService) {
+        this.idTypeService = idTypeService;
+        this.nameTypeService = nameTypeService;
+        this.colorTypeService = colorTypeService;
+    }
+
+    public TypeService() {
+    }
+
+    public int getIdTypeService() {
+        return idTypeService;
+    }
+
+    public void setIdTypeService(int idTypeService) {
+        this.idTypeService = idTypeService;
+    }
+
+    public String getNameTypeService() {
+        return nameTypeService;
+    }
+
+    public void setNameTypeService(String nameTypeService) {
+        this.nameTypeService = nameTypeService;
+    }
+
+    public String getColorTypeService() {
+        return colorTypeService;
+    }
+
+    public void setColorTypeService(String colorTypeService) {
+        this.colorTypeService = colorTypeService;
+    }
+
+    @Override
+    public String toString() {
+        return "TypeService{" + "idTypeService=" + idTypeService + ", nameTypeService=" + nameTypeService + ", colorTypeService=" + colorTypeService + '}';
+    }
 
 }

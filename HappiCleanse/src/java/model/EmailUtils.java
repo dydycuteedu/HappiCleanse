@@ -14,10 +14,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-/**
- *
- * @author codevn
- */
+
 public class EmailUtils {
 public static void send(Email email) 
 			throws Exception {

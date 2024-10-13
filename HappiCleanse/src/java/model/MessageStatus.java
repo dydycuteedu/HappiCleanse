@@ -5,22 +5,39 @@
 
 package model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
-/**
- *
- * @author codevn
- */
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
 public class MessageStatus {
     private int status;
     private String content;
+
+    public MessageStatus(int status, String content) {
+        this.status = status;
+        this.content = content;
+    }
+
+    public MessageStatus() {
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    @Override
+    public String toString() {
+        return "MessageStatus{" + "status=" + status + ", content=" + content + '}';
+    }
+    
+    
 }

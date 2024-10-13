@@ -4,21 +4,6 @@
  */
 package model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
-/**
- *
- * @author codevn
- */
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
 public class Shifts {
 
     private int idShift;
@@ -26,4 +11,44 @@ public class Shifts {
     private TypeShift typeShift;
 
     private double price;
+
+    public Shifts(int idShift, TypeShift typeShift, double price) {
+        this.idShift = idShift;
+        this.typeShift = typeShift;
+        this.price = price;
+    }
+
+    public Shifts() {
+    }
+
+    public int getIdShift() {
+        return idShift;
+    }
+
+    public void setIdShift(int idShift) {
+        this.idShift = idShift;
+    }
+
+    public TypeShift getTypeShift() {
+        return typeShift;
+    }
+
+    public void setTypeShift(TypeShift typeShift) {
+        this.typeShift = typeShift;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "Shifts{" + "idShift=" + idShift + ", typeShift=" + typeShift + ", price=" + price + '}';
+    }
+    
+    
 }

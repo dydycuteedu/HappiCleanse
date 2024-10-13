@@ -12,18 +12,50 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-/**
- *
- * @author codevn
- */
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
+
+
 public class BoxChat {
     private int idBoxChat;
     private User userCustomer;
     
     private List<Chat> chatList;
+
+    public BoxChat(int idBoxChat, User userCustomer, List<Chat> chatList) {
+        this.idBoxChat = idBoxChat;
+        this.userCustomer = userCustomer;
+        this.chatList = chatList;
+    }
+
+    public BoxChat() {
+    }
+
+    public int getIdBoxChat() {
+        return idBoxChat;
+    }
+
+    public void setIdBoxChat(int idBoxChat) {
+        this.idBoxChat = idBoxChat;
+    }
+
+    public User getUserCustomer() {
+        return userCustomer;
+    }
+
+    public void setUserCustomer(User userCustomer) {
+        this.userCustomer = userCustomer;
+    }
+
+    public List<Chat> getChatList() {
+        return chatList;
+    }
+
+    public void setChatList(List<Chat> chatList) {
+        this.chatList = chatList;
+    }
+
+    @Override
+    public String toString() {
+        return "BoxChat{" + "idBoxChat=" + idBoxChat + ", userCustomer=" + userCustomer + ", chatList=" + chatList + '}';
+    }
+    
 }
