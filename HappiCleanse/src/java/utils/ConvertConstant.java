@@ -9,10 +9,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-/**
- *
- * @author truon
- */
+
 public class ConvertConstant {
     
     public static java.sql.Date convertLocalDateToDate(LocalDateTime localDate){

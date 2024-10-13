@@ -17,10 +17,7 @@ import model.MessageStatus;
 import model.User;
 import utils.OTPGenerator;
 
-/**
- *
- * @author codevn
- */
+
 @WebServlet(name = "ForgotPasswordControl", urlPatterns = {"/forgotPassword"})
 public class ForgotPasswordController extends HttpServlet {
 

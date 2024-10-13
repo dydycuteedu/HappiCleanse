@@ -1,8 +1,4 @@
-<%-- 
-    Document   : ForgotPassword
-    Created on : Oct 5, 2024, 11:15:39 PM
-    Author     : truon
---%>
+
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>

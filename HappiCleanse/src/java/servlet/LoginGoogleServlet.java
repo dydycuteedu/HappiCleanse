@@ -20,10 +20,7 @@ import model.User;
 import utils.LoginGoogle.GooglePojo;
 import utils.LoginGoogle.GoogleUtils;
 
-/**
- *
- * @author truon
- */
+
 @WebServlet(name = "LoginGoogleServlet", urlPatterns = {"/login-google"})
 public class LoginGoogleServlet extends HttpServlet {
 

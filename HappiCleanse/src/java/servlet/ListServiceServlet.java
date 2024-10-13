@@ -18,10 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import model.Feedback;
 import model.Service;
 
-/**
- *
- * @author truon
- */
+
 @WebServlet(name = "ListServiceServlet", urlPatterns = {"/ListServiceServlet"})
 public class ListServiceServlet extends HttpServlet {
 

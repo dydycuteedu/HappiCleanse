@@ -11,10 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Service;
 
-/**
- *
- * @author truon
- */
 @WebServlet(name = "SearchServiceServlet", urlPatterns = {"/SearchServiceServlet"})
 public class SearchServiceServlet extends HttpServlet {
 

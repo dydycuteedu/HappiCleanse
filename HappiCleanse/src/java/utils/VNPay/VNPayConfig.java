@@ -5,10 +5,6 @@
 
 package utils.VNPay;
 
-/**
- *
- * @author codevn
- */
 
 import java.io.IOException;
 import java.util.Map;

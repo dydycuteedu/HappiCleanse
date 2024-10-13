@@ -16,10 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Service;
 
-/**
- *
- * @author truon
- */
+
 @WebServlet(name = "DetailService", urlPatterns = {"/DetailService"})
 public class DetailServiceServlet extends HttpServlet {
 

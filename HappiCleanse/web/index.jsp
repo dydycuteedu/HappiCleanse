@@ -1,8 +1,4 @@
-<%-- 
-    Document   : index.jsp
-    Created on : Oct 5, 2024, 7:13:18 PM
-    Author     : vannhat
---%>
+
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>

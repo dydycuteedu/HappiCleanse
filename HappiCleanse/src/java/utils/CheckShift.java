@@ -10,10 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- *
- * @author truon
- */
+
 public class CheckShift {
     
     private static final Set<String> holidays = new HashSet<>();

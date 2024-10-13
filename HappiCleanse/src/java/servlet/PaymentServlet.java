@@ -17,10 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import model.Order;
 import model.Shifts;
 
-/**
- *
- * @author truon
- */
+
 @WebServlet(name = "PaymentServlet", urlPatterns = {"/PaymentServlet"})
 public class PaymentServlet extends HttpServlet {
 

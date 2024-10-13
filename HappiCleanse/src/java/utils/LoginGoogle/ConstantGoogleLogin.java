@@ -4,10 +4,7 @@
  */
 package utils.LoginGoogle;
 
-/**
- *
- * @author truon
- */
+
 public class ConstantGoogleLogin {
 
     public static String GOOGLE_REDIRECT_URI = "http://localhost:8080/HappiCleanse/login-google";
