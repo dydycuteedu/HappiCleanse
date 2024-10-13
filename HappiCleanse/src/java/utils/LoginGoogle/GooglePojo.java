@@ -10,10 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-/**
- *
- * @author truon
- */
+
 @Getter
 @Setter
 @AllArgsConstructor

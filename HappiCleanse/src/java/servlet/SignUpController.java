@@ -17,10 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.User;
 
-/**
- *
- * @author codevn
- */
 @WebServlet(name = "SignUpControl", urlPatterns = {"/signup"})
 public class SignUpController extends HttpServlet {
 

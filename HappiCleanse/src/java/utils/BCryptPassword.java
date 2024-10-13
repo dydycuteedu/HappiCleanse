@@ -7,10 +7,6 @@ package utils;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-/**
- *
- * @author codevn
- */
 public class BCryptPassword {
     
     public static String hash(String password) {

@@ -1,8 +1,3 @@
-<%-- 
-    Document   : login
-    Created on : Oct 5, 2024, 7:13:46 PM
-    Author     : vannhat
---%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>

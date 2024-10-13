@@ -9,10 +9,7 @@ import java.util.Base64;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-/**
- *
- * @author codevn
- */
+
 public class VNPayService {
 
    public static String hmacSHA512(String key, String data) {

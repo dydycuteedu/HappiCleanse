@@ -20,10 +20,7 @@ import javax.servlet.http.HttpSession;
 import model.Order;
 import model.User;
 
-/**
- *
- * @author codevn
- */
+
 @WebServlet(name = "EditProfileControl", urlPatterns = {"/editProfile"})
 public class EditProfileController extends HttpServlet {
 

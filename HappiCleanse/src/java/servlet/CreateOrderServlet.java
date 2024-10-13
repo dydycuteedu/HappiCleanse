@@ -27,10 +27,7 @@ import model.User;
 import utils.CheckShift;
 import utils.ConvertConstant;
 
-/**
- *
- * @author truon
- */
+
 @WebServlet(name = "CreateOrderServlet", urlPatterns = {"/CreateOrderServlet"})
 public class CreateOrderServlet extends HttpServlet {
 

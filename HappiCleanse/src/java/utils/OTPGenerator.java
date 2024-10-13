@@ -6,10 +6,7 @@ package utils;
 
 import java.util.Random;
 
-/**
- *
- * @author codevn
- */
+
 public class OTPGenerator {
 
     public static String generateNumericOTP(int length) {

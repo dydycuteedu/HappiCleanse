@@ -16,10 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.User;
 
-/**
- *
- * @author codevn
- */
+
 @WebServlet(name = "LoginControl", urlPatterns = {"/login"})
 public class LoginController extends HttpServlet {
 

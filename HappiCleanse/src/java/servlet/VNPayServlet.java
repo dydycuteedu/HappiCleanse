@@ -23,10 +23,7 @@ import model.User;
 import utils.VNPay.VNPayConfig;
 import utils.VNPay.VNPayService;
 
-/**
- *
- * @author vannhat
- */
+
 @WebServlet(name = "VNPayServlet", urlPatterns = {"/VNPayServlet"})
 public class VNPayServlet extends HttpServlet {
 

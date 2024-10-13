@@ -19,10 +19,7 @@ import model.Feedback;
 import model.Service;
 import model.User;
 
-/**
- *
- * @author vannhat
- */
+
 @WebServlet(name = "HomeController", urlPatterns = {"/home"})
 public class HomeController extends HttpServlet {
 
