@@ -18,7 +18,7 @@ import model.User;
 import utils.OTPGenerator;
 
 
-@WebServlet(name = "ForgotPasswordControl", urlPatterns = {"/forgotPassword"})
+@WebServlet(name = "ForgotPasswordController", urlPatterns = {"/forgotPassword"})
 public class ForgotPasswordController extends HttpServlet {
 
     @Override

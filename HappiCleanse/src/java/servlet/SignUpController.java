@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.User;
 
-@WebServlet(name = "SignUpControl", urlPatterns = {"/signup"})
+@WebServlet(name = "SignUpController", urlPatterns = {"/signup"})
 public class SignUpController extends HttpServlet {
 
     /**
@@ -49,10 +49,10 @@ public class SignUpController extends HttpServlet {
                 } catch (SQLException ex) {
                     Logger.getLogger(SignUpController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                response.sendRedirect("HappiCleanse/login");
+                response.sendRedirect("/HappiCleanse/login");
             }else{
                 //day ve trang login.jsp
-                response.sendRedirect("HappiCleanse/Login.jsp");
+                response.sendRedirect("login.jsp");
             }
         }
         //sign up

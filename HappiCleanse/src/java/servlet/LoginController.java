@@ -17,29 +17,10 @@ import javax.servlet.http.HttpSession;
 import model.User;
 
 
-@WebServlet(name = "LoginControl", urlPatterns = {"/login"})
+@WebServlet(name = "LoginController", urlPatterns = {"/login"})
 public class LoginController extends HttpServlet {
 
    
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-//        processRequest(request, response);
-    	//b1 get user,pass from cookie
-    	Cookie arr[] = request.getCookies();
-    	if(arr != null) {
-    		for(Cookie o : arr) {
-        		if(o.getName().equals("userC")) {
-        			request.setAttribute("username", o.getValue());
-        		}
-        		if(o.getName().equals("passC")) {
-        			request.setAttribute("password", o.getValue());
-        		}
-        	}
-    	}
-    	//b2: set user,pass to login form
-        request.getRequestDispatcher("login.jsp").forward(request, response);
-    }
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -54,11 +35,11 @@ public class LoginController extends HttpServlet {
             throws ServletException, IOException {
 //        processRequest(request, response);
     	 response.setContentType("text/html;charset=UTF-8");
-         String username = request.getParameter("user");
+         String username = request.getParameter("user"); //getPrameter la de lay du lieu tu ben jsp 
          String password = request.getParameter("pass");
-         String remember =request.getParameter("remember");
+         String remember = request.getParameter("remember");
          
-         Dao dao = new Dao();
+         Dao dao = new Dao(); // sau khi get xong thi chay toi DaoUser de doi chung
          User a = dao.login(username, password);
          if (a == null) {
              request.setAttribute("error", "Sai username hoac password!");
@@ -81,7 +62,7 @@ public class LoginController extends HttpServlet {
              response.addCookie(u);//luu u va p len Chrome
              response.addCookie(p);
              
-             request.getRequestDispatcher("login.jsp").forward(request, response);
+             request.getRequestDispatcher("/home").forward(request, response);
          }
     }
 

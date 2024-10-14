@@ -7,7 +7,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Login/Register - Plumberz</title>
+    <title>Login/Register - HappiCleanse</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -81,7 +81,7 @@
                             <div class="tab-pane fade show active" id="pills-login" role="tabpanel"
                                 aria-labelledby="pills-login-tab">
                                 <h5 class="text-center mb-4">Please login to your account</h5>
-                                <form action="/HappiCleanse/login" method="POST">
+                                <form action="/HappiCleanse/login" method="post">
                                     <div class="form-floating mb-3">
                                         <input type="text" class="form-control" id="loginEmail"
                                                placeholder="username" name="user">
@@ -105,8 +105,8 @@
                             <div class="tab-pane fade" id="pills-register" role="tabpanel"
                                 aria-labelledby="pills-register-tab">
                                 <h5 class="text-center mb-4">Create a new account</h5>
-                                <form action="/HappiCleanse/signup" method="POST">
-                                    <div class="form-floating mb-3">
+                                <form action="/HappiCleanse/signup" method="get">
+                                <div class="form-floating mb-3">
                                         <input type="text" class="form-control" id="registerName"
                                             placeholder="Your Name" name="nameUser">
                                         <label for="registerName">Full Name</label>
