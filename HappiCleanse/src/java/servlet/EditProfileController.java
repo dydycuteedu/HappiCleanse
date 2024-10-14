@@ -21,7 +21,7 @@ import model.Order;
 import model.User;
 
 
-@WebServlet(name = "EditProfileControl", urlPatterns = {"/editProfile"})
+@WebServlet(name = "EditProfileController", urlPatterns = {"/editProfile"})
 public class EditProfileController extends HttpServlet {
 
     /**
