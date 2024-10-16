@@ -6,45 +6,56 @@ package servlet;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.nio.file.Paths;
+import javax.mail.Part;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import javax.servlet.http.HttpSession;
 
 
 @WebServlet("/uploadAvatar")
 public class UploadAvatarServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Check if the request is a multipart/form-data
-        if (ServletFileUpload.isMultipartContent(request)) {
-            try {
-                // Set up file upload handler
-                List<FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+        HttpSession session = request.getSession(false);
+        // Lấy file từ input form
+        Part filePart = request.getPart("avatar"); // "imageFile" là tên của input field
 
-                for (FileItem item : multiparts) {
-                    if (!item.isFormField()) {
-                        String name = new File(item.getName()).getName();
-                        String uploadPath = "path/to/uploads" + File.separator + name;
-                        item.write(new File(uploadPath));
+        // Lấy tên file gốc
+        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
 
-                        // Update the session attribute with the new avatar URL
-                        request.getSession().setAttribute("acc.avatar", "path/to/uploads/" + name);
-                    }
-                }
+        // Đường dẫn đến thư mục muốn lưu file (bạn có thể thay đổi thành thư mục mong muốn)
+        String uploadPath = getServletContext().getRealPath("/") + "/img";
 
-                // Redirect to profile page after upload
-                response.sendRedirect("profile.jsp");
-            } catch (Exception e) {
-                request.setAttribute("message", "File upload failed due to: " + e.getMessage());
-            }
-        } else {
-            request.setAttribute("message", "Sorry, this servlet only handles file upload request.");
+        // Tạo thư mục nếu nó chưa tồn tại
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdir();
         }
+
+        // Đường dẫn đầy đủ của file sẽ được lưu
+        String filePath = uploadPath + File.separator + fileName;
+
+        // Ghi file vào đường dẫn trên
+        filePart.write(filePath);
+        UserDetail userDetail = (UserDetail) session.getAttribute("accDetail");
+
+        userDetail.setAvatar("views/client/asset/img/" + fileName);
+
+        UserDetailDao userDetailDao = new UserDetailDao();
+        boolean isUpdatedUserImg = userDetailDao.updateUserDetailProfile(userDetail);
+        
+        if (isUpdatedUserImg) {
+            session.setAttribute("msg", "Cập nhật hồ sơ thành công!");
+            session.setAttribute("accDetail", userDetail);
+        } else {
+            // Gửi phản hồi lại cho người dùng
+            session.setAttribute("msg", "Có lỗi xảy ra trong quá trình cập nhật!");
+        }
+        request.getRequestDispatcher("views/client/pages/profile.jsp").forward(request, response);
     }
 }
 

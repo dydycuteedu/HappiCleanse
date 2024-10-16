@@ -87,7 +87,7 @@
                                 <!-- Profile Picture -->
                                 <img src="${sessionScope.acc.avatar}" alt="Profile" class="rounded-circle profile-pic">
                                 <!-- Name -->
-                                <span class="profile-name">${sessionScope.acc.nameUser}</span>
+                                <span class="profile-name">${sessionScope.acc.fullname}</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
                                 <li><a class="dropdown-item" href="editProfile">Profile</a></li>

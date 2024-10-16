@@ -7,7 +7,6 @@ package servlet;
 
 import dao.Dao;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,21 +40,24 @@ public class EditProfileController extends HttpServlet {
             User a = (User) session.getAttribute("acc");
             Dao dao = new Dao();
             int id = a.getIdUser();
-            String nameUser = request.getParameter("nameUser");
-            String password = request.getParameter("password");
+            String fullname = request.getParameter("fullname");
             String email = request.getParameter("email");
             String phoneNumber = request.getParameter("phoneNumber");
             String gender = request.getParameter("gender");
             String avatar = request.getParameter("avatar");
-            int address = Integer.parseInt(request.getParameter("address"));
+            String address = request.getParameter("address");
+            a.setAddress(address);
+            a.setIdUser(id);
+            a.setAvatar(avatar);
+            a.setEmail(email);
+            a.setGender(gender);
+            a.setPhonenumber(phoneNumber);
+            a.setFullname(fullname);
+            dao.editProfile(a);
             
-            User newUser = new User(id, a.getUsername(), gender, password, email, phoneNumber, gender, avatar, dao.getAddress(address), a.getIsValid(), a.getIsCheck(), a.getRole());
+            request.setAttribute("mess", "Cap nhat tai khoan thanh cong!");
             
-            dao.editProfile(newUser);
-            
-            request.setAttribute("mess", "Cap nhat tai khoan thanh cong! Hay dang nhap bang tai khoan moi!");
-            
-            request.getRequestDispatcher("Login.jsp").forward(request, response);
+            request.getRequestDispatcher("EditProfile.jsp").forward(request, response);
         } catch (Exception ex) {
             Logger.getLogger(EditProfileController.class.getName()).log(Level.SEVERE, null, ex);
         }

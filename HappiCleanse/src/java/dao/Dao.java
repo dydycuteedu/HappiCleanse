@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.Address;
+//import model.Address;
 import model.DetailShifts;
 import model.Feedback;
 import model.Notification;
@@ -28,10 +28,7 @@ import model.User;
 import utils.BCryptPassword;
 import utils.ConvertConstant;
 
-/**
- *
- * @author codevn
- */
+
 public class Dao {
 
     Connection conn = null;
@@ -48,7 +45,7 @@ public class Dao {
             rs = ps.executeQuery();
             while (rs.next()) {
                 if (BCryptPassword.checkP(pass, rs.getString("password"))) {
-                    Address address = getAddress(rs.getInt("address"));
+                   
                     return new User(
                         rs.getInt("idUser"),
                         rs.getString("nameUser"),
@@ -58,7 +55,7 @@ public class Dao {
                         rs.getString("phonenumber"),
                         rs.getString("gender"),
                         rs.getString("avatar"),
-                        address,
+                        rs.getString("address"),
                         rs.getInt("isValid"),
                         rs.getInt("isCheck"),
                         rs.getString("Role")
@@ -80,7 +77,7 @@ public class Dao {
             ps.setString(1, user);
             rs = ps.executeQuery();
             while (rs.next()) {
-                Address address = getAddress(rs.getInt("address"));
+              
                 return new User(
                         rs.getInt("idUser"),
                         rs.getString("nameUser"),
@@ -90,7 +87,7 @@ public class Dao {
                         rs.getString("phonenumber"),
                         rs.getString("gender"),
                         rs.getString("avatar"),
-                        address,
+                        rs.getString("address"),
                         rs.getInt("isValid"),
                         rs.getInt("isCheck"),
                         rs.getString("Role")
@@ -110,7 +107,7 @@ public class Dao {
             pss.setInt(1, idUser);
             rs = pss.executeQuery();
             if (rs.next()) {
-                Address address = getAddress(rs.getInt("address"));
+               
                 return new User(
                         rs.getInt("idUser"),
                         rs.getString("nameUser"),
@@ -120,7 +117,7 @@ public class Dao {
                         rs.getString("phonenumber"),
                         rs.getString("gender"),
                         rs.getString("avatar"),
-                        address,
+                        rs.getString("address"),
                         rs.getInt("isValid"),
                         rs.getInt("isCheck"),
                         rs.getString("Role")
@@ -142,7 +139,7 @@ public class Dao {
             ps.setString(2, email);
             rs = ps.executeQuery();
             while (rs.next()) {
-                Address address = getAddress(rs.getInt("address"));
+               
                 return new User(
                         rs.getInt("idUser"),
                         rs.getString("nameUser"),
@@ -152,7 +149,7 @@ public class Dao {
                         rs.getString("phonenumber"),
                         rs.getString("gender"),
                         rs.getString("avatar"),
-                        address,
+                        rs.getString("address"),
                         rs.getInt("isValid"),
                         rs.getInt("isCheck"),
                         rs.getString("Role")
@@ -167,14 +164,14 @@ public class Dao {
     public void editProfile(User user) throws Exception {
         String sql = "UPDATE [User] SET nameUser = ?, username = ?, password = ?, email = ?, phonenumber = ?, gender = ?,avatar=?, address = ? WHERE idUser = ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, user.getNameUser());
+            ps.setString(1, user.getFullname());
             ps.setString(2, user.getUsername());
             ps.setString(3, user.getPassword());
             ps.setString(4, user.getEmail());
             ps.setString(5, user.getPhonenumber());
             ps.setString(6, user.getGender());
             ps.setString(7, user.getAvatar());
-            ps.setInt(8, user.getAddress().getIdAddress());
+            ps.setString(8, user.getAddress());
             ps.setInt(9, user.getIdUser());
             ps.executeUpdate();
         }
@@ -206,65 +203,65 @@ public class Dao {
         }
     }
 
-    // ADDRESS 28/09
-    public void addAddress(Address address) throws SQLException, Exception {
-        String sql = "INSERT INTO Address (street, district, city, zipcode) VALUES (?, ?, ?, ?)";
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, address.getStreet());
-            ps.setString(2, address.getDistrict());
-            ps.setString(3, address.getCity());
-            ps.setString(4, address.getZipcode());
-            ps.executeUpdate();
-        }
-    }
+//    // ADDRESS 28/09
+//    public void addAddress(Address address) throws SQLException, Exception {
+//        String sql = "INSERT INTO Address (street, district, city, zipcode) VALUES (?, ?, ?, ?)";
+//        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+//            ps.setString(1, address.getStreet());
+//            ps.setString(2, address.getDistrict());
+//            ps.setString(3, address.getCity());
+//            ps.setString(4, address.getZipcode());
+//            ps.executeUpdate();
+//        }
+//    }
 
-    public Address getAddress(int id) throws SQLException, Exception {
-        String sql = "SELECT * FROM Address WHERE idAddress = ?";
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return new Address(
-                            rs.getInt("idAddress"),
-                            rs.getString("street"),
-                            rs.getString("district"),
-                            rs.getString("city"),
-                            rs.getString("zipcode")
-                    );
-                }
-            }
-        }
-        return null;
-    }
-
-    public List<Address> getAllAddresses() throws SQLException, Exception {
-        String sql = "SELECT * FROM Address";
-        List<Address> addresses = new ArrayList<>();
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                addresses.add(new Address(
-                        rs.getInt("idAddress"),
-                        rs.getString("street"),
-                        rs.getString("district"),
-                        rs.getString("city"),
-                        rs.getString("zipcode")
-                ));
-            }
-        }
-        return addresses;
-    }
-
-    public void updateAddress(Address address) throws SQLException, Exception {
-        String sql = "UPDATE Address SET street = ?, district = ?, city = ?, zipcode = ? WHERE idAddress = ?";
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, address.getStreet());
-            ps.setString(2, address.getDistrict());
-            ps.setString(3, address.getCity());
-            ps.setString(4, address.getZipcode());
-            ps.setInt(5, address.getIdAddress());
-            ps.executeUpdate();
-        }
-    }
+//    public Address getAddress(int id) throws SQLException, Exception {
+//        String sql = "SELECT * FROM Address WHERE idAddress = ?";
+//        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+//            ps.setInt(1, id);
+//            try (ResultSet rs = ps.executeQuery()) {
+//                if (rs.next()) {
+//                    return new Address(
+//                            rs.getInt("idAddress"),
+//                            rs.getString("street"),
+//                            rs.getString("district"),
+//                            rs.getString("city"),
+//                            rs.getString("zipcode")
+//                    );
+//                }
+//            }
+//        }
+//        return null;
+//    }
+//
+//    public List<Address> getAllAddresses() throws SQLException, Exception {
+//        String sql = "SELECT * FROM Address";
+//        List<Address> addresses = new ArrayList<>();
+//        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+//            while (rs.next()) {
+//                addresses.add(new Address(
+//                        rs.getInt("idAddress"),
+//                        rs.getString("street"),
+//                        rs.getString("district"),
+//                        rs.getString("city"),
+//                        rs.getString("zipcode")
+//                ));
+//            }
+//        }
+//        return addresses;
+//    }
+//
+//    public void updateAddress(Address address) throws SQLException, Exception {
+//        String sql = "UPDATE Address SET street = ?, district = ?, city = ?, zipcode = ? WHERE idAddress = ?";
+//        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+//            ps.setString(1, address.getStreet());
+//            ps.setString(2, address.getDistrict());
+//            ps.setString(3, address.getCity());
+//            ps.setString(4, address.getZipcode());
+//            ps.setInt(5, address.getIdAddress());
+//            ps.executeUpdate();
+//        }
+//    }
 
     public void deleteAddress(int id) throws SQLException, Exception {
         String sql = "DELETE FROM Address WHERE idAddress = ?";
