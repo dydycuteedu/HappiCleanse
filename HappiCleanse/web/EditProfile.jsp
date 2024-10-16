@@ -105,11 +105,11 @@
                                 </div>
 
                                 <!-- Submit button to save the new image -->
-                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                                <button type="submit" class="btn btn-primary">Save Avatar</button>
                             </form>
                             <!-- Buttons -->
                             <div class="w-100">
-                                <button class="btn btn-primary w-100 mb-3 py-2" type="button" onclick="showProfile()">Update Profile</button>
+                                <button style="margin-top: 30px" class="btn btn-primary w-100 mb-3 py-2" type="button" onclick="showProfile()">Edit Profile</button>
                                 <button class="btn btn-primary w-100 py-2" type="button" onclick="showHistory()">History</button>
                             </div>
                         </div>
@@ -120,23 +120,46 @@
                         <div class="bg-light p-5 h-100 d-flex align-items-center">
                             <form class="w-100" action="editProfile" method="POST">
                                 <div class="mb-4">
-                                    <h3 class="text-center">Edit Profile</h3>
+                                    <h3 class="text-center">My Profile</h3>
                                 </div>
+                               
                                 <div class="form-group mb-3">
                                     <label for="name" class="form-label">Full Name</label>
-                                    <input type="text" class="form-control" id="name" placeholder="Full Name" value="${sessionScope.acc.nameUser}">
+                                    <input type="text" name="fullname" class="form-control" id="name" placeholder="Full Name" value="${sessionScope.acc.fullname}">
                                 </div>
+                                
                                 <div class="form-group mb-3">
                                     <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email" placeholder="Email" value="${sessionScope.acc.email}">
+                                    <input type="email" name="email" class="form-control" id="email" placeholder="Email" value="${sessionScope.acc.email}">
                                 </div>
+                              
                                 <div class="form-group mb-3">
                                     <label for="phone" class="form-label">Phone Number</label>
-                                    <input type="text" class="form-control" id="phone" placeholder="Phone Number" value="${sessionScope.acc.phonenumber}">
+                                    <input type="text" name="phoneNumber" class="form-control" id="phone" placeholder="Phone Number" value="${sessionScope.acc.phonenumber}">
                                 </div>
+                             
                                 <div class="form-group mb-4">
                                     <label for="address" class="form-label">Address</label>
-                                    <input type="text" class="form-control" id="address" placeholder="Address" value="${sessionScope.acc.address.street}">
+                                    <input type="text" name="address" class="form-control" id="address" placeholder="Address" value="${sessionScope.acc.address}">
+                                </div>
+                               
+                                <div class="form-group mb-4">
+                                    <label for="gender" class="form-label me-2">Gender:</label>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="male" value="Male"
+                                               ${sessionScope.acc.gender == 'Male' ? 'checked' : ''}>
+                                        <label class="form-check-label" for="male">Male</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="female" value="Female"
+                                               ${sessionScope.acc.gender == 'Female' ? 'checked' : ''}>
+                                        <label class="form-check-label" for="female">Female</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="other" value="Other"
+                                               ${sessionScope.acc.gender == 'Other' ? 'checked' : ''}>
+                                        <label class="form-check-label" for="other">Other</label>
+                                    </div>
                                 </div>
                                 <div class="text-center">
                                     <button class="btn btn-primary w-50 py-2" type="submit">Confirm Update</button>

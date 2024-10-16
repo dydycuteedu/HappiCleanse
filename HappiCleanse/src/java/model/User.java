@@ -9,7 +9,7 @@ public class User {
 
     private int idUser;
 
-    private String nameUser;
+    private String fullname;
 
     private String username;
 
@@ -20,16 +20,16 @@ public class User {
     private String gender;
     private String avatar;
     
-    private Address address;
+    private String address;
 
     private int isValid;
     private int isCheck;
 
     private String role;
 
-    public User(int idUser, String nameUser, String username, String password, String email, String phonenumber, String gender, String avatar, Address address, int isValid, int isCheck, String role) {
+    public User(int idUser, String fullname, String username, String password, String email, String phonenumber, String gender, String avatar, String address, int isValid, int isCheck, String role) {
         this.idUser = idUser;
-        this.nameUser = nameUser;
+        this.fullname = fullname;
         this.username = username;
         this.password = password;
         this.email = email;
@@ -53,12 +53,12 @@ public class User {
         this.idUser = idUser;
     }
 
-    public String getNameUser() {
-        return nameUser;
+    public String getFullname() {
+        return fullname;
     }
 
-    public void setNameUser(String nameUser) {
-        this.nameUser = nameUser;
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
     public String getUsername() {
@@ -109,11 +109,11 @@ public class User {
         this.avatar = avatar;
     }
 
-    public Address getAddress() {
+    public String getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 
@@ -143,7 +143,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "idUser=" + idUser + ", nameUser=" + nameUser + ", username=" + username + ", password=" + password + ", email=" + email + ", phonenumber=" + phonenumber + ", gender=" + gender + ", avatar=" + avatar + ", address=" + address + ", isValid=" + isValid + ", isCheck=" + isCheck + ", role=" + role + '}';
+        return "User{" + "idUser=" + idUser + ", nameUser=" + fullname + ", username=" + username + ", password=" + password + ", email=" + email + ", phonenumber=" + phonenumber + ", gender=" + gender + ", avatar=" + avatar + ", address=" + address + ", isValid=" + isValid + ", isCheck=" + isCheck + ", role=" + role + '}';
     }
     
 }
