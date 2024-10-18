@@ -28,7 +28,6 @@ import model.User;
 import utils.BCryptPassword;
 import utils.ConvertConstant;
 
-
 public class Dao {
 
     Connection conn = null;
@@ -45,22 +44,22 @@ public class Dao {
             rs = ps.executeQuery();
             while (rs.next()) {
                 if (BCryptPassword.checkP(pass, rs.getString("password"))) {
-                   
+
                     return new User(
-                        rs.getInt("idUser"),
-                        rs.getString("nameUser"),
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getString("email"),
-                        rs.getString("phonenumber"),
-                        rs.getString("gender"),
-                        rs.getString("avatar"),
-                        rs.getString("address"),
-                        rs.getInt("isValid"),
-                        rs.getInt("isCheck"),
-                        rs.getString("Role")
-                );
-            }
+                            rs.getInt("idUser"),
+                            rs.getString("nameUser"),
+                            rs.getString("username"),
+                            rs.getString("password"),
+                            rs.getString("email"),
+                            rs.getString("phonenumber"),
+                            rs.getString("gender"),
+                            rs.getString("avatar"),
+                            rs.getString("address"),
+                            rs.getInt("isValid"),
+                            rs.getInt("isCheck"),
+                            rs.getString("Role")
+                    );
+                }
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -77,7 +76,7 @@ public class Dao {
             ps.setString(1, user);
             rs = ps.executeQuery();
             while (rs.next()) {
-              
+
                 return new User(
                         rs.getInt("idUser"),
                         rs.getString("nameUser"),
@@ -107,7 +106,7 @@ public class Dao {
             pss.setInt(1, idUser);
             rs = pss.executeQuery();
             if (rs.next()) {
-               
+
                 return new User(
                         rs.getInt("idUser"),
                         rs.getString("nameUser"),
@@ -129,6 +128,37 @@ public class Dao {
         return null;
     }
 
+    public ArrayList<User> getAllUsers() {
+        ArrayList<User> list = new ArrayList<User>();
+
+        try {
+            Connection con = DBContext.getConnection();
+            PreparedStatement ps = con.prepareStatement("select * from [User]");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                User u = new User();
+                u.setIdUser(rs.getInt(1));
+                u.setFullname(rs.getString(2));
+                u.setUsername(rs.getString(3));
+                u.setPassword(rs.getString(4));
+                u.setEmail(rs.getString(5));
+                u.setPhonenumber(rs.getString(6));
+                u.setGender(rs.getString(7));
+                u.setAvatar(rs.getString(8));
+                 u.setIsValid(rs.getInt(9));
+                u.setIsCheck(rs.getInt(10));
+                u.setRole(rs.getString(11));
+                u.setAddress(rs.getString(12));
+                list.add(u);
+            }
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
     public User checkAccountExistByUsernameAndEmail(String username, String email) {
         String query = "select * from [User]\n"
                 + "where username = ? AND email = ?\n";
@@ -139,7 +169,7 @@ public class Dao {
             ps.setString(2, email);
             rs = ps.executeQuery();
             while (rs.next()) {
-               
+
                 return new User(
                         rs.getInt("idUser"),
                         rs.getString("nameUser"),
@@ -162,7 +192,7 @@ public class Dao {
     }
 
     public void editProfile(User user) throws Exception {
-        String sql = "UPDATE [User] SET nameUser = ?, username = ?, password = ?, email = ?, phonenumber = ?, gender = ?,avatar=?, address = ? WHERE idUser = ?";
+        String sql = "UPDATE [User] SET nameUser = ?, username = ?, password = ?, email = ?, phonenumber = ?, gender = ?,avatar=?, address = ?, isValid = ? WHERE idUser = ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, user.getFullname());
             ps.setString(2, user.getUsername());
@@ -172,7 +202,8 @@ public class Dao {
             ps.setString(6, user.getGender());
             ps.setString(7, user.getAvatar());
             ps.setString(8, user.getAddress());
-            ps.setInt(9, user.getIdUser());
+            ps.setInt(9, user.getIsValid());
+            ps.setInt(10, user.getIdUser());
             ps.executeUpdate();
         }
     }
@@ -203,73 +234,7 @@ public class Dao {
         }
     }
 
-//    // ADDRESS 28/09
-//    public void addAddress(Address address) throws SQLException, Exception {
-//        String sql = "INSERT INTO Address (street, district, city, zipcode) VALUES (?, ?, ?, ?)";
-//        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-//            ps.setString(1, address.getStreet());
-//            ps.setString(2, address.getDistrict());
-//            ps.setString(3, address.getCity());
-//            ps.setString(4, address.getZipcode());
-//            ps.executeUpdate();
-//        }
-//    }
 
-//    public Address getAddress(int id) throws SQLException, Exception {
-//        String sql = "SELECT * FROM Address WHERE idAddress = ?";
-//        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-//            ps.setInt(1, id);
-//            try (ResultSet rs = ps.executeQuery()) {
-//                if (rs.next()) {
-//                    return new Address(
-//                            rs.getInt("idAddress"),
-//                            rs.getString("street"),
-//                            rs.getString("district"),
-//                            rs.getString("city"),
-//                            rs.getString("zipcode")
-//                    );
-//                }
-//            }
-//        }
-//        return null;
-//    }
-//
-//    public List<Address> getAllAddresses() throws SQLException, Exception {
-//        String sql = "SELECT * FROM Address";
-//        List<Address> addresses = new ArrayList<>();
-//        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
-//            while (rs.next()) {
-//                addresses.add(new Address(
-//                        rs.getInt("idAddress"),
-//                        rs.getString("street"),
-//                        rs.getString("district"),
-//                        rs.getString("city"),
-//                        rs.getString("zipcode")
-//                ));
-//            }
-//        }
-//        return addresses;
-//    }
-//
-//    public void updateAddress(Address address) throws SQLException, Exception {
-//        String sql = "UPDATE Address SET street = ?, district = ?, city = ?, zipcode = ? WHERE idAddress = ?";
-//        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-//            ps.setString(1, address.getStreet());
-//            ps.setString(2, address.getDistrict());
-//            ps.setString(3, address.getCity());
-//            ps.setString(4, address.getZipcode());
-//            ps.setInt(5, address.getIdAddress());
-//            ps.executeUpdate();
-//        }
-//    }
-
-    public void deleteAddress(int id) throws SQLException, Exception {
-        String sql = "DELETE FROM Address WHERE idAddress = ?";
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            ps.executeUpdate();
-        }
-    }
 
     // Notification 28/09
     public void addNotification(Notification notification) throws SQLException, Exception {
@@ -525,7 +490,7 @@ public class Dao {
         String sql = "SELECT * FROM Feedback";
         List<Feedback> feedbacks = new ArrayList<>();
         try (Connection connh = DBContext.getConnection(); PreparedStatement pss = connh.prepareStatement(sql)) {
-             ResultSet rsH = pss.executeQuery();
+            ResultSet rsH = pss.executeQuery();
             while (rsH.next()) {
                 Shifts shift = getShift(rsH.getInt("idShift"));
                 User user = getUser(rsH.getInt("idUser"));
@@ -538,7 +503,8 @@ public class Dao {
                         user
                 ));
             }
-        }System.out.println(feedbacks.toString());
+        }
+        System.out.println(feedbacks.toString());
         return feedbacks;
     }
 
@@ -751,7 +717,7 @@ public class Dao {
         }
         return orders;
     }
-    
+
     // DETAIL SHIFT
     public void insertDetailShift(DetailShifts detailShift) throws Exception {
         String sql = "INSERT INTO DetailShift (idShifts, idUser, idService) VALUES (?, ?, ?)";
@@ -844,7 +810,7 @@ public class Dao {
             e.printStackTrace();
         }
     }
-    
+
     // INSERT DETAIL ORDER
     public void insertDetailOrder(double totalMoney, int idOrder, int idShifts) throws Exception {
         String sql = "INSERT INTO DetailOrder (totalMoney, idOrder, idShift) VALUES (?, ?, ?)";
@@ -858,7 +824,7 @@ public class Dao {
             e.printStackTrace();
         }
     }
-    
+
     // GET SHIFT BY ID ORDER
     public Shifts getShiftsByIdOrder(int idOrder) throws Exception {
         String sql = "SELECT idShift FROM DetailOrder WHERE idOrder = ?";
@@ -881,10 +847,10 @@ public class Dao {
 
     // GET SERVICE BY SHIFTS
     public List<Service> getServiceByShift(int idShift) throws Exception {
-        String sql = "SELECT s.idService, s.nameService, s.description, s.img1, s.img2, s.img3, s.img4, s.img5, s.img6, idTypeService " +
-                     "FROM DetailShift ds " +
-                     "JOIN Service s ON ds.idService = s.idService " +
-                     "WHERE ds.idShifts = ?";
+        String sql = "SELECT s.idService, s.nameService, s.description, s.img1, s.img2, s.img3, s.img4, s.img5, s.img6, idTypeService "
+                + "FROM DetailShift ds "
+                + "JOIN Service s ON ds.idService = s.idService "
+                + "WHERE ds.idShifts = ?";
         List<Service> services = new ArrayList<>();
 
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql);) {
@@ -894,15 +860,15 @@ public class Dao {
             while (rs.next()) {
                 TypeService typeService = getTypeService(rs.getInt("idTypeService"));
                 Service service = new Service(
-                    rs.getInt("idService"),
-                    rs.getString("nameService"),
-                    rs.getString("description"),
-                    rs.getString("img1"),
-                    rs.getString("img2"),
-                    rs.getString("img3"),
-                    rs.getString("img4"),
-                    rs.getString("img5"),
-                    rs.getString("img6"),
+                        rs.getInt("idService"),
+                        rs.getString("nameService"),
+                        rs.getString("description"),
+                        rs.getString("img1"),
+                        rs.getString("img2"),
+                        rs.getString("img3"),
+                        rs.getString("img4"),
+                        rs.getString("img5"),
+                        rs.getString("img6"),
                         typeService
                 );
                 services.add(service); // Add the service to the list
@@ -913,5 +879,5 @@ public class Dao {
 
         return services;
     }
-    
+
 }

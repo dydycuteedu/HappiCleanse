@@ -4,28 +4,28 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>Dashboard | Upcube - Admin & Dashboard Template</title>
+    <title>Dashboard | HappiCleanse- Admin Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesdesign" name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="${pageContext.request.contextPath}/views/admin\assets/images/favicon.ico">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/Admin\assets/images/favicon.ico">
 
     <!-- jquery.vectormap css -->
-    <link href="${pageContext.request.contextPath}/views/admin\assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
+    <link href="${pageContext.request.contextPath}/Admin\assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
 
     <!-- DataTables -->
-    <link href="${pageContext.request.contextPath}/views/admin\assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="${pageContext.request.contextPath}/Admin\assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 
     <!-- Responsive datatable examples -->
-    <link href="${pageContext.request.contextPath}/views/admin\assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />  
+    <link href="${pageContext.request.contextPath}/Admin\assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />  
 
     <!-- Bootstrap Css -->
-    <link href="${pageContext.request.contextPath}/views/admin\assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <link href="${pageContext.request.contextPath}/Admin\assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
     <!-- Icons Css -->
-    <link href="${pageContext.request.contextPath}/views/admin\assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="${pageContext.request.contextPath}/Admin\assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <!-- App Css-->
-    <link href="${pageContext.request.contextPath}/views/admin\assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+    <link href="${pageContext.request.contextPath}/Admin\assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
 
 </head>
 <header id="page-topbar">
@@ -34,11 +34,11 @@
             <!-- LOGO -->
             <div class="navbar-brand-box">
                 <a href="${pageContext.request.contextPath}/AdminServlet" class="logo logo-dark">
-                    <h1 class="text-primary display-6">FlexFood</h1>
+                    <h3 class="text-primary display-6">HappiCleanse</h3>
                 </a>
 
                 <a href="${pageContext.request.contextPath}/AdminServlet" class="logo logo-light">
-                    <h1 class="text-primary display-6">FlexFood</h1>
+                    <h3 class="text-primary">HappiCleanse</h3>
                 </a>
             </div>
 
@@ -121,7 +121,7 @@
                         </a>
                         <a href="" class="text-reset notification-item">
                             <div class="d-flex">
-                                <img src="${pageContext.request.contextPath}/views/admin\assets/images/users/avatar-3.jpg"
+                                <img src="${pageContext.request.contextPath}/Admin\assets/images/users/avatar-3.jpg"
                                      class="me-3 rounded-circle avatar-xs" alt="user-pic">
                                 <div class="flex-1">
                                     <h6 class="mb-1">James Lemire</h6>
@@ -151,7 +151,7 @@
 
                         <a href="" class="text-reset notification-item">
                             <div class="d-flex">
-                                <img src="${pageContext.request.contextPath}/views/admin\assets/images/users/avatar-4.jpg"
+                                <img src="${pageContext.request.contextPath}/Admin\assets/images/users/avatar-4.jpg"
                                      class="me-3 rounded-circle avatar-xs" alt="user-pic">
                                 <div class="flex-1">
                                     <h6 class="mb-1">Salena Layfield</h6>
@@ -176,7 +176,7 @@
             <div class="dropdown d-inline-block user-dropdown">
                 <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img class="rounded-circle header-profile-user" src="${sessionScope.accDetail.avatar}"
+                    <img class="rounded-circle header-profile-user" src="${sessionScope.acc.avatar}"
                          alt="Header Avatar">
                     <span class="d-none d-xl-inline-block ms-1">${sessionScope.acc.username}</span>
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
@@ -188,7 +188,7 @@
                     <a class="dropdown-item d-block" href="#"><span class="badge bg-success float-end mt-1">11</span><i class="ri-settings-2-line align-middle me-1"></i> Settings</a>
                     <a class="dropdown-item" href="#"><i class="ri-lock-unlock-line align-middle me-1"></i> Lock screen</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item text-danger" href="${pageContext.request.contextPath}/UsersServlet?actor=guest&action=logout"><i class="ri-shut-down-line align-middle me-1 text-danger"></i> Logout</a>
+                    <a class="dropdown-item text-danger" href="${pageContext.request.contextPath}/Logout"><i class="ri-shut-down-line align-middle me-1 text-danger"></i> Logout</a>
                 </div>
             </div>
 

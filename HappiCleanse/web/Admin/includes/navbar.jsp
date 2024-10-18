@@ -31,7 +31,7 @@
                 </li>
 
                 <li>
-                    <a href="${pageContext.request.contextPath}/views/admin/home/calendar.jsp" class=" waves-effect">
+                    <a href="${pageContext.request.contextPath}/Admin/home/calendar.jsp" class=" waves-effect">
                         <i class="ri-calendar-2-line"></i>
                         <span>Calendar</span>
                     </a>
@@ -70,7 +70,7 @@
                         <span>Quản lý</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="${pageContext.request.contextPath}/UsersServlet?actor=admin&action=management">Quản Lý Người Dùng</a></li>
+                        <li><a href="${pageContext.request.contextPath}/UserServlet?action=management">Quản Lý Người Dùng</a></li>
                         <li><a href="${pageContext.request.contextPath}/PolicyServlet?actor=admin&action=management">Quản Lý Chính Sách</a></li>
                         <li><a href="${pageContext.request.contextPath}/OrderServlet?actor=admin&action=management">Quản Lý Đơn Hàng</a></li>
                         <li><a href="${pageContext.request.contextPath}/DishServlet?actor=admin&action=management">Quản Lý Món Ăn</a></li>

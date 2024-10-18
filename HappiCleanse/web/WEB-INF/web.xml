@@ -4,13 +4,35 @@
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>servlet.LogoutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdminServlet</servlet-name>
+        <servlet-class>servlet.AdminServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserServlet</servlet-name>
+        <servlet-class>servlet.UserServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/Logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminServlet</servlet-name>
+        <url-pattern>/AdminServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserServlet</servlet-name>
+        <url-pattern>/UserServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+    
+    <dependency>
+        <groupId>com.sun.activation</groupId>
+        <artifactId>javax.activation</artifactId>
+        <version>1.2.0</version>
+    </dependency>
 </web-app>
