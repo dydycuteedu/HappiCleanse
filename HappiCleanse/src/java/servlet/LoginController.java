@@ -61,8 +61,10 @@ public class LoginController extends HttpServlet {
 
              response.addCookie(u);//luu u va p len Chrome
              response.addCookie(p);
-             
-             request.getRequestDispatcher("/home").forward(request, response);
+             if(a.getRole().equals("Admin")){
+                 request.getRequestDispatcher("Admin/home/index.jsp").forward(request, response);
+             }else
+                request.getRequestDispatcher("/home").forward(request, response);
          }
     }
 
