@@ -4,16 +4,20 @@
  */
 package servlet;
 
+import dao.Dao;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-import javax.mail.Part;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Part;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.User;
 
 
 @WebServlet("/uploadAvatar")
@@ -41,21 +45,16 @@ public class UploadAvatarServlet extends HttpServlet {
 
         // Ghi file vào đường dẫn trên
         filePart.write(filePath);
-        UserDetail userDetail = (UserDetail) session.getAttribute("accDetail");
+        User user = (User) session.getAttribute("acc");
 
-        userDetail.setAvatar("views/client/asset/img/" + fileName);
-
-        UserDetailDao userDetailDao = new UserDetailDao();
-        boolean isUpdatedUserImg = userDetailDao.updateUserDetailProfile(userDetail);
-        
-        if (isUpdatedUserImg) {
-            session.setAttribute("msg", "Cập nhật hồ sơ thành công!");
-            session.setAttribute("accDetail", userDetail);
-        } else {
-            // Gửi phản hồi lại cho người dùng
-            session.setAttribute("msg", "Có lỗi xảy ra trong quá trình cập nhật!");
+        user.setAvatar("img/" + fileName);
+        Dao dao = new Dao();
+        try {
+            dao.editProfile(user);
+        } catch (Exception ex) {
+            Logger.getLogger(UploadAvatarServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        request.getRequestDispatcher("views/client/pages/profile.jsp").forward(request, response);
+        request.getRequestDispatcher("EditProfile.jsp").forward(request, response);
     }
 }
 

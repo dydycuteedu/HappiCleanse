@@ -8,7 +8,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Plumberz - Free Plumbing Website Template</title>
+    <title>HappiCleanse- We can help your house</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -50,11 +50,11 @@
                     <div class="container">
                         <div class="row justify-content-start">
                             <div class="col-10 col-lg-8">
-                                <h5 class="text-white text-uppercase mb-3 animated slideInDown">Plumbing & Repairing Services</h5>
-                                <h1 class="display-3 text-white animated slideInDown mb-4">Efficient Residential Plumbing Services</h1>
-                                <p class="fs-5 fw-medium text-white mb-4 pb-2">Vero elitr justo clita lorem. Ipsum dolor at sed stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea elitr.</p>
+                                <h5 class="text-white text-uppercase mb-3 animated slideInDown">House cleaning Services</h5>
+                                <h1 class="display-3 text-white animated slideInDown mb-4">House cleaning advanced Services</h1>
+                                <p class="fs-5 fw-medium text-white mb-4 pb-2">Chúng tôi sẽ giúp ngôi nhà bạn đẹp hơn, tiết kiệm thời gian làm việc nhà cho bạn!!</p>
                                 <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Read More</a>
-                                <a href="" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Free Quote</a>
+                                
                             </div>
                         </div>
                     </div>
@@ -66,12 +66,11 @@
                     <div class="container">
                         <div class="row justify-content-start">
                             <div class="col-10 col-lg-8">
-                                <h5 class="text-white text-uppercase mb-3 animated slideInDown">Plumbing & Repairing Services</h5>
-                                <h1 class="display-3 text-white animated slideInDown mb-4">Efficient Commercial Plumbing Services</h1>
-                                <p class="fs-5 fw-medium text-white mb-4 pb-2">Vero elitr justo clita lorem. Ipsum dolor at sed stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea elitr.</p>
+                                <h5 class="text-white text-uppercase mb-3 animated slideInDown">Babysister Services</h5>
+                                <h1 class="display-3 text-white animated slideInDown mb-4">Babysister Services</h1>
+                                <p class="fs-5 fw-medium text-white mb-4 pb-2">Việc trông trẻ quá tốn thời gian để làm? Chúng tôi có đội ngũ trông trẻ giúp bạn có thêm thời gian làm việc.</p>
                                 <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Read More</a>
-                                <a href="" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Free Quote</a>
-                            </div>
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -124,8 +123,8 @@
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
                     <h6 class="text-secondary text-uppercase">About Us</h6>
-                    <h1 class="mb-4">We Are Trusted Plumbing Company Since 1990</h1>
-                    <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet</p>
+                    <h1 class="mb-4">Chúng tôi được thành lập vaod năm 2024</h1>
+                    <p class="mb-4">Đáp ứng nhu cầu cho các mái ấm nơi có các hộ gia đình, người phụ nữ nội trợ bận bịu với công việc văn phòng không có thời gian chăm lo cho ngôi nhà. Vì thế chúng tôi ra đời để phục vụ các bạn!!!</p>
                     <p class="fw-medium text-primary"><i class="fa fa-check text-success me-3"></i>Residential & commercial plumbing</p>
                     <p class="fw-medium text-primary"><i class="fa fa-check text-success me-3"></i>Quality services at affordable prices</p>
                     <p class="fw-medium text-primary"><i class="fa fa-check text-success me-3"></i>Immediate 24/ 7 emergency services</p>
@@ -273,51 +272,11 @@
                 </div>
             </div>
 
-            <h1 class="text-white mb-4">Emergency Plumbing Service</h1>
-            <h3 class="text-white mb-0">24 Hours 7 Days a Week</h3>
+            <h1 class="text-white mb-4">HouseHould Service</h1>
+            <h3 class="text-white mb-0">12 Hours 7 Days a Week</h3>
         </div>
-        <div class="container position-relative wow fadeInUp" data-wow-delay="0.1s" style="margin-top: -6rem;">
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="bg-light text-center p-5">
-                        <h1 class="mb-4">Book For A Service</h1>
-                        <form>
-                            <div class="row g-3">
-                                <div class="col-12 col-sm-6">
-                                    <input type="text" class="form-control border-0" placeholder="Your Name" style="height: 55px;">
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <input type="email" class="form-control border-0" placeholder="Your Email" style="height: 55px;">
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <select class="form-select border-0" style="height: 55px;">
-                                        <option selected>Select A Service</option>
-                                        <option value="1">Service 1</option>
-                                        <option value="2">Service 2</option>
-                                        <option value="3">Service 3</option>
-                                    </select>
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <div class="date" id="date1" data-target-input="nearest">
-                                        <input type="text"
-                                            class="form-control border-0 datetimepicker-input"
-                                            placeholder="Service Date" data-target="#date1" data-toggle="datetimepicker" style="height: 55px;">
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <textarea class="form-control border-0" placeholder="Special Request"></textarea>
-                                </div>
-                                <div class="col-12">
-                                    <button class="btn btn-primary w-100 py-3" type="submit">Book Now</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Booking End -->
+        
+  
 
 
     <!-- Team Start -->
@@ -410,8 +369,8 @@
     <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
         <div class="container">
             <div class="text-center">
-                <h6 class="text-secondary text-uppercase">Testimonial</h6>
-                <h1 class="mb-5">Our Clients Say!</h1>
+                
+                <h1 class="mb-5">Khách hàng nói gì về chúng tôi?</h1>
             </div>
             <div class="owl-carousel testimonial-carousel position-relative wow fadeInUp" data-wow-delay="0.1s">
                 <div class="testimonial-item text-center">

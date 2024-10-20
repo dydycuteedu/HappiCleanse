@@ -52,11 +52,14 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="card-title">
-                                            <h4 >Tạo Mới Người Dùng</h4>
+                                            <h4 >Tạo Mới Nhân viên</h4>
                                         </div>
                                         <form action="${pageContext.request.contextPath}/UserServlet" method="post" style="display: inline;">
                                             <div class="row mb-3">
-                                                <input type="hidden" name="actor" value="admin">
+                                                <label for="example-text-input" class="col-sm-2 col-form-label">Họ và tên</label>
+                                                <div class="col-sm-10">
+                                                    <input class="form-control" type="text" name="fullname" id="example-text-input" required>
+                                                </div>
                                                 <label for="example-text-input" class="col-sm-2 col-form-label">Tên Người Dùng</label>
                                                 <div class="col-sm-10">
                                                     <input class="form-control" type="text" name="username" id="example-text-input" required>
@@ -69,16 +72,12 @@
                                                 <div class="col-sm-10">
                                                     <input class="form-control" type="text" name="email" id="example-text-input" required>
                                                 </div>
-                                                <label for="example-text-input" class="col-sm-2 col-form-label">Trạng thái</label>
-                                                <div class="col-sm-10">
-                                                    <input type="checkbox" id="switch" switch="none" name="status" checked/>
-                                                    <label for="switch" data-on-label="On" data-off-label="Off"></label>
-                                                </div>
+                                                
                                             </div>
                                             <div class="mb-0">
                                                 <div>
                                                     <input type="submit" class="btn btn-primary waves-effect waves-light me-1" name="action" value="Add">
-                                                    <a href="${pageContext.request.contextPath}/UsersServlet?action=management" class="btn btn-secondary waves-effect">
+                                                    <a href="${pageContext.request.contextPath}/UserServlet?action=management" class="btn btn-secondary waves-effect">
                                                         Quay trở lại
                                                     </a>
                                                 </div>

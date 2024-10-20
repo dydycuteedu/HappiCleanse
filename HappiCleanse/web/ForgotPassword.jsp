@@ -48,7 +48,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-6 col-md-8 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="bg-light p-5 rounded">
-                        <h5 class="text-center mb-4">Reset your password</h5>
+                        <h5 class="text-center mb-4">Forgot your password</h5>
                         <form action="forgotPassword" method="POST">
                             <div class="form-floating mb-4">
                                 <input type="email" class="form-control" id="resetEmail" placeholder="name@example.com" name="email">

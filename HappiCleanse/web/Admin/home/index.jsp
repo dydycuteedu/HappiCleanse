@@ -71,7 +71,7 @@
                                     <div class="card-body">
                                         <div class="d-flex">
                                             <div class="flex-grow-1">
-                                                <p class="text-truncate font-size-14 mb-2">Total Sales</p>
+                                                <p class="text-truncate font-size-14 mb-2">Total Orders</p>
                                                 <h4 class="mb-2">1452</h4>
                                                 <p class="text-muted mb-0"><span class="text-success fw-bold font-size-12 me-2"><i class="ri-arrow-right-up-line me-1 align-middle"></i>9.23%</span>from previous period</p>
                                             </div>
@@ -125,7 +125,7 @@
                                     <div class="card-body">
                                         <div class="d-flex">
                                             <div class="flex-grow-1">
-                                                <p class="text-truncate font-size-14 mb-2">Unique Visitors</p>
+                                                <p class="text-truncate font-size-14 mb-2">Service using</p>
                                                 <h4 class="mb-2">29670</h4>
                                                 <p class="text-muted mb-0"><span class="text-success fw-bold font-size-12 me-2"><i class="ri-arrow-right-up-line me-1 align-middle"></i>11.7%</span>from previous period</p>
                                             </div>
@@ -157,7 +157,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <h4 class="card-title mb-4">Email Sent</h4>
+                                        <h4 class="card-title mb-4">Service statistic</h4>
 
                                         <div class="text-center pt-3">
                                             <div class="row">

@@ -97,7 +97,7 @@
                                     </div>
                                     <button class="btn btn-primary w-100 py-3" type="submit">Login</button>
                                     <!--Login google-->
-                                    <a href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8080/HappiCleanse/login-google&response_type=code&client_id=736597478888-lb1kurpmc507lagf345egoeto6u7ne3l.apps.googleusercontent.com&approval_prompt=force">Login With Google</a> 
+                                    <a style="margin-top:100px" href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8080/HappiCleanse/login-google&response_type=code&client_id=736597478888-lb1kurpmc507lagf345egoeto6u7ne3l.apps.googleusercontent.com&approval_prompt=force">Login With Google</a> 
                                 </form>
                             </div>
 

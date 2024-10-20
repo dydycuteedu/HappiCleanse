@@ -7,6 +7,7 @@ package servlet;
 import dao.Dao;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -72,12 +73,12 @@ public class UserServlet extends HttpServlet {
 //            case "Save":
 //                Save(request, response);
 //                break;
-//            case "Add":
-//                Add(request, response);
-//                break;
-//            case "create":
-//                Create(request, response);
-//                break;
+            case "Add":
+                Add(request, response);
+                break;
+            case "create":
+                Create(request, response);
+                break;
         }
     }
     
@@ -102,12 +103,12 @@ public class UserServlet extends HttpServlet {
                 case "Save":
                     Save(request, response);
                     break;
-//            case "Add":
-//                Add(request, response);
-//                break;
-//            case "create":
-//                Create(request, response);
-//                break;
+            case "Add":
+                Add(request, response);
+                break;
+            case "create":
+                Create(request, response);
+                break;
             }
         } catch (Exception ex) {
             Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -128,11 +129,11 @@ public class UserServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-//    private void Create(HttpServletRequest request, HttpServletResponse response)
-//            throws IOException, ServletException {
-//        RequestDispatcher dispatcher = request.getRequestDispatcher("Admin/user/create.jsp");
-//        dispatcher.forward(request, response);
-//    }
+    private void Create(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("Admin/user/create.jsp");
+        dispatcher.forward(request, response);
+    }
 //
     private void View(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
@@ -162,10 +163,11 @@ public class UserServlet extends HttpServlet {
 //    private void Delete(HttpServletRequest request, HttpServletResponse response)
 //            throws IOException, ServletException {
 //        int rid = Integer.parseInt(request.getParameter("id"));
-//        UserDao.delete(rid);
+//        Dao dao = new Dao();
+//        Dao.delete(rid);
 //        Management(request, response);
 //    }
-//
+
 
     private void Save(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException, Exception {
@@ -184,16 +186,22 @@ public class UserServlet extends HttpServlet {
         Management(request, response);
     }
 //
-//    private void Add(HttpServletRequest request, HttpServletResponse response)
-//            throws IOException, ServletException {
-//        String uname = request.getParameter("username");
-//        String upass = request.getParameter("password");
-//        String uemail = request.getParameter("email");
-//        User user = new User();
-//        user.setUsername(uname);
-//        user.setPassword(Common.encryptMD5(upass));
-//        user.setEmail(uemail);
-//        UserDao.insert(user);
-//        Management(request, response);
-//    }
+    private void Add(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
+        String uname = request.getParameter("username");
+        String upass = request.getParameter("password");
+        String uemail = request.getParameter("email");
+        String username = request.getParameter("fullname");
+         Dao dao = new Dao();
+         User user = new User();
+        user.setUsername(uname);
+        user.setPassword(upass);
+        user.setEmail(uemail);
+        try {
+            dao.singup(username, uname, upass, uemail);
+        } catch (SQLException ex) {
+            Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Management(request, response);
+    }
 }
