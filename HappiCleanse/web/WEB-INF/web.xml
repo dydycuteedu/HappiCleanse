@@ -12,6 +12,10 @@
         <servlet-name>UserServlet</servlet-name>
         <servlet-class>servlet.UserServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DetailServiceServlet</servlet-name>
+        <servlet-class>DetailServiceServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/Logout</url-pattern>
@@ -24,12 +28,15 @@
         <servlet-name>UserServlet</servlet-name>
         <url-pattern>/UserServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DetailServiceServlet</servlet-name>
+        <url-pattern>/DetailServiceServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
-    
     <dependency>
         <groupId>com.sun.activation</groupId>
         <artifactId>javax.activation</artifactId>
