@@ -24,20 +24,13 @@
         <div class="col-lg-9 col-md-12 text-end">
             <div class="h-100 d-inline-flex align-items-center me-4">
                 <i class="fa fa-map-marker-alt text-primary me-2"></i>
-                <p class="m-0">123 Street, New York, USA</p>
+                <p class="m-0">Da Nang</p>
             </div>
             <div class="h-100 d-inline-flex align-items-center me-4">
                 <i class="far fa-envelope-open text-primary me-2"></i>
-                <p class="m-0">info@example.com</p>
+                <p class="m-0">happicleanse@gmail.com.com</p>
             </div>
-            <div class="h-100 d-inline-flex align-items-center">
-                <a class="btn btn-sm-square bg-white text-primary me-1" href=""><i
-                        class="fab fa-facebook-f"></i></a>
-                <a class="btn btn-sm-square bg-white text-primary me-1" href=""><i class="fab fa-twitter"></i></a>
-                <a class="btn btn-sm-square bg-white text-primary me-1" href=""><i
-                        class="fab fa-linkedin-in"></i></a>
-                <a class="btn btn-sm-square bg-white text-primary me-0" href=""><i class="fab fa-instagram"></i></a>
-            </div>
+           
         </div>
     </div>
 </div>
