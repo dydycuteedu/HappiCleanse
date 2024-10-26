@@ -105,7 +105,7 @@
                             <div class="tab-pane fade" id="pills-register" role="tabpanel"
                                 aria-labelledby="pills-register-tab">
                                 <h5 class="text-center mb-4">Create a new account</h5>
-                                <form action="/HappiCleanse/signup" method="get">
+                                <form action="/HappiCleanse/signup" method="post">
                                 <div class="form-floating mb-3">
                                         <input type="text" class="form-control" id="registerName"
                                             placeholder="Your Name" name="nameUser">

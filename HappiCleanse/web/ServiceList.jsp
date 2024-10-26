@@ -71,7 +71,7 @@
                         </div>
                         <div class="owl-carousel service-carousel position-relative wow fadeInUp" data-wow-delay="0.1s">
                             <c:forEach items="${serviceList}" var="service" >
-                                <div class="bg-light p-4">
+                                <div class="bg-light p-4" style="height: 450px;">
                                     <div class="d-flex align-items-center justify-content-center border border-5 border-white mb-4" style="width: 75px; height: 75px;">
                                         <i class="fa fa-water fa-2x text-primary"></i>
                                     </div>
@@ -83,8 +83,6 @@
                                     <a href="DetailService?idService=${service.idService}" class="btn bg-white text-primary w-100 mt-2">Read More<i class="fa fa-arrow-right text-secondary ms-2"></i></a>
                                 </div>
                             </c:forEach>
-
-
                         </div>
                     </div>
                 </div>
@@ -185,7 +183,7 @@
                                     <small class="fa fa-star text-secondary"></small>
                                 </c:forEach>
                             </div>
-                            <h5 class="mb-1">${feedback.user.nameUser}</h5>
+                            <h5 class="mb-1">${feedback.user.fullname}</h5>
                            
                         </div>
                     </c:forEach>

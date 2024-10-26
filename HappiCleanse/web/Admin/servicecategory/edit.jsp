@@ -5,7 +5,7 @@
 
     <head>
         <meta charset="utf-8" />
-        <title>Edit information</title>
+        <title>Data Tables | Upcube - Admin & Dashboard Template</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
         <meta content="Themesdesign" name="author" />
@@ -52,26 +52,26 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="card-title">
-                                            <h4 >Chỉnh Sửa Nhân viên</h4>
+                                            <h4 >Chỉnh Sửa Loại Món Ăn</h4>
                                         </div>
-                                        <form action="${pageContext.request.contextPath}/UserServlet" method="post" style="display: inline;">
+                                        <form action="${pageContext.request.contextPath}/DishCategoryServlet" method="post" style="display: inline;">
                                             <div class="row mb-3">
-                                               
-                                                <input type="hidden" name="id" value="${user.idUser}">
-                                                <label for="rolename" class="col-sm-2 col-form-label">Tên Người Dùng</label>
+                                                <input type="hidden" name="actor" value="admin">
+                                                <input type="hidden" name="id" value="${dishcategory.dishCategoryID}">
+                                                <label for="rolename" class="col-sm-2 col-form-label">Tên Loại Món Ăn</label>
                                                 <div class="col-sm-10">
-                                                    <input class="form-control" type="text" name="name" id="rolename" value="${user.username}">
+                                                    <input class="form-control" type="text" name="name" id="rolename" value="${dishcategory.name}">
                                                 </div>
                                                 <label for="status" class="col-sm-2 col-form-label">Trạng thái</label>
                                                 <div class="col-sm-10">
-                                                    <input type="checkbox" id="switch" switch="none" name="status" <c:if test="${user.isValid == 1}">checked</c:if> />
+                                                    <input type="checkbox" id="switch" switch="none" name="status" <c:if test="${dishcategory.status == true}">checked</c:if> />
                                                     <label for="switch" data-on-label="On" data-off-label="Off"></label>
                                                 </div>
                                             </div>
                                             <div class="mb-0">
                                                 <div>
                                                     <input type="submit" class="btn btn-primary waves-effect waves-light me-1" name="action" value="Save"/>
-                                                    <a href="${pageContext.request.contextPath}/UserServlet?action=management" class="btn btn-secondary waves-effect">
+                                                    <a href="${pageContext.request.contextPath}/DishCategoryServlet?actor=admin&action=management" class="btn btn-secondary waves-effect">
                                                         Quay trở lại
                                                     </a>
                                                 </div>

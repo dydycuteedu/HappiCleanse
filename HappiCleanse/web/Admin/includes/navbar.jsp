@@ -31,7 +31,7 @@
                 </li>
 
                 <li>
-                    <a href="${pageContext.request.contextPath}/Admin/home/calendar.jsp" class=" waves-effect">
+                    <a href="${pageContext.request.contextPath}/CalenderServlet" class=" waves-effect">
                         <i class="ri-calendar-2-line"></i>
                         <span>Calendar</span>
                     </a>
@@ -57,11 +57,9 @@
                         <span>Danh mục</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="${pageContext.request.contextPath}/PolicyCategoryServlet?actor=admin&action=management">Danh Mục Chính Sách</a></li>
-                        <li><a href="${pageContext.request.contextPath}/DishCategoryServlet?actor=admin&action=management">Danh Mục Món Ăn</a></li>
-                        <li><a href="${pageContext.request.contextPath}/RoleServlet?actor=admin&action=management">Danh Mục Vai Trò</a></li>
-                        <li><a href="${pageContext.request.contextPath}/NutrionServlet?actor=admin&action=management">Danh Mục Nguyên Liệu</a></li>
-                    </ul>
+                        <li><a href="${pageContext.request.contextPath}/ServiceCategoryServlet?action=management">Danh Mục Dịch Vụ</a></li>
+                        <li><a href="${pageContext.request.contextPath}/RoleServlet?action=management">Danh Mục Vai Trò</a></li>
+                       </ul>
                 </li>
 
                 <li>
@@ -70,16 +68,10 @@
                         <span>Quản lý</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="${pageContext.request.contextPath}/UserServlet?action=management">Quản Lý Người Dùng</a></li>
-                        <li><a href="${pageContext.request.contextPath}/PolicyServlet?actor=admin&action=management">Quản Lý Chính Sách</a></li>
+                        <li><a href="${pageContext.request.contextPath}/CustomerServlet?action=management">Quản Lý Customer</a></li>
+                        <li><a href="${pageContext.request.contextPath}/StaffServlet?action=management">Quản Lý Staff</a></li>
                         <li><a href="${pageContext.request.contextPath}/OrderServlet?actor=admin&action=management">Quản Lý Đơn Hàng</a></li>
-                        <li><a href="${pageContext.request.contextPath}/DishServlet?actor=admin&action=management">Quản Lý Món Ăn</a></li>
-                        <li><a href="${pageContext.request.contextPath}/CostServlet?actor=admin&action=management">Quản Lý Chi Phí Dịch Vụ</a></li>
-                        <li><a href="${pageContext.request.contextPath}/DishServlet?actor=admin&action=management">Quản Lý Sự Kiện</a></li>
-                        <li><a href="${pageContext.request.contextPath}/DishServlet?actor=admin&action=management">Quản Lý Mã Giảm Giá</a></li>
-                        <li><a href="${pageContext.request.contextPath}/DishServlet?actor=admin&action=management">Quản Lý Thông Báo</a></li>
-                        <li><a href="${pageContext.request.contextPath}/DishServlet?actor=admin&action=management">Quản Lý Chi Phí Giao Hàng</a></li>
-                    </ul>
+                        </ul>
                 </li>
             </ul>
         </div>

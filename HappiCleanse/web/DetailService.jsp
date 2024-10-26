@@ -68,76 +68,30 @@
                 <!-- Service Header -->
                 <div class="row g-0 mb-5">
                     <div class="col-md-12">
-                        <h1 class="text-center mb-4">${service.nameService}</h1>
-                        <p class="text-center">${service.description}</p>
+                        <h1 class="text-center mb-4" style="font-size: 80px;">${service.nameService}</h1>
                     </div>
                 </div>
-
-                
-
-
-                <!-- Service Highlights -->
-                <div class="row mb-5">
-                    <div class="col-lg-4">
-                        <div class="bg-light p-4 text-center">
-                            <i class="fa fa-check-circle fa-2x text-primary mb-3"></i>
-                            <h4>Quality Service</h4>
-                            <p>dịch vụ chất lượng cao. Chúng tôi lấy khách hàng làm thượng đế!!!</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="bg-light p-4 text-center">
-                            <i class="fa fa-check-circle fa-2x text-primary mb-3"></i>
-                            <h4>Customer Satisfaction</h4>
-                            <p>Khách hàng sửa dụng dịch vụ làm vườn khá hài lòng với việc được dọn dẹp sạch sẽ và tỉa đẹp cho cây xanh của họ.</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="bg-light p-4 text-center">
-                            <i class="fa fa-check-circle fa-2x text-primary mb-3"></i>
-                            <h4>20/7 Support</h4>
-                            <p>Chúng tôi luôn hoạt động cả tuần. Việc dọn vườn không thành vấn đề</p>
-                        </div>
-                    </div>
-                </div>
-                
-                
                 <div class="row g-3">
                     <!-- Image 1 -->
                     <div class="col-md-4">
-                        <img src="img/service-detail1.jpg" alt="Image 1" class="img-fluid mb-4">
+                        <img src="${service.img1}" alt="Image 1" class="img-fluid mb-4">
                     </div>
 
                     <!-- Image 2 -->
                     <div class="col-md-4">
-                        <img src="img/service-detail2.jpg" alt="Image 2" class="img-fluid mb-4">
+                        <img src="${service.img2}" alt="Image 2" class="img-fluid mb-4">
                     </div>
 
                     <!-- Image 3 -->
                     <div class="col-md-4">
-                        <img src="img/service-detail3.jpg" alt="Image 3" class="img-fluid mb-4">
-                    </div>
-
-                    <!-- Image 4 -->
-                    <div class="col-md-4">
-                        <img src="img/service-detail4.jpg" alt="Image 4" class="img-fluid mb-4">
-                    </div>
-
-                    <!-- Image 5 -->
-                    <div class="col-md-4">
-                        <img src="img/service-detail5.jpg" alt="Image 5" class="img-fluid mb-4">
-                    </div>
-
-                    <!-- Image 6 -->
-                    <div class="col-md-4">
-                        <img src="img/service-detail6.jpg" alt="Image 6" class="img-fluid mb-4">
+                        <img src="${service.img3}" alt="Image 3" class="img-fluid mb-4">
                     </div>
                 </div>
                 <!-- Service Details Section -->
                 <div class="row mb-5">
                     <div class="col-lg-12">
                         <h2 class="mb-4">About Our Drain Repair Service</h2>
-                        <p>We understand how frustrating drainage issues can be. Our skilled technicians are equipped with the latest tools and techniques to handle all types of drain repair jobs. From minor blockages to major repair work, we ensure the job is done right the first time. We work quickly and efficiently, so you can get back to your normal routine without any disruptions.</p>
+                        <p>${service.description}</p>
 
                         <h3 class="mt-5">Why Choose Us?</h3>
                         <ul>
@@ -166,11 +120,13 @@
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="date" id="date1" data-target-input="nearest">
-                                                <input type="text"
+                                                <input type="datetime-local"
                                                        class="form-control border-0 datetimepicker-input"
-                                                       placeholder="Service Date" data-target="#date1" data-toggle="datetimepicker" style="height: 55px;" name="dateShift">
+                                                       placeholder="Service Date" style="height: 55px;" name="dateShift">
+                                                
                                             </div>
                                         </div>
+                                            
                                         <div class="col-12">
                                             <textarea class="form-control border-0" placeholder="Special Request" name="notes"></textarea>
                                         </div>

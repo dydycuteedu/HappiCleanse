@@ -4,6 +4,7 @@
  */
 package model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -15,18 +16,18 @@ public class Feedback {
 
     private int ratings;
 
-    private LocalDateTime editedTime;
+    private LocalDate editedTime;
 
-    private Shifts shift;
+    private Order order;
 
     private User user;
 
-    public Feedback(int idFeedback, String contentFeedback, int ratings, LocalDateTime editedTime, Shifts shift, User user) {
+    public Feedback(int idFeedback, String contentFeedback, int ratings, LocalDate editedTime, Order order, User user) {
         this.idFeedback = idFeedback;
         this.contentFeedback = contentFeedback;
         this.ratings = ratings;
         this.editedTime = editedTime;
-        this.shift = shift;
+        this.order = order;
         this.user = user;
     }
 
@@ -57,21 +58,23 @@ public class Feedback {
         this.ratings = ratings;
     }
 
-    public LocalDateTime getEditedTime() {
+    public LocalDate getEditedTime() {
         return editedTime;
     }
 
-    public void setEditedTime(LocalDateTime editedTime) {
+    public void setEditedTime(LocalDate editedTime) {
         this.editedTime = editedTime;
     }
 
-    public Shifts getShift() {
-        return shift;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setShift(Shifts shift) {
-        this.shift = shift;
+    public void setOrder(Order order) {
+        this.order = order;
     }
+
+
 
     public User getUser() {
         return user;
@@ -83,7 +86,7 @@ public class Feedback {
 
     @Override
     public String toString() {
-        return "Feedback{" + "idFeedback=" + idFeedback + ", contentFeedback=" + contentFeedback + ", ratings=" + ratings + ", editedTime=" + editedTime + ", shift=" + shift + ", user=" + user + '}';
+        return "Feedback{" + "idFeedback=" + idFeedback + ", contentFeedback=" + contentFeedback + ", ratings=" + ratings + ", editedTime=" + editedTime + ", order=" + order + ", user=" + user + '}';
     }
 
     

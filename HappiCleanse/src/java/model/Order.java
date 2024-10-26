@@ -17,15 +17,17 @@ public class Order {
 
     private String statusOrder;
     private LocalDateTime dateCreate;
+    private LocalDateTime dateService;
     
     private List<Shifts> shifts;
 
-    public Order(int idOrder, User user, String notes, String statusOrder, LocalDateTime dateCreate, List<Shifts> shifts) {
+    public Order(int idOrder, User user, String notes, String statusOrder, LocalDateTime dateCreate,LocalDateTime dateService, List<Shifts> shifts) {
         this.idOrder = idOrder;
         this.user = user;
         this.notes = notes;
         this.statusOrder = statusOrder;
         this.dateCreate = dateCreate;
+        this.dateService = dateService;
         this.shifts = shifts;
     }
 
@@ -71,6 +73,15 @@ public class Order {
     public void setDateCreate(LocalDateTime dateCreate) {
         this.dateCreate = dateCreate;
     }
+
+    public LocalDateTime getDateService() {
+        return dateService;
+    }
+
+    public void setDateService(LocalDateTime dateService) {
+        this.dateService = dateService;
+    }
+    
 
     public List<Shifts> getShifts() {
         return shifts;

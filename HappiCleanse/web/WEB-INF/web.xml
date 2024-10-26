@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="4.0" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
+    <filter>
+        <filter-name>AccesFilter</filter-name>
+        <filter-class>Filter.AccesFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AccesFilter</filter-name>
+        <url-pattern>/BookingServlet</url-pattern>
+        <url-pattern>/CreateOrderServlet</url-pattern>
+    </filter-mapping>
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>servlet.LogoutServlet</servlet-class>
@@ -15,6 +24,30 @@
     <servlet>
         <servlet-name>DetailServiceServlet</servlet-name>
         <servlet-class>DetailServiceServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomerServlet</servlet-name>
+        <servlet-class>servlet.CustomerServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StaffServlet</servlet-name>
+        <servlet-class>servlet.StaffServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServiceCategoryServlet</servlet-name>
+        <servlet-class>servlet.ServiceCategoryServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BookingServlet</servlet-name>
+        <servlet-class>servlet.BookingServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FeedbackServlet</servlet-name>
+        <servlet-class>servlet.FeedbackServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CalenderServlet</servlet-name>
+        <servlet-class>servlet.CalenderServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
@@ -32,6 +65,30 @@
         <servlet-name>DetailServiceServlet</servlet-name>
         <url-pattern>/DetailServiceServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerServlet</servlet-name>
+        <url-pattern>/CustomerServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffServlet</servlet-name>
+        <url-pattern>/StaffServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServiceCategoryServlet</servlet-name>
+        <url-pattern>/ServiceCategoryServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BookingServlet</servlet-name>
+        <url-pattern>/BookingServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FeedbackServlet</servlet-name>
+        <url-pattern>/FeedbackServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CalenderServlet</servlet-name>
+        <url-pattern>/CalenderServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
@@ -42,4 +99,9 @@
         <artifactId>javax.activation</artifactId>
         <version>1.2.0</version>
     </dependency>
+    <welcome-file-list>
+        <welcome-file>
+            home
+        </welcome-file>
+    </welcome-file-list>
 </web-app>

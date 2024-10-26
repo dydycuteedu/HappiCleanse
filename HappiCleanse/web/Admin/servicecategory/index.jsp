@@ -5,7 +5,7 @@
 
     <head>
         <meta charset="utf-8" />
-        <title>USER DATA</title>
+        <title>Danh sách danh mục Dich vụ</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
         <meta content="Themesdesign" name="author" />
@@ -28,16 +28,6 @@
         <link href="${pageContext.request.contextPath}/Admin\assets/css/icons.min.css" rel="stylesheet" type="text/css" />
         <!-- App Css-->
         <link href="${pageContext.request.contextPath}/Admin\assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
-        <style>
-            #datatable th, #datatable td {
-                white-space: nowrap; /* Ngăn không cho nội dung xuống dòng */
-                overflow: hidden; /* Ẩn phần nội dung bị tràn ra ngoài */
-                text-overflow: ellipsis; /* Thêm dấu ba chấm cho nội dung quá dài */
-                max-width: 150px; /* Đặt chiều rộng tối đa cho ô, có thể điều chỉnh theo ý muốn */
-                padding: 5px; /* Tạo khoảng cách giữa nội dung và viền ô */
-                box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước ô */
-            }
-        </style>
     </head>
     <body data-topbar="dark">
 
@@ -65,8 +55,8 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="card-title">
-                                            <h4 >Quản Lí Người Dùng</h4>
-                                            <a href="${pageContext.request.contextPath}/UserServlet?action=create" id="editable-sample_new" class="btn btn-primary">
+                                            <h4 >Quản Lí Danh Mục Dịch Vu</h4>
+                                            <a href="${pageContext.request.contextPath}/ServiceCategoryServlet?&action=create" id="editable-sample_new" class="btn btn-primary">
                                                 Tạo mới <i class="fa fa-plus"></i>
                                             </a>
                                         </div>
@@ -75,67 +65,51 @@
                                         <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                             <thead>
                                                 <tr>
-
-                                                    <th>Username</th>
-
-                                                    <th>Email</th>
-
-                                                    <th>Giới tính</th>
-                                                    <th>Vai Trò</th>
-                                                    <th>Trạng Thái</th>
+                                                    <th>Mã Loại Dịch Vụ</th>
+                                                    <th>Tên Loại Dịch Vụ</th>
+                                                    <th>Màu Loại Dịch Vụ</th>
                                                     <th>Hành Động</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <c:forEach var="user" items="${list}">
-                                                    <tr>
+                                            <c:forEach var="servicecategory" items="${list}">
+                                                <tr>
+                                                    <td>${servicecategory.idServiceCategory}</td>
+                                                    <td>${servicecategory.nameServiceCategory}</td>
+                                                    <td>${servicecategory.colorServiceCategory}</td>
+                                                    <td>
+                                                        <div class="btn-group" role="group">
 
-                                                        <td><img class="rounded-circle header-profile-user" src="${user.avatar}" alt="avatar"/> ${user.username}</td>
+                                                            <form action="${pageContext.request.contextPath}/ServiceCategoryServlet" method="GET" style="display: inline;">
+                                                                <input type="hidden" name="id" value="${servicecategory.idServiceCategory}">
+                                                                <input type="hidden" name="action" value="view">
 
+                                                                <button type="submit" class="btn btn-sm btn-primary" style="margin-right: 5px;">
+                                                                    <i class="ri-profile-fill"></i>
+                                                                </button>
+                                                            </form>
 
+                                                            <form action="${pageContext.request.contextPath}/ServiceCategoryServlet" method="GET" style="display: inline;">
+                                                                <input type="hidden" name="id" value="${servicecategory.idServiceCategory}">
+                                                                <input type="hidden" name="action" value="edit">
 
-                                                        <td>${user.email}</td>
+                                                                <button type="submit" class="btn btn-sm btn-warning" style="margin-right: 5px;">
+                                                                    <i class="ri-pencil-fill"></i>
+                                                                </button>
+                                                            </form>
 
-                                                        <td>${user.gender}</td>
-                                                        <td>${user.role}</td>
-                                                        <td>
-                                                            <input type="checkbox" id="switch" switch="none" name="status" disabled
-                                                                   <c:if test="${user.isValid == 1}">checked</c:if> />
-                                                                   <label for="switch" data-on-label="On" data-off-label="Off"></label>
-                                                            </td>
-                                                            <td>
-                                                                <div class="btn-group" role="group">
+                                                            <form action="${pageContext.request.contextPath}/ServiceCategoryServlet" method="GET" style="display: inline;">
+                                                                <input type="hidden" name="id" value="${servicecategory.idServiceCategory}">
+                                                                <input type="hidden" name="action" value="delete">
 
-                                                                    <form action="${pageContext.request.contextPath}/UserServlet" method="POST" style="display: inline;">
-                                                                    <input type="hidden" name="id" value="${user.idUser}">
-                                                                    <input type="hidden" name="action" value="view">
-                                                                   
-                                                                    <button type="submit" class="btn btn-sm btn-primary" style="margin-right: 5px;">
-                                                                        <i class="ri-profile-fill"></i>
-                                                                    </button>
-                                                                </form>
-
-                                                                <form action="${pageContext.request.contextPath}/UserServlet" method="GET" style="display: inline;">
-                                                                    <input type="hidden" name="id" value="${user.idUser}">
-                                                                    <input type="hidden" name="action" value="edit">
-                                                                    <input type="hidden" name="actor" value="admin">
-                                                                    <button type="submit" class="btn btn-sm btn-warning" style="margin-right: 5px;" >
-                                                                        <i class="ri-pencil-fill"></i>
-                                                                    </button>
-                                                                </form>
-
-                                                                <form action="${pageContext.request.contextPath}/UserServlet" method="GET" style="display: inline;">
-                                                                    <input type="hidden" name="id" value="${user.idUser}">
-                                                                    <input type="hidden" name="action" value="delete">
-                                                                    <input type="hidden" name="actor" value="admin">
-                                                                    <button type="submit" class="btn btn-sm btn-danger" id="sa-params">
-                                                                        <i class="ri-delete-bin-fill"></i>
-                                                                    </button>
-                                                                </form>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </c:forEach>
+                                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                                    <i class="ri-delete-bin-fill"></i>
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
                                             </tbody>
                                         </table>
 
@@ -190,11 +164,6 @@
 
         <!-- Datatable init js -->
         <script src="${pageContext.request.contextPath}/Admin\assets/js/pages/datatables.init.js"></script>
-        <!-- Sweet Alerts js -->
-        <script src="${pageContext.request.contextPath}/Admin\assets/libs/sweetalert2/sweetalert2.min.js"></script>
-
-        <!-- Sweet alert init js-->
-        <script src="${pageContext.request.contextPath}/Admin\assets/js/pages/sweet-alerts.init.js"></script>
 
         <script src="${pageContext.request.contextPath}/Admin\assets/js/app.js"></script>
 

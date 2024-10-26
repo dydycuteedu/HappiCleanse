@@ -7,30 +7,24 @@ package servlet;
 import dao.Dao;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.DetailShifts;
+import model.Feedback;
 import model.Order;
-import model.Service;
-import model.Shifts;
-import model.TypeShift;
 import model.User;
-import utils.CheckShift;
-import utils.ConvertConstant;
 
-
-@WebServlet(name = "CreateOrderServlet", urlPatterns = {"/CreateOrderServlet"})
-public class CreateOrderServlet extends HttpServlet {
+/**
+ *
+ * @author CHUC DY
+ */
+public class FeedbackServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -49,10 +43,10 @@ public class CreateOrderServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CreateOrderServlet</title>");
+            out.println("<title>Servlet FeedbackServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CreateOrderServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet FeedbackServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -70,7 +64,16 @@ public class CreateOrderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            Dao dao = new Dao();
+            HttpSession session = request.getSession();
+            User a = (User) session.getAttribute("acc");
+            List<Order> orderList = dao.getOrderByUserId(a.getIdUser());
+            request.setAttribute("orderList", orderList);
+            request.getRequestDispatcher("Booking.jsp").forward(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(BookingServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -87,36 +90,22 @@ public class CreateOrderServlet extends HttpServlet {
         try {
             Dao dao = new Dao();
             HttpSession session = request.getSession();
-            User user = (User) session.getAttribute("acc");
-            
-            String nameUser = request.getParameter("nameUser");
-            String email = request.getParameter("email");
-            String phoneNumber = request.getParameter("phoneNumber");
-            String address = request.getParameter("address");
-            if (user == null) {
-                user = dao.getUser(1);
-            }
-            int idService = Integer.parseInt(request.getParameter("idService"));
-            String dateCreateString = request.getParameter("dateShift");
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-            LocalDateTime localDateTime = LocalDateTime.parse(dateCreateString, formatter);
-            String notes = request.getParameter("notes");
-            Service service = dao.getService(idService);
-            TypeShift typeShift = dao.getTypeShift(CheckShift.checkHoliday(localDateTime));
-            Shifts shifts = new Shifts(0, typeShift, typeShift.getCoefficient() * 120);
-            dao.addShift(shifts);
-            List<Shifts> shiftses = new ArrayList<>();
-            
-            shiftses.add(shifts);
-            Order order = new Order(0, user, notes, "Pending", LocalDateTime.now(),localDateTime, shiftses);
-            dao.addOrder(order);
-            dao.insertDetailOrder(typeShift.getCoefficient() * 120, dao.getAllOrders().getLast().getIdOrder(), dao.getAllShifts().getLast().getIdShift());
-            DetailShifts detailShifts = new DetailShifts(dao.getAllShifts().getLast(), user, service);
-            dao.insertDetailShift(detailShifts);
-            response.sendRedirect("PaymentServlet?idOrder=" + dao.getAllOrders().getLast().getIdOrder());
+            User a = (User) session.getAttribute("acc");
+            int oid = Integer.parseInt(request.getParameter("orderid"));
+            Order o = dao.getOrder(oid);
+            int rating = Integer.parseInt(request.getParameter("rating"));
+            String contentFeedback = request.getParameter("description");
+            Feedback f = new Feedback();
+            f.setContentFeedback(contentFeedback);
+            f.setUser(a);
+            f.setRatings(rating);
+            f.setOrder(o);
+            dao.addFeedback(f);
+            doGet(request, response);
         } catch (Exception ex) {
-            Logger.getLogger(CreateOrderServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FeedbackServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
 
     }
 

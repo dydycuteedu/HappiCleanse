@@ -3,7 +3,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>Data Tables | Upcube - Admin & Dashboard Template</title>
+        <title>STAFF DETAIL</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
         <meta content="Themesdesign" name="author" />
@@ -51,7 +51,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="card-title">
-                                            <h4 >Thông Tin Người Dùng</h4>
+                                            <h4 >Thông Tin Staff</h4>
                                         </div>
                                         <div class="profile-details">
                                             <ul>
@@ -67,7 +67,7 @@
                                         </div>
                                         <div class="mb-0">
                                             <div>
-                                                <a href="${pageContext.request.contextPath}/UserServlet?action=management" class="btn btn-secondary waves-effect">
+                                                <a href="${pageContext.request.contextPath}/StaffServlet?action=management" class="btn btn-secondary waves-effect">
                                                     Quay trở lại
                                                 </a>
                                             </div>

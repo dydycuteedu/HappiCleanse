@@ -13,17 +13,17 @@
         <link rel="shortcut icon" href="assets/images/favicon.ico">
 
         <!-- Plugin css -->
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/views/admin\assets/libs/@fullcalendar/core/main.min.css" type="text/css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/views/admin\assets/libs/@fullcalendar/daygrid/main.min.css" type="text/css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/views/admin\assets/libs/@fullcalendar/bootstrap/main.min.css" type="text/css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/views/admin\assets/libs/@fullcalendar/timegrid/main.min.css" type="text/css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/Admin\assets/libs/@fullcalendar/core/main.min.css" type="text/css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/Admin\assets/libs/@fullcalendar/daygrid/main.min.css" type="text/css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/Admin\assets/libs/@fullcalendar/bootstrap/main.min.css" type="text/css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/Admin\assets/libs/@fullcalendar/timegrid/main.min.css" type="text/css">
     
         <!-- Bootstrap Css -->
-        <link href="${pageContext.request.contextPath}/views/admin\assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
+        <link href="${pageContext.request.contextPath}/Admin\assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
         <!-- Icons Css -->
-        <link href="${pageContext.request.contextPath}/views/admin\assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="${pageContext.request.contextPath}/Admin\assets/css/icons.min.css" rel="stylesheet" type="text/css" />
         <!-- App Css-->
-        <link href="${pageContext.request.contextPath}/views/admin\assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+        <link href="${pageContext.request.contextPath}/Admin\assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
 
     </head>
 
@@ -200,25 +200,25 @@
         <jsp:include page="../includes/rightbar.jsp" />
 
         <!-- JAVASCRIPT -->
-        <script src="${pageContext.request.contextPath}/views/admin\assets/libs/jquery/jquery.min.js"></script>
-        <script src="${pageContext.request.contextPath}/views/admin\assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="${pageContext.request.contextPath}/views/admin\assets/libs/metismenu/metisMenu.min.js"></script>
-        <script src="${pageContext.request.contextPath}/views/admin\assets/libs/simplebar/simplebar.min.js"></script>
-        <script src="${pageContext.request.contextPath}/views/admin\assets/libs/node-waves/waves.min.js"></script>
+        <script src="${pageContext.request.contextPath}/Admin\assets/libs/jquery/jquery.min.js"></script>
+        <script src="${pageContext.request.contextPath}/Admin\assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="${pageContext.request.contextPath}/Admin\assets/libs/metismenu/metisMenu.min.js"></script>
+        <script src="${pageContext.request.contextPath}/Admin\assets/libs/simplebar/simplebar.min.js"></script>
+        <script src="${pageContext.request.contextPath}/Admin\assets/libs/node-waves/waves.min.js"></script>
 
         <!-- plugin js -->
-        <script src="${pageContext.request.contextPath}/views/admin\assets/libs/moment/min/moment.min.js"></script>
-        <script src="${pageContext.request.contextPath}/views/admin\assets/libs/jquery-ui-dist/jquery-ui.min.js"></script>
-        <script src="${pageContext.request.contextPath}/views/admin\assets/libs/@fullcalendar/core/main.min.js"></script>
-        <script src="${pageContext.request.contextPath}/views/admin\assets/libs/@fullcalendar/bootstrap/main.min.js"></script>
-        <script src="${pageContext.request.contextPath}/views/admin\assets/libs/@fullcalendar/daygrid/main.min.js"></script>
-        <script src="${pageContext.request.contextPath}/views/admin\assets/libs/@fullcalendar/timegrid/main.min.js"></script>
-        <script src="${pageContext.request.contextPath}/views/admin\assets/libs/@fullcalendar/interaction/main.min.js"></script>
+        <script src="${pageContext.request.contextPath}/Admin\assets/libs/moment/min/moment.min.js"></script>
+        <script src="${pageContext.request.contextPath}/Admin\assets/libs/jquery-ui-dist/jquery-ui.min.js"></script>
+        <script src="${pageContext.request.contextPath}/Admin\assets/libs/@fullcalendar/core/main.min.js"></script>
+        <script src="${pageContext.request.contextPath}/Admin\assets/libs/@fullcalendar/bootstrap/main.min.js"></script>
+        <script src="${pageContext.request.contextPath}/Admin\assets/libs/@fullcalendar/daygrid/main.min.js"></script>
+        <script src="${pageContext.request.contextPath}/Admin\assets/libs/@fullcalendar/timegrid/main.min.js"></script>
+        <script src="${pageContext.request.contextPath}/Admin\assets/libs/@fullcalendar/interaction/main.min.js"></script>
 
         <!-- Calendar init -->
-        <script src="${pageContext.request.contextPath}/views/admin\assets/js/pages/calendar.init.js"></script>
+        <script src="${pageContext.request.contextPath}/Admin\assets/js/pages/calendar.init.js"></script>
 
-        <script src="${pageContext.request.contextPath}/views/admin\assets/js/app.js"></script>
+        <script src="${pageContext.request.contextPath}/Admin\assets/js/app.js"></script>
 
     </body>
 </html>

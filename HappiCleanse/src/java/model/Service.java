@@ -14,22 +14,16 @@ public class Service {
     private String img1;
     private String img2;
     private String img3;
-    private String img4;
-    private String img5;
-    private String img6;
-    private TypeService typeService;
+    private ServiceCategory serviceCategory;
 
-    public Service(int idService, String nameService, String description, String img1, String img2, String img3, String img4, String img5, String img6, TypeService typeService) {
+    public Service(int idService, String nameService, String description, String img1, String img2, String img3, ServiceCategory serviceCategory) {
         this.idService = idService;
         this.nameService = nameService;
         this.description = description;
         this.img1 = img1;
         this.img2 = img2;
         this.img3 = img3;
-        this.img4 = img4;
-        this.img5 = img5;
-        this.img6 = img6;
-        this.typeService = typeService;
+        this.serviceCategory = serviceCategory;
     }
 
     public Service() {
@@ -83,43 +77,13 @@ public class Service {
         this.img3 = img3;
     }
 
-    public String getImg4() {
-        return img4;
-    }
-
-    public void setImg4(String img4) {
-        this.img4 = img4;
-    }
-
-    public String getImg5() {
-        return img5;
-    }
-
-    public void setImg5(String img5) {
-        this.img5 = img5;
-    }
-
-    public String getImg6() {
-        return img6;
-    }
-
-    public void setImg6(String img6) {
-        this.img6 = img6;
-    }
-
-    public TypeService getTypeService() {
-        return typeService;
-    }
-
-    public void setTypeService(TypeService typeService) {
-        this.typeService = typeService;
-    }
-
-    @Override
-    public String toString() {
-        return "Service{" + "idService=" + idService + ", nameService=" + nameService + ", description=" + description + ", img1=" + img1 + ", img2=" + img2 + ", img3=" + img3 + ", img4=" + img4 + ", img5=" + img5 + ", img6=" + img6 + ", typeService=" + typeService + '}';
-    }
     
-    
-    
+
+    public ServiceCategory getServiceCategory() {
+        return serviceCategory;
+    }
+
+    public void setServiceCategory(ServiceCategory serviceCategory) {
+        this.serviceCategory = serviceCategory;
+    }  
 }

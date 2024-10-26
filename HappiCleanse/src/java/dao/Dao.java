@@ -9,8 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -22,7 +22,7 @@ import model.Notification;
 import model.Order;
 import model.Service;
 import model.Shifts;
-import model.TypeService;
+import model.ServiceCategory;
 import model.TypeShift;
 import model.User;
 import utils.BCryptPassword;
@@ -145,7 +145,7 @@ public class Dao {
                 u.setPhonenumber(rs.getString(6));
                 u.setGender(rs.getString(7));
                 u.setAvatar(rs.getString(8));
-                 u.setIsValid(rs.getInt(9));
+                u.setIsValid(rs.getInt(9));
                 u.setIsCheck(rs.getInt(10));
                 u.setRole(rs.getString(11));
                 u.setAddress(rs.getString(12));
@@ -222,6 +222,37 @@ public class Dao {
         }
         return false;
     }
+//sign up staff with full profile
+
+    public boolean singupStaff(String nameUser, String username, String pass, String email, String phonenumber, String address, String gender, String avatar) throws SQLException {
+        String sql = "INSERT INTO [User] (nameUser, username, password, email, phonenumber, address, gender, avatar, role, isValid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, nameUser);
+            ps.setString(2, username);
+            ps.setString(3, BCryptPassword.hash(pass));
+            ps.setString(4, email);
+            ps.setString(5, phonenumber);
+            ps.setString(6, address);
+            ps.setString(7, gender);
+            ps.setString(8, avatar);
+            ps.setString(9, "Staff");
+            ps.setInt(10, 1);
+            ps.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
+    //delete staff
+    public void deleteStaff(int id) throws SQLException, Exception {
+        String sql = "DELETE FROM [User] WHERE idUser = ?";
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        }
+    }
 
     public void changePassword(String password, int idUser) {
         String sql = "UPDATE [User] set password = ? WHERE idUser = ? ";
@@ -233,8 +264,6 @@ public class Dao {
             System.out.println(e);
         }
     }
-
-
 
     // Notification 28/09
     public void addNotification(Notification notification) throws SQLException, Exception {
@@ -292,12 +321,16 @@ public class Dao {
 
     // order 28/09
     public void addOrder(Order order) throws SQLException, Exception {
-        String sql = "INSERT INTO [Order] (idUser, notes, statusOrder, dateCreate) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO [Order] (idUser, notes, statusOrder, dateCreate,dateService) VALUES (?, ?, ?, ?,?)";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, order.getUser().getIdUser());
             ps.setString(2, order.getNotes());
             ps.setString(3, order.getStatusOrder());
             ps.setDate(4, ConvertConstant.convertLocalDateToDate(LocalDateTime.now()));
+            // Định dạng ngày giờ theo ý muốn
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String dateServiceString = order.getDateService().format(formatter);
+            ps.setString(5, dateServiceString);
             ps.executeUpdate();
         }
     }
@@ -310,7 +343,7 @@ public class Dao {
                 if (rs.next()) {
                     User user = getUser(rs.getInt("idUser"));
                     List<Shifts> shifts = getAllShiftByOrder(rs.getInt("idOrder"));
-                    return new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), shifts);
+                    return new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), ConvertConstant.convertStringtoLocalDateTime(rs.getString("dateService")), shifts);
                 }
             }
         }
@@ -325,7 +358,7 @@ public class Dao {
 
                 User user = getUser(rs.getInt("idUser"));
                 List<Shifts> shifts = getAllShiftByOrder(rs.getInt("idOrder"));
-                orders.add(new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), shifts));
+                orders.add(new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), ConvertConstant.convertStringtoLocalDateTime(rs.getString("dateService")), shifts));
             }
         }
         return orders;
@@ -349,6 +382,16 @@ public class Dao {
             ps.executeUpdate();
         }
     }
+    
+    public void cancelOrder(Order order) throws SQLException, Exception {
+        String sql = "UPDATE [Order] SET statusOrder = ? WHERE idOrder = ?";
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, order.getStatusOrder());
+            ps.setInt(2, order.getIdOrder());
+            ps.executeUpdate();
+        }
+    }
+    
 
     // Type shifts 28/09
     public TypeShift getTypeShift(int id) throws SQLException, Exception {
@@ -449,42 +492,41 @@ public class Dao {
         }
     }
 
-    // feedback 28/09
+     //feedback 28/09
     public void addFeedback(Feedback feedback) throws SQLException, Exception {
-        String sql = "INSERT INTO Feedback (contentFeedback, ratings, editedTime, idShift, idUser) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Feedback (contentFeedback, ratings, editedTime, idOrder, idUser) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, feedback.getContentFeedback());
             ps.setInt(2, feedback.getRatings());
-            ps.setTimestamp(3, Timestamp.valueOf(LocalDateTime.MIN).valueOf(feedback.getEditedTime()));
-            ps.setInt(4, feedback.getShift().getIdShift());
+            ps.setDate(3, ConvertConstant.convertLocalDateToDate(LocalDateTime.now()));
+            ps.setInt(4, feedback.getOrder().getIdOrder());
             ps.setInt(5, feedback.getUser().getIdUser());
             ps.executeUpdate();
         }
     }
-
-    // Method to retrieve a Feedback by its ID
-    public Feedback getFeedback(int id) throws SQLException, Exception {
-        String sql = "SELECT * FROM Feedback WHERE idFeedback = ?";
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    Shifts shift = getShift(rs.getInt("idShift"));
-                    User user = getUser(rs.getInt("idUser"));
-                    return new Feedback(
-                            rs.getInt("idFeedback"),
-                            rs.getString("contentFeedback"),
-                            rs.getInt("ratings"),
-                            rs.getTimestamp("editedTime").toLocalDateTime(),
-                            shift,
-                            user
-                    );
-                }
-            }
-        }
-        return null;
-    }
-
+//
+//    // Method to retrieve a Feedback by its ID
+//    public Feedback getFeedback(int id) throws SQLException, Exception {
+//        String sql = "SELECT * FROM Feedback WHERE idFeedback = ?";
+//        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+//            ps.setInt(1, id);
+//            try (ResultSet rs = ps.executeQuery()) {
+//                if (rs.next()) {
+//                    Shifts shift = getShift(rs.getInt("idShift"));
+//                    User user = getUser(rs.getInt("idUser"));
+//                    return new Feedback(
+//                            rs.getInt("idFeedback"),
+//                            rs.getString("contentFeedback"),
+//                            rs.getInt("ratings"),
+//                            rs.getTimestamp("editedTime").toLocalDateTime(),
+//                            shift,
+//                            user
+//                    );
+//                }
+//            }
+//        }
+//        return null;
+//    }
     // Method to retrieve all Feedback entries
     public List<Feedback> getAllFeedbacks() throws SQLException, Exception {
         String sql = "SELECT * FROM Feedback";
@@ -492,14 +534,14 @@ public class Dao {
         try (Connection connh = DBContext.getConnection(); PreparedStatement pss = connh.prepareStatement(sql)) {
             ResultSet rsH = pss.executeQuery();
             while (rsH.next()) {
-                Shifts shift = getShift(rsH.getInt("idShift"));
+                Order order = getOrder(rsH.getInt("idOrder"));
                 User user = getUser(rsH.getInt("idUser"));
                 feedbacks.add(new Feedback(
                         rsH.getInt("idFeedback"),
                         rsH.getString("contentFeedback"),
                         rsH.getInt("ratings"),
-                        rsH.getTimestamp("editedTime").toLocalDateTime(),
-                        shift,
+                        rsH.getDate("editedTime").toLocalDate(),
+                        order,
                         user
                 ));
             }
@@ -509,19 +551,18 @@ public class Dao {
     }
 
     // Method to update a Feedback entry
-    public void updateFeedback(Feedback feedback) throws SQLException, Exception {
-        String sql = "UPDATE Feedback SET contentFeedback = ?, ratings = ?, editedTime = ?, idShift = ?, idUser = ? WHERE idFeedback = ?";
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, feedback.getContentFeedback());
-            ps.setInt(2, feedback.getRatings());
-            ps.setTimestamp(3, Timestamp.valueOf(feedback.getEditedTime()));
-            ps.setInt(4, feedback.getShift().getIdShift());
-            ps.setInt(5, feedback.getUser().getIdUser());
-            ps.setInt(6, feedback.getIdFeedback());
-            ps.executeUpdate();
-        }
-    }
-
+//    public void updateFeedback(Feedback feedback) throws SQLException, Exception {
+//        String sql = "UPDATE Feedback SET contentFeedback = ?, ratings = ?, editedTime = ?, idShift = ?, idUser = ? WHERE idFeedback = ?";
+//        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+//            ps.setString(1, feedback.getContentFeedback());
+//            ps.setInt(2, feedback.getRatings());
+//            ps.setTimestamp(3, Timestamp.valueOf(feedback.getEditedTime()));
+//            ps.setInt(4, feedback.getShift().getIdShift());
+//            ps.setInt(5, feedback.getUser().getIdUser());
+//            ps.setInt(6, feedback.getIdFeedback());
+//            ps.executeUpdate();
+//        }
+//    }
     // Method to delete a Feedback entry by its ID
     public void deleteFeedback(int id) throws SQLException, Exception {
         String sql = "DELETE FROM Feedback WHERE idFeedback = ?";
@@ -531,54 +572,50 @@ public class Dao {
         }
     }
 
-    public List<Feedback> getFeedbackByService(int idService) throws Exception {
-        String sql = "SELECT \n"
-                + "    f.idFeedback,\n"
-                + "    f.contentFeedback,\n"
-                + "    f.ratings,\n"
-                + "    f.editedTime,\n"
-                + "    s.idService\n"
-                + "FROM \n"
-                + "    Feedback f\n"
-                + "JOIN \n"
-                + "    Shifts sh ON f.idShift = sh.idShift\n"
-                + "JOIN \n"
-                + "    Service s ON sh.idShift = s.idService \n"
-                + "WHERE \n"
-                + "    idService = ?";
-        List<Feedback> feedbacks = new ArrayList<>();
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, idService);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Shifts shift = getShift(rs.getInt("idShift"));
-                User user = getUser(rs.getInt("idUser"));
-                feedbacks.add(new Feedback(
-                        rs.getInt("idFeedback"),
-                        rs.getString("contentFeedback"),
-                        rs.getInt("ratings"),
-                        rs.getTimestamp("editedTime").toLocalDateTime(),
-                        shift,
-                        user
-                ));
-            }
-        }
-        return feedbacks;
-    }
-
+//    public List<Feedback> getFeedbackByService(int idService) throws Exception {
+//        String sql = "SELECT \n"
+//                + "    f.idFeedback,\n"
+//                + "    f.contentFeedback,\n"
+//                + "    f.ratings,\n"
+//                + "    f.editedTime,\n"
+//                + "    s.idService\n"
+//                + "FROM \n"
+//                + "    Feedback f\n"
+//                + "JOIN \n"
+//                + "    Shifts sh ON f.idShift = sh.idShift\n"
+//                + "JOIN \n"
+//                + "    Service s ON sh.idShift = s.idService \n"
+//                + "WHERE \n"
+//                + "    idService = ?";
+//        List<Feedback> feedbacks = new ArrayList<>();
+//        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+//            ps.setInt(1, idService);
+//            ResultSet rs = ps.executeQuery();
+//            while (rs.next()) {
+//                Shifts shift = getShift(rs.getInt("idShift"));
+//                User user = getUser(rs.getInt("idUser"));
+//                feedbacks.add(new Feedback(
+//                        rs.getInt("idFeedback"),
+//                        rs.getString("contentFeedback"),
+//                        rs.getInt("ratings"),
+//                        rs.getTimestamp("editedTime").toLocalDateTime(),
+//                        shift,
+//                        user
+//                ));
+//            }
+//        }
+//        return feedbacks;
+//    }
     // service
     public void addService(Service service) throws SQLException, Exception {
-        String sql = "INSERT INTO Service (nameService, description, img1, img2, img3, img4, img5, img6, idTypeService) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Service (nameService, description, img1, img2, img3, idServiceCategory) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBContext.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, service.getNameService());
             stmt.setString(2, service.getDescription());
             stmt.setString(3, service.getImg1());
             stmt.setString(4, service.getImg2());
             stmt.setString(5, service.getImg3());
-            stmt.setString(6, service.getImg4());
-            stmt.setString(7, service.getImg5());
-            stmt.setString(8, service.getImg6());
-            stmt.setInt(9, service.getTypeService().getIdTypeService());
+            stmt.setInt(6, service.getServiceCategory().getIdServiceCategory());
 
             stmt.executeUpdate();
 
@@ -616,18 +653,15 @@ public class Dao {
     }
 
     public void updateService(Service service) throws SQLException, Exception {
-        String sql = "UPDATE Service SET nameService = ?, description = ?, img1 = ?, img2 = ?, img3 = ?, img4 = ?, img5 = ?, img6 = ?, idTypeService = ? WHERE idService = ?";
+        String sql = "UPDATE Service SET nameService = ?, description = ?, img1 = ?, img2 = ?, img3 = ?, idServiceCategory = ? WHERE idService = ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, service.getNameService());
             stmt.setString(2, service.getDescription());
             stmt.setString(3, service.getImg1());
             stmt.setString(4, service.getImg2());
             stmt.setString(5, service.getImg3());
-            stmt.setString(6, service.getImg4());
-            stmt.setString(7, service.getImg5());
-            stmt.setString(8, service.getImg6());
-            stmt.setInt(9, service.getTypeService().getIdTypeService());
-            stmt.setInt(10, service.getIdService());
+            stmt.setInt(6, service.getServiceCategory().getIdServiceCategory());
+            stmt.setInt(7, service.getIdService());
             stmt.executeUpdate();
         }
     }
@@ -648,47 +682,49 @@ public class Dao {
         service.setImg1(rs.getString("img1"));
         service.setImg2(rs.getString("img2"));
         service.setImg3(rs.getString("img3"));
-        service.setImg4(rs.getString("img4"));
-        service.setImg5(rs.getString("img5"));
-        service.setImg6(rs.getString("img6"));
 
-        // Assuming you have a TypeServiceDAO to get TypeService by id
-        TypeService typeService = getTypeService(rs.getInt("idTypeService"));
-        service.setTypeService(typeService);
+        // Assuming you have a ServiceCategoryDAO to get ServiceCategory by id
+        ServiceCategory serviceCategory = getServiceCategory(rs.getInt("idServiceCategory"));
+        service.setServiceCategory(serviceCategory);
         return service;
     }
 
-    // get typeservice
-    public TypeService getTypeService(int idTypeService) throws SQLException, Exception {
-        String sql = "SELECT * FROM TypeService WHERE idTypeService = ?";
+    //get Service Category
+    public ServiceCategory getServiceCategory(int idServiceCategory) throws SQLException, Exception {
+        String sql = "SELECT * FROM ServiceCategory WHERE idServiceCategory = ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, idTypeService);
+            stmt.setInt(1, idServiceCategory);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return mapTypeService(rs);
+                    return mapServiceCategory(rs);
                 }
             }
         }
         return null;
     }
 
-    public List<TypeService> getAllTypeServices() throws SQLException, Exception {
-        List<TypeService> typeServices = new ArrayList<>();
-        String sql = "SELECT * FROM TypeService";
-        try (Connection conn = DBContext.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery(sql)) {
+    public List<ServiceCategory> getAllServiceCategories() throws SQLException, Exception {
+        List<ServiceCategory> serviceCategories = new ArrayList<>();
+        try {
+            Connection con = DBContext.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM [ServiceCategory]");
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                typeServices.add(mapTypeService(rs));
+                serviceCategories.add(mapServiceCategory(rs));
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return typeServices;
+        return serviceCategories;
     }
 
-    private TypeService mapTypeService(ResultSet rs) throws SQLException {
-        TypeService typeService = new TypeService();
-        typeService.setIdTypeService(rs.getInt("idTypeService"));
-        typeService.setNameTypeService(rs.getString("nameTypeService"));
-        typeService.setColorTypeService(rs.getString("colorTypeService"));
-        return typeService;
+    private ServiceCategory mapServiceCategory(ResultSet rs) throws SQLException {
+        ServiceCategory serviceCategory = new ServiceCategory();
+        serviceCategory.setIdServiceCategory(rs.getInt("idServiceCategory"));
+        serviceCategory.setNameServiceCategory(rs.getString("nameServiceCategory"));
+        serviceCategory.setColorServiceCategory(rs.getString("colorServiceCategory"));
+        serviceCategory.setImg(rs.getString("img"));
+        return serviceCategory;
     }
 
     public Iterable<Service> getServiceBySearchContent(String search) {
@@ -700,7 +736,35 @@ public class Dao {
     }
 
     public List<User> getAllStaff() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<User> list = new ArrayList<User>();
+
+        try {
+            Connection con = DBContext.getConnection();
+            PreparedStatement ps = con.prepareStatement("select * from [User] where Role = ?");
+            ps.setString(1, "Staff");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                User u = new User();
+                u.setIdUser(rs.getInt(1));
+                u.setFullname(rs.getString(2));
+                u.setUsername(rs.getString(3));
+                u.setPassword(rs.getString(4));
+                u.setEmail(rs.getString(5));
+                u.setPhonenumber(rs.getString(6));
+                u.setGender(rs.getString(7));
+                u.setAvatar(rs.getString(8));
+                u.setIsValid(rs.getInt(9));
+                u.setIsCheck(rs.getInt(10));
+                u.setRole(rs.getString(11));
+                u.setAddress(rs.getString(12));
+                list.add(u);
+            }
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
     }
 
     public List<Order> getOrderByUserId(int idUser) throws Exception {
@@ -712,7 +776,7 @@ public class Dao {
             while (rs.next()) {
                 User user = getUser(rs.getInt("idUser"));
                 List<Shifts> shifts = getAllShiftByOrder(rs.getInt("idOrder"));
-                orders.add(new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), shifts));
+                orders.add(new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), ConvertConstant.convertDateToLocalDate(rs.getDate("dateService")), shifts));
             }
         }
         return orders;
@@ -847,7 +911,7 @@ public class Dao {
 
     // GET SERVICE BY SHIFTS
     public List<Service> getServiceByShift(int idShift) throws Exception {
-        String sql = "SELECT s.idService, s.nameService, s.description, s.img1, s.img2, s.img3, s.img4, s.img5, s.img6, idTypeService "
+        String sql = "SELECT s.idService, s.nameService, s.description, s.img1, s.img2, s.img3, idServiceCategory "
                 + "FROM DetailShift ds "
                 + "JOIN Service s ON ds.idService = s.idService "
                 + "WHERE ds.idShifts = ?";
@@ -858,7 +922,7 @@ public class Dao {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                TypeService typeService = getTypeService(rs.getInt("idTypeService"));
+                ServiceCategory serviceCategory = getServiceCategory(rs.getInt("idServiceCategory"));
                 Service service = new Service(
                         rs.getInt("idService"),
                         rs.getString("nameService"),
@@ -866,10 +930,7 @@ public class Dao {
                         rs.getString("img1"),
                         rs.getString("img2"),
                         rs.getString("img3"),
-                        rs.getString("img4"),
-                        rs.getString("img5"),
-                        rs.getString("img6"),
-                        typeService
+                        serviceCategory
                 );
                 services.add(service); // Add the service to the list
             }

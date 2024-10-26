@@ -94,7 +94,7 @@
                                         <h4 class="text-start">Service Summary</h4>
                                         <p><strong>Service:</strong> ${service.nameService}</p>
                                         <p><strong>Description:</strong> ${service.description}</p>
-                                        <p><strong>Amount:</strong> $100.00</p> <!-- Replace with actual amount -->
+                                        <p><strong>Amount:</strong>${totalMoney}</p> <!-- Replace with actual amount -->
                                     </div>
                                 </div>
 
