@@ -19,6 +19,7 @@ public class User {
 
     private String gender;
     private String avatar;
+    private String cvUrl;
     
     private String address;
 
@@ -41,6 +42,23 @@ public class User {
         this.isCheck = isCheck;
         this.role = role;
     }
+
+    public User(int idUser, String fullname, String username, String password, String email, String phonenumber, String gender, String avatar, String cvUrl, String address, int isValid, int isCheck, String role) {
+        this.idUser = idUser;
+        this.fullname = fullname;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.phonenumber = phonenumber;
+        this.gender = gender;
+        this.avatar = avatar;
+        this.cvUrl = cvUrl;
+        this.address = address;
+        this.isValid = isValid;
+        this.isCheck = isCheck;
+        this.role = role;
+    }
+    
 
     public User() {
     }
@@ -140,6 +158,15 @@ public class User {
     public void setRole(String role) {
         this.role = role;
     }
+
+    public String getCvUrl() {
+        return cvUrl;
+    }
+
+    public void setCvUrl(String cvUrl) {
+        this.cvUrl = cvUrl;
+    }
+    
 
     @Override
     public String toString() {

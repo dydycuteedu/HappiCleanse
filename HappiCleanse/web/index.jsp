@@ -87,7 +87,7 @@
                     <c:forEach var="servicecategoryList" items="${servicecategoryList}">
                         <div class="col-lg-4 col-md-6 service-item-top wow fadeInUp" data-wow-delay="0.1s">
                             <div class="overflow-hidden">
-                                <img class="img-fluid w-100 h-100" src="${servicecategoryList.img}" alt="">
+                                <img class="img-fluid w-100 h-100" src="${servicecategoryList.imgURL}" alt="">
                             </div>
                             <div class="d-flex align-items-center justify-content-between bg-light p-4">
                                 <h5 class="text-truncate me-3 mb-0">${servicecategoryList.nameServiceCategory}</h5>

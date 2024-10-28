@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Part;
 import javax.servlet.http.HttpServlet;
@@ -19,8 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.User;
 
-
-@WebServlet("/uploadAvatar")
+@MultipartConfig
+@WebServlet(name = "UploadAvatarServlet", urlPatterns = {"/uploadAvatar"})
 public class UploadAvatarServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Check if the request is a multipart/form-data
@@ -32,7 +33,7 @@ public class UploadAvatarServlet extends HttpServlet {
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
 
         // Đường dẫn đến thư mục muốn lưu file (bạn có thể thay đổi thành thư mục mong muốn)
-        String uploadPath = getServletContext().getRealPath("/") + "/img";
+        String uploadPath = getServletContext().getRealPath("/") + "img";
 
         // Tạo thư mục nếu nó chưa tồn tại
         File uploadDir = new File(uploadPath);

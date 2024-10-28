@@ -67,7 +67,7 @@
                                                 <tr>
                                                     <th>Mã Loại Dịch Vụ</th>
                                                     <th>Tên Loại Dịch Vụ</th>
-                                                    <th>Màu Loại Dịch Vụ</th>
+                                                    <th>Hinh anh minh hoa</th>
                                                     <th>Hành Động</th>
                                                 </tr>
                                             </thead>
@@ -76,7 +76,7 @@
                                                 <tr>
                                                     <td>${servicecategory.idServiceCategory}</td>
                                                     <td>${servicecategory.nameServiceCategory}</td>
-                                                    <td>${servicecategory.colorServiceCategory}</td>
+                                                    <td><img src="${servicecategory.imgURL}" alt="anh minh hoa"/></td>
                                                     <td>
                                                         <div class="btn-group" role="group">
 

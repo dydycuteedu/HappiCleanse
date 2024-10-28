@@ -9,7 +9,10 @@
         <!-- User details -->
         <div class="user-profile text-center mt-3">
             <div class="">
-                <img src="${sessionScope.acc.avatar}" alt="" class="avatar-md rounded-circle">
+                <img src="${sessionScope.acc.avatar}" alt="Profile" class="rounded-circle profile-pic" style="width: 100px;
+                     height: 100px;
+                     margin-right: 10px;
+                     object-fit: cover;">
             </div>
             <div class="mt-3">
                 <h4 class="font-size-16 mb-1">${sessionScope.acc.username}</h4>
@@ -59,7 +62,7 @@
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="${pageContext.request.contextPath}/ServiceCategoryServlet?action=management">Danh Mục Dịch Vụ</a></li>
                         <li><a href="${pageContext.request.contextPath}/RoleServlet?action=management">Danh Mục Vai Trò</a></li>
-                       </ul>
+                    </ul>
                 </li>
 
                 <li>
@@ -71,7 +74,7 @@
                         <li><a href="${pageContext.request.contextPath}/CustomerServlet?action=management">Quản Lý Customer</a></li>
                         <li><a href="${pageContext.request.contextPath}/StaffServlet?action=management">Quản Lý Staff</a></li>
                         <li><a href="${pageContext.request.contextPath}/OrderServlet?actor=admin&action=management">Quản Lý Đơn Hàng</a></li>
-                        </ul>
+                    </ul>
                 </li>
             </ul>
         </div>

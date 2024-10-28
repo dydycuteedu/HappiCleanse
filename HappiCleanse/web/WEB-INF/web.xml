@@ -49,6 +49,34 @@
         <servlet-name>CalenderServlet</servlet-name>
         <servlet-class>servlet.CalenderServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SaveAvatarServlet</servlet-name>
+        <servlet-class>servlet.SaveAvatarServlet</servlet-class>
+        <multipart-config>
+            <location/>
+            <!-- Thư mục tạm để lưu trữ các file -->
+            <max-file-size>10485760</max-file-size>
+            <!-- Kích thước tối đa của file là 10MB -->
+            <max-request-size>20971520</max-request-size>
+            <!-- Kích thước tối đa của request -->
+            <file-size-threshold>5242880</file-size-threshold>
+            <!-- Kích thước tối thiểu để lưu file vào disk -->
+        </multipart-config>
+    </servlet>
+    <servlet>
+        <servlet-name>RegisterStaffServlet</servlet-name>
+        <servlet-class>servlet.RegisterStaffServlet</servlet-class>
+        <multipart-config>
+            <location/>
+            <!-- Thư mục tạm để lưu trữ các file -->
+            <max-file-size>10485760</max-file-size>
+            <!-- Kích thước tối đa của file là 10MB -->
+            <max-request-size>20971520</max-request-size>
+            <!-- Kích thước tối đa của request -->
+            <file-size-threshold>5242880</file-size-threshold>
+            <!-- Kích thước tối thiểu để lưu file vào disk -->
+        </multipart-config>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/Logout</url-pattern>
@@ -88,6 +116,14 @@
     <servlet-mapping>
         <servlet-name>CalenderServlet</servlet-name>
         <url-pattern>/CalenderServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SaveAvatarServlet</servlet-name>
+        <url-pattern>/SaveAvatarServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegisterStaffServlet</servlet-name>
+        <url-pattern>/RegisterStaffServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

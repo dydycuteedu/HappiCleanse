@@ -35,8 +35,8 @@ public class Dao {
     ResultSet rs = null;
 
     public User login(String user, String pass) {
-        String query = "select * from [User]\n"
-                + "where [username] = ?";
+        String query = "select * from Users\n"
+                + "where username = ?";
         try {
             conn = DBContext.getConnection();//mo ket noi voi sql
             ps = conn.prepareStatement(query);
@@ -47,7 +47,7 @@ public class Dao {
 
                     return new User(
                             rs.getInt("idUser"),
-                            rs.getString("nameUser"),
+                            rs.getString("fullname"),
                             rs.getString("username"),
                             rs.getString("password"),
                             rs.getString("email"),
@@ -68,7 +68,7 @@ public class Dao {
     }
 
     public User checkAccountExist(String user) {
-        String query = "select * from [User]\n"
+        String query = "select * from Users\n"
                 + "where username = ?\n";
         try {
             conn = new DBContext().getConnection();//mo ket noi voi sql
@@ -79,7 +79,7 @@ public class Dao {
 
                 return new User(
                         rs.getInt("idUser"),
-                        rs.getString("nameUser"),
+                        rs.getString("fullname"),
                         rs.getString("username"),
                         rs.getString("password"),
                         rs.getString("email"),
@@ -99,7 +99,7 @@ public class Dao {
     }
 
     public User getUser(int idUser) {
-        String sql = "SELECT * FROM [User] where idUser = ?";
+        String sql = "SELECT * FROM Users where idUser = ?";
         try {
             conn = DBContext.getConnection();
             PreparedStatement pss = conn.prepareStatement(sql);
@@ -109,7 +109,7 @@ public class Dao {
 
                 return new User(
                         rs.getInt("idUser"),
-                        rs.getString("nameUser"),
+                        rs.getString("fullname"),
                         rs.getString("username"),
                         rs.getString("password"),
                         rs.getString("email"),
@@ -133,7 +133,7 @@ public class Dao {
 
         try {
             Connection con = DBContext.getConnection();
-            PreparedStatement ps = con.prepareStatement("select * from [User]");
+            PreparedStatement ps = con.prepareStatement("select * from Users");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 User u = new User();
@@ -145,10 +145,10 @@ public class Dao {
                 u.setPhonenumber(rs.getString(6));
                 u.setGender(rs.getString(7));
                 u.setAvatar(rs.getString(8));
-                u.setIsValid(rs.getInt(9));
-                u.setIsCheck(rs.getInt(10));
-                u.setRole(rs.getString(11));
-                u.setAddress(rs.getString(12));
+                u.setAddress(rs.getString(9));
+                u.setIsValid(rs.getInt(10));
+                u.setIsCheck(rs.getInt(11));
+                u.setRole(rs.getString(12));
                 list.add(u);
             }
             con.close();
@@ -160,7 +160,7 @@ public class Dao {
     }
 
     public User checkAccountExistByUsernameAndEmail(String username, String email) {
-        String query = "select * from [User]\n"
+        String query = "select * from Users\n"
                 + "where username = ? AND email = ?\n";
         try {
             conn = new DBContext().getConnection();//mo ket noi voi sql
@@ -172,7 +172,7 @@ public class Dao {
 
                 return new User(
                         rs.getInt("idUser"),
-                        rs.getString("nameUser"),
+                        rs.getString("fullname"),
                         rs.getString("username"),
                         rs.getString("password"),
                         rs.getString("email"),
@@ -192,7 +192,7 @@ public class Dao {
     }
 
     public void editProfile(User user) throws Exception {
-        String sql = "UPDATE [User] SET nameUser = ?, username = ?, password = ?, email = ?, phonenumber = ?, gender = ?,avatar=?, address = ?, isValid = ? WHERE idUser = ?";
+        String sql = "UPDATE Users SET fullname = ?, username = ?, password = ?, email = ?, phonenumber = ?, gender = ?,avatar=?, address = ?, isValid = ? WHERE idUser = ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, user.getFullname());
             ps.setString(2, user.getUsername());
@@ -208,10 +208,10 @@ public class Dao {
         }
     }
 
-    public boolean singup(String nameUser, String username, String pass, String email) throws SQLException {
-        String sql = "INSERT INTO [User] (nameUser, username, password, email) VALUES (?, ?, ?, ?)";
+    public boolean singup(String fullname, String username, String pass, String email) throws SQLException {
+        String sql = "INSERT INTO Users (fullname, username, password, email) VALUES (?, ?, ?, ?)";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, nameUser);
+            ps.setString(1, fullname);
             ps.setString(2, username);
             ps.setString(3, BCryptPassword.hash(pass));
             ps.setString(4, email);
@@ -223,11 +223,32 @@ public class Dao {
         return false;
     }
 //sign up staff with full profile
-
-    public boolean singupStaff(String nameUser, String username, String pass, String email, String phonenumber, String address, String gender, String avatar) throws SQLException {
-        String sql = "INSERT INTO [User] (nameUser, username, password, email, phonenumber, address, gender, avatar, role, isValid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
+    public boolean registerStaff(User user) throws SQLException {
+        String sql = "INSERT INTO Users (fullname, username, password, email,phonenumber,gender,isValid,isCheck,Role,CVURL) VALUES (?, ?, ?, ?,?,?,?,?,?,?)";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, nameUser);
+            ps.setString(1, user.getFullname());
+            ps.setString(2, user.getUsername());
+            ps.setString(3, BCryptPassword.hash(user.getPassword()));
+            ps.setString(4, user.getEmail());
+            ps.setString(5, user.getPhonenumber());
+            ps.setString(6, user.getGender());
+            ps.setInt(7, user.getIsValid());
+            ps.setInt(8, user.getIsCheck());
+            ps.setString(9, user.getRole());
+            ps.setString(10, user.getCvUrl());
+            ps.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+    
+    public boolean singupStaff(String fullname, String username, String pass, String email, String phonenumber, String address, String gender, String avatar) throws SQLException {
+        String sql = "INSERT INTO Users (fullname, username, password, email, phonenumber, address, gender, avatar, role, isValid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, fullname);
             ps.setString(2, username);
             ps.setString(3, BCryptPassword.hash(pass));
             ps.setString(4, email);
@@ -247,7 +268,7 @@ public class Dao {
 
     //delete staff
     public void deleteStaff(int id) throws SQLException, Exception {
-        String sql = "DELETE FROM [User] WHERE idUser = ?";
+        String sql = "DELETE FROM Users WHERE idUser = ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             ps.executeUpdate();
@@ -255,7 +276,7 @@ public class Dao {
     }
 
     public void changePassword(String password, int idUser) {
-        String sql = "UPDATE [User] set password = ? WHERE idUser = ? ";
+        String sql = "UPDATE Users set password = ? WHERE idUser = ? ";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, BCryptPassword.hash(password));
             ps.setInt(2, idUser);
@@ -321,7 +342,7 @@ public class Dao {
 
     // order 28/09
     public void addOrder(Order order) throws SQLException, Exception {
-        String sql = "INSERT INTO [Order] (idUser, notes, statusOrder, dateCreate,dateService) VALUES (?, ?, ?, ?,?)";
+        String sql = "INSERT INTO Orders (idUser, notes, statusOrder, dateCreate,dateService) VALUES (?, ?, ?, ?,?)";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, order.getUser().getIdUser());
             ps.setString(2, order.getNotes());
@@ -336,7 +357,7 @@ public class Dao {
     }
 
     public Order getOrder(int id) throws SQLException, Exception {
-        String sql = "SELECT * FROM [Order] WHERE idOrder = ?";
+        String sql = "SELECT * FROM Orders WHERE idOrder = ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
@@ -351,7 +372,7 @@ public class Dao {
     }
 
     public List<Order> getAllOrders() throws SQLException, Exception {
-        String sql = "SELECT * FROM [Order]";
+        String sql = "SELECT * FROM Orders";
         List<Order> orders = new ArrayList<>();
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
@@ -365,7 +386,7 @@ public class Dao {
     }
 
     public void updateOrder(Order order) throws SQLException, Exception {
-        String sql = "UPDATE [Order] SET idUser = ?, notes = ?, statusOrder = ? WHERE idOrder = ?";
+        String sql = "UPDATE Orders SET idUser = ?, notes = ?, statusOrder = ? WHERE idOrder = ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, order.getUser().getIdUser());
             ps.setString(2, order.getNotes());
@@ -376,22 +397,21 @@ public class Dao {
     }
 
     public void deleteOrder(int id) throws SQLException, Exception {
-        String sql = "DELETE FROM [Order] WHERE idOrder = ?";
+        String sql = "DELETE FROM Orders WHERE idOrder = ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             ps.executeUpdate();
         }
     }
-    
+
     public void cancelOrder(Order order) throws SQLException, Exception {
-        String sql = "UPDATE [Order] SET statusOrder = ? WHERE idOrder = ?";
+        String sql = "UPDATE Orders SET statusOrder = ? WHERE idOrder = ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, order.getStatusOrder());
             ps.setInt(2, order.getIdOrder());
             ps.executeUpdate();
         }
     }
-    
 
     // Type shifts 28/09
     public TypeShift getTypeShift(int id) throws SQLException, Exception {
@@ -492,7 +512,7 @@ public class Dao {
         }
     }
 
-     //feedback 28/09
+    //feedback 28/09
     public void addFeedback(Feedback feedback) throws SQLException, Exception {
         String sql = "INSERT INTO Feedback (contentFeedback, ratings, editedTime, idOrder, idUser) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -528,6 +548,7 @@ public class Dao {
 //        return null;
 //    }
     // Method to retrieve all Feedback entries
+
     public List<Feedback> getAllFeedbacks() throws SQLException, Exception {
         String sql = "SELECT * FROM Feedback";
         List<Feedback> feedbacks = new ArrayList<>();
@@ -707,7 +728,7 @@ public class Dao {
         List<ServiceCategory> serviceCategories = new ArrayList<>();
         try {
             Connection con = DBContext.getConnection();
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM [ServiceCategory]");
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM ServiceCategory");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 serviceCategories.add(mapServiceCategory(rs));
@@ -722,8 +743,7 @@ public class Dao {
         ServiceCategory serviceCategory = new ServiceCategory();
         serviceCategory.setIdServiceCategory(rs.getInt("idServiceCategory"));
         serviceCategory.setNameServiceCategory(rs.getString("nameServiceCategory"));
-        serviceCategory.setColorServiceCategory(rs.getString("colorServiceCategory"));
-        serviceCategory.setImg(rs.getString("img"));
+        serviceCategory.setImgURL(rs.getString("imgURL"));
         return serviceCategory;
     }
 
@@ -740,7 +760,7 @@ public class Dao {
 
         try {
             Connection con = DBContext.getConnection();
-            PreparedStatement ps = con.prepareStatement("select * from [User] where Role = ?");
+            PreparedStatement ps = con.prepareStatement("select * from Users where Role = ?");
             ps.setString(1, "Staff");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -753,11 +773,13 @@ public class Dao {
                 u.setPhonenumber(rs.getString(6));
                 u.setGender(rs.getString(7));
                 u.setAvatar(rs.getString(8));
-                u.setIsValid(rs.getInt(9));
-                u.setIsCheck(rs.getInt(10));
-                u.setRole(rs.getString(11));
-                u.setAddress(rs.getString(12));
-                list.add(u);
+                u.setAddress(rs.getString(9));
+                u.setIsValid(rs.getInt(10));
+                u.setIsCheck(rs.getInt(11));
+                u.setRole(rs.getString(12));
+                if(list.size()<4){
+                    list.add(u);
+                }
             }
             con.close();
         } catch (Exception e) {
@@ -768,7 +790,7 @@ public class Dao {
     }
 
     public List<Order> getOrderByUserId(int idUser) throws Exception {
-        String sql = "SELECT * FROM [Order] WHERE idUser = ?";
+        String sql = "SELECT * FROM Orders WHERE idUser = ?";
         List<Order> orders = new ArrayList<>();
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql);) {
             ps.setInt(1, idUser);

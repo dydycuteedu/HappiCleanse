@@ -109,14 +109,14 @@
                                             <c:if test="${order.statusOrder == 'Pending'}">
                                                 <td><span class="badge bg-warning">Pending</span></td>
                                             </c:if>
-                                            <c:if test="${order.statusOrder == 'Booked'}">
-                                                <td><span class="badge bg-warning">Booked</span></td>
+                                            <c:if test="${order.statusOrder == 'In Progress'}">
+                                                <td><span class="badge bg-warning">In Progress</span></td>
                                             </c:if>
                                             <c:if test="${order.statusOrder == 'Cancelled'}">
                                                 <td><span class="badge bg-danger">Cancelled</span></td>
                                             </c:if>
                                             <td>${order.dateService}</td>
-                                            <c:if test="${order.statusOrder == 'Booked'}">
+                                            <c:if test="${order.statusOrder == 'Pending'}">
                                                 <td>
                                                     <form action="BookingServlet" method="post" style="display: inline;">
                                                         <input type="hidden" name="id" value="${order.idOrder}">
@@ -134,7 +134,7 @@
                                                 </td>
                                             </c:if>
                                         </tr>
-                                    <div class="modal fade" id="createDishModal" tabindex="2" aria-hidden="true">
+                                    <div class="modal fade" id="createDishModal" tabindex="20" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">

@@ -12,6 +12,7 @@ import java.util.List;
 public class Order {
     private int idOrder;
     private User user;
+    private User staff;
 
     private String notes;
 
@@ -89,6 +90,14 @@ public class Order {
 
     public void setShifts(List<Shifts> shifts) {
         this.shifts = shifts;
+    }
+
+    public User getStaff() {
+        return staff;
+    }
+
+    public void setStaff(User staff) {
+        this.staff = staff;
     }
 
     @Override

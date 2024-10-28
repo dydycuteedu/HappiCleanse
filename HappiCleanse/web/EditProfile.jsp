@@ -66,6 +66,18 @@
                 }
             });
         </script>
+        <style>
+            .avatar {
+                width: 300px;              /* Adjust size as needed */
+                height: 300px;
+                border-radius: 50%;        /* Makes the image circular */
+                border: 3px solid #fff;    /* White border */
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds a shadow effect */
+                object-fit: cover;         /* Ensures image covers the entire circle */
+                display: block;
+                margin-bottom: 30px;         /* Centers the avatar */
+            }
+        </style>
     </head>
 
     <body>
@@ -94,18 +106,16 @@
                     <!-- Profile Section with Buttons -->
                     <div class="col-lg-4 mb-5">
                         <div class="bg-light p-5 text-center h-100 d-flex flex-column align-items-center justify-content-center">
-                            <form action="uploadAvatar" method="post" enctype="multipart/form-data">
+                            <form action="SaveAvatarServlet" method="post" enctype="multipart/form-data">
+
                                 <div class="mb-4 text-center">
                                     <!-- Clickable profile image -->
-                                    <img id="profileImage" src="${sessionScope.acc.avatar}" alt="Profile" class="rounded-circle"
-                                         style="width: 300px; height: 300px; cursor: pointer;">
-
-                                    <!-- Hidden file input to select a new image -->
-                                    <input type="file" id="fileInput" name="avatar" style="display: none;" accept="image/*">
+                                    <img id="profileImage" src="${sessionScope.acc.avatar}" alt="Profile" class="avatar">
+                                    <div class="input-group">
+                                        <input type="file" class="form-control" name="avatar" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                                        <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04">Save Avatar</button>
+                                    </div>
                                 </div>
-
-                                <!-- Submit button to save the new image -->
-                                <button type="submit" class="btn btn-primary">Save Avatar</button>
                             </form>
                             <!-- Buttons -->
                             <div class="w-100">
@@ -122,27 +132,27 @@
                                 <div class="mb-4">
                                     <h3 class="text-center">My Profile</h3>
                                 </div>
-                               
+
                                 <div class="form-group mb-3">
                                     <label for="name" class="form-label">Full Name</label>
                                     <input type="text" name="fullname" class="form-control" id="name" placeholder="Full Name" value="${sessionScope.acc.fullname}">
                                 </div>
-                                
+
                                 <div class="form-group mb-3">
                                     <label for="email" class="form-label">Email</label>
                                     <input type="email" name="email" class="form-control" id="email" placeholder="Email" value="${sessionScope.acc.email}">
                                 </div>
-                              
+
                                 <div class="form-group mb-3">
                                     <label for="phone" class="form-label">Phone Number</label>
                                     <input type="text" name="phoneNumber" class="form-control" id="phone" placeholder="Phone Number" value="${sessionScope.acc.phonenumber}">
                                 </div>
-                             
+
                                 <div class="form-group mb-4">
                                     <label for="address" class="form-label">Address</label>
                                     <input type="text" name="address" class="form-control" id="address" placeholder="Address" value="${sessionScope.acc.address}">
                                 </div>
-                               
+
                                 <div class="form-group mb-4">
                                     <label for="gender" class="form-label me-2">Gender:</label>
                                     <div class="form-check form-check-inline">

@@ -9,17 +9,17 @@ public class ServiceCategory {
 
     private int idServiceCategory;
     private String nameServiceCategory;
-    private String colorServiceCategory;
-    private String img;
+
+    private String imgURL;
 
     public ServiceCategory() {
     }
 
-    public ServiceCategory(int idServiceCategory, String nameServiceCategory, String colorServiceCategory,String img) {
+    public ServiceCategory(int idServiceCategory, String nameServiceCategory, String imgURL) {
         this.idServiceCategory = idServiceCategory;
         this.nameServiceCategory = nameServiceCategory;
-        this.colorServiceCategory = colorServiceCategory;
-        this.img = img;
+
+        this.imgURL = imgURL;
     }
 
     public int getIdServiceCategory() {
@@ -38,26 +38,17 @@ public class ServiceCategory {
         this.nameServiceCategory = nameServiceCategory;
     }
 
-    public String getColorServiceCategory() {
-        return colorServiceCategory;
+    public String getImgURL() {
+        return imgURL;
     }
 
-    public void setColorServiceCategory(String colorServiceCategory) {
-        this.colorServiceCategory = colorServiceCategory;
+    public void setImgURL(String imgURL) {
+        this.imgURL = imgURL;
     }
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
-    }
-    
 
     @Override
     public String toString() {
-        return "ServiceCategory{" + "idServiceCategory=" + idServiceCategory + ", nameServiceCategory=" + nameServiceCategory + ", colorServiceCategory=" + colorServiceCategory + '}';
+        return "ServiceCategory{" + "idServiceCategory=" + idServiceCategory + ", nameServiceCategory=" + nameServiceCategory + ", imgURL=" + imgURL + '}';
     }
 
 }

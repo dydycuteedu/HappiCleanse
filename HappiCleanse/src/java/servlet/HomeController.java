@@ -6,6 +6,7 @@ package servlet;
 
 import dao.Dao;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,11 +40,17 @@ public class HomeController extends HttpServlet {
             List<Feedback> feedbackList = dao.getAllFeedbacks();
             List<Service> serviceList = dao.getAllServices();
             List<ServiceCategory> servicecategoryList = dao.getAllServiceCategories();
+            List<ServiceCategory> servicecategoryList1 = new ArrayList<>();
+            for(ServiceCategory service : servicecategoryList){
+                if(servicecategoryList1.size() < 6){
+                    servicecategoryList1.add(service);
+                }
+            }
             List<User> staffList = dao.getAllStaff();
             request.setAttribute("staffList", staffList);
             request.setAttribute("feedbackList", feedbackList);
             request.setAttribute("serviceList", serviceList);
-            request.setAttribute("servicecategoryList", servicecategoryList);
+            request.setAttribute("servicecategoryList", servicecategoryList1);
         } catch (Exception ex) {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
         }
