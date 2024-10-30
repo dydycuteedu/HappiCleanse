@@ -5,7 +5,7 @@
 
     <head>
         <meta charset="utf-8" />
-        <title>Danh sách danh mục Dich vụ</title>
+        <title>ADMIN- QUẢN LÝ DỊCH VỤ</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
         <meta content="Themesdesign" name="author" />
@@ -30,12 +30,12 @@
         <link href="${pageContext.request.contextPath}/Admin\assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
         <style>
             #datatable th, #datatable td {
-                white-space: nowrap; 
-                overflow: hidden; 
-                text-overflow: ellipsis; 
-                max-width: 150px; 
-                padding: 5px; 
-                box-sizing: border-box; 
+                white-space: nowrap; /* Ngăn không cho nội dung xuống dòng */
+                overflow: hidden; /* Ẩn phần nội dung bị tràn ra ngoài */
+                text-overflow: ellipsis; /* Thêm dấu ba chấm cho nội dung quá dài */
+                max-width: 150px; /* Đặt chiều rộng tối đa cho ô, có thể điều chỉnh theo ý muốn */
+                padding: 5px; /* Tạo khoảng cách giữa nội dung và viền ô */
+                box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước ô */
             }
         </style>
     </head>
@@ -65,8 +65,8 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="card-title">
-                                            <h4 >Quản Lí Danh Mục Dịch Vu</h4>
-                                            <a href="${pageContext.request.contextPath}/ServiceCategoryServlet?&action=create" id="editable-sample_new" class="btn btn-primary">
+                                            <h4 >Quản Lí Dịch Vụ</h4>
+                                            <a href="${pageContext.request.contextPath}/ServiceServlet?action=create" id="editable-sample_new" class="btn btn-primary">
                                                 Tạo mới <i class="fa fa-plus"></i>
                                             </a>
                                         </div>
@@ -75,43 +75,47 @@
                                         <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                             <thead>
                                                 <tr>
-                                                    <th>Mã Loại Dịch Vụ</th>
-                                                    <th>Tên Loại Dịch Vụ</th>
+                                                    <th>Mã Dịch vụ</th>
+                                                    <th>Tên Dịch vụ</th>
+                                                    <th>Mô Tả Dịch vụ</th>
+                                                    <th>Loại Dịch vụ</th>
                                                     <th>Hinh anh minh hoa</th>
                                                     <th>Hành Động</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <c:forEach var="servicecategory" items="${list}">
+                                                <c:forEach var="service" items="${list}">
                                                     <tr>
-                                                        <td>${servicecategory.idServiceCategory}</td>
-                                                        <td>${servicecategory.nameServiceCategory}</td>
-                                                        <td><img class="rounded-circle header-profile-user" src="${servicecategory.imgURL}" alt="anh minh hoa"/></td>
+                                                        <td>${service.idService}</td>
+                                                        <td>${service.nameService}</td>
+                                                        <td>${service.description}</td>
+                                                        <td>${service.serviceCategory.nameServiceCategory}</td>
+                                                        <td><img class="rounded-circle header-profile-user" src="${service.img1}" alt="alt"/>
+                                                            <img class="rounded-circle header-profile-user" src="${service.img2}" alt="alt"/>
+                                                            <img class="rounded-circle header-profile-user" src="${service.img3}" alt="alt"/>
+                                                        </td>
                                                         <td>
                                                             <div class="btn-group" role="group">
 
-                                                                <form action="${pageContext.request.contextPath}/ServiceCategoryServlet" method="GET" style="display: inline;">
-                                                                    <input type="hidden" name="id" value="${servicecategory.idServiceCategory}">
+                                                                <form action="${pageContext.request.contextPath}/ServiceServlet" method="GET" style="display: inline;">
+                                                                    <input type="hidden" name="id" value="${service.idService}">
                                                                     <input type="hidden" name="action" value="view">
-
                                                                     <button type="submit" class="btn btn-sm btn-primary" style="margin-right: 5px;">
                                                                         <i class="ri-profile-fill"></i>
                                                                     </button>
                                                                 </form>
 
-                                                                <form action="${pageContext.request.contextPath}/ServiceCategoryServlet" method="GET" style="display: inline;">
-                                                                    <input type="hidden" name="id" value="${servicecategory.idServiceCategory}">
+                                                                <form action="${pageContext.request.contextPath}/ServiceServlet" method="GET" style="display: inline;">
+                                                                    <input type="hidden" name="id" value="${service.idService}">
                                                                     <input type="hidden" name="action" value="edit">
-
                                                                     <button type="submit" class="btn btn-sm btn-warning" style="margin-right: 5px;">
                                                                         <i class="ri-pencil-fill"></i>
                                                                     </button>
                                                                 </form>
 
-                                                                <form action="${pageContext.request.contextPath}/ServiceCategoryServlet" method="GET" style="display: inline;">
-                                                                    <input type="hidden" name="id" value="${servicecategory.idServiceCategory}">
+                                                                <form action="${pageContext.request.contextPath}/ServiceServlet" method="GET" style="display: inline;">
+                                                                    <input type="hidden" name="id" value="${service.idService}">
                                                                     <input type="hidden" name="action" value="delete">
-
                                                                     <button type="submit" class="btn btn-sm btn-danger">
                                                                         <i class="ri-delete-bin-fill"></i>
                                                                     </button>

@@ -3,7 +3,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>Data Tables | Upcube - Admin & Dashboard Template</title>
+        <title>SERVICE DETAIL</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
         <meta content="Themesdesign" name="author" />
@@ -51,23 +51,25 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="card-title">
-                                            <h4 >Thông Tin Đơn Hàng</h4>
+                                            <h4 >Thông Tin Dịch vụ</h4>
                                         </div>
                                         <div class="profile-details">
                                             <ul>
-                                                <li><strong>Mã Đơn hàng:</strong> ${o.idOrder}</li>
-                                                <li><strong>Tên khách hàng:</strong> ${o.user.fullname}</li>
-                                                <li><strong>Nội dung:</strong> ${o.notes}</li>
-                                                <li><strong>Ngày đặt:</strong> ${o.dateService}</li>
-                                                <li><strong>Trạng thái đơn hàng:</strong> ${o.statusOrder}</li>
-                                                <li><strong>Nhân viên làm việc:</strong> ${o.staff.fullname}</li>
-                                                <li><strong>Dịch vụ:</strong> ${detailshift.service.nameService}</li>
-                                                <li><strong>Tổng giá tiền:</strong> ${shift.price}</li>
+                                                <li><strong>Mã Dịch vụ:</strong> ${service.idService}</li>
+                                                <li><strong>Tên Dịch vụ:</strong> ${service.nameService}</li>
+                                                <li><strong>Mô Tả Dịch vụ:</strong> ${service.description}</li>
+                                                <li><strong>Loại Dịch vụ:</strong> ${service.serviceCategory.nameServiceCategory}</li>
+                                                <li><strong>Hình Ảnh Dịch vụ:</strong>
+                                                    <img class="rounded-circle header-profile-user" src="${service.img1}" alt="alt"/>
+                                                    <img class="rounded-circle header-profile-user" src="${service.img2}" alt="alt"/>
+                                                    <img class="rounded-circle header-profile-user" src="${service.img3}" alt="alt"/>
+                                                </li>
+
                                             </ul>
                                         </div>
                                         <div class="mb-0">
                                             <div>
-                                                <a href="${pageContext.request.contextPath}/AdminServlet" class="btn btn-secondary waves-effect">
+                                                <a href="${pageContext.request.contextPath}/ServiceServlet?action=management" class="btn btn-secondary waves-effect">
                                                     Quay trở lại
                                                 </a>
                                             </div>

@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import model.Order;
 import model.Shifts;
 
-
 @WebServlet(name = "PaymentServlet", urlPatterns = {"/PaymentServlet"})
 public class PaymentServlet extends HttpServlet {
 
@@ -64,9 +63,9 @@ public class PaymentServlet extends HttpServlet {
             Dao dao = new Dao();
             Order order = dao.getOrder(idOrder);
             request.setAttribute("order", order);
-            Shifts shift = dao.getAllShiftByOrder(idOrder).getLast();
+            Shifts shift = dao.getAllShiftByOrder(idOrder);
             request.setAttribute("service", dao.getServiceByShift(shift.getIdShift()).getLast());
-            double totalMoney = order.getShifts().get(0).getPrice();
+            double totalMoney = order.getShifts().getPrice();
             request.setAttribute("totalMoney", totalMoney);
             request.getRequestDispatcher("Payment.jsp").forward(request, response);
         } catch (Exception ex) {
@@ -86,18 +85,7 @@ public class PaymentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String paymentMethod = request.getParameter("paymentMethod");
-
-        if (paymentMethod.equals("cash")) {
-            // Handle cash payment
-            response.sendRedirect("BookingServlet");
-        } else if (paymentMethod.equals("vnpay")) {
-            // Redirect to VNPay gateway or process VNPay payment
-            response.sendRedirect("VNPayServlet");
-        } else {
-            // Handle invalid payment method
-            System.out.println("Invalid payment method selected.");
-        }
+        response.sendRedirect("BookingServlet");
     }
 
     /**

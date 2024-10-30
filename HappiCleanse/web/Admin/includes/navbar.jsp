@@ -29,7 +29,7 @@
                 <li>
                     <a href="${pageContext.request.contextPath}/AdminServlet" class="waves-effect">
                         <i class="ri-dashboard-line"></i><span class="badge rounded-pill bg-success float-end">3</span>
-                        <span>Dashboard</span>
+                        <span>Đơn Hàng</span>
                     </a>
                 </li>
 
@@ -47,7 +47,7 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="email-inbox.html">FeedBack</a></li>
-                        <li><a href="email-read.html">Report</a></li>
+                        <li><a href="${pageContext.request.contextPath}/RegisterServlet?action=management">Đơn đăng kí</a></li>
                     </ul>
                 </li>
 
@@ -62,6 +62,7 @@
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="${pageContext.request.contextPath}/ServiceCategoryServlet?action=management">Danh Mục Dịch Vụ</a></li>
                         <li><a href="${pageContext.request.contextPath}/RoleServlet?action=management">Danh Mục Vai Trò</a></li>
+
                     </ul>
                 </li>
 
@@ -73,6 +74,7 @@
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="${pageContext.request.contextPath}/CustomerServlet?action=management">Quản Lý Customer</a></li>
                         <li><a href="${pageContext.request.contextPath}/StaffServlet?action=management">Quản Lý Staff</a></li>
+                        <li><a href="${pageContext.request.contextPath}/ServiceServlet?action=management">Quản Lý Dịch Vụ</a></li>
                         <li><a href="${pageContext.request.contextPath}/OrderServlet?actor=admin&action=management">Quản Lý Đơn Hàng</a></li>
                     </ul>
                 </li>

@@ -117,7 +117,7 @@
                                                                         <i class="ri-pencil-fill"></i>
                                                                     </button>
                                                                 </form>
-
+                                                                    
                                                                 <form action="${pageContext.request.contextPath}/DishServlet" method="GET" style="display: inline;">
                                                                     <input type="hidden" name="id" value="${order.orderID}">
                                                                     <input type="hidden" name="action" value="delete">

@@ -4,128 +4,193 @@
  */
 package servlet;
 
-import dao.Dao;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.TimeZone;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Order;
-import model.User;
-import utils.VNPay.VNPayConfig;
-import utils.VNPay.VNPayService;
+import utils.VNPay.VnPayEncryption;
 
-
+/**
+ *
+ * @author vannhat
+ */
 @WebServlet(name = "VNPayServlet", urlPatterns = {"/VNPayServlet"})
 public class VNPayServlet extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // Payment parameters
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
-        String vnp_TmnCode = "2LAF05XX";  // Get from VNPay
-        String vnp_TxnRef = String.valueOf(System.currentTimeMillis()); // Order ID (unique)
-        String vnp_OrderInfo = "Payment for order #" + vnp_TxnRef;
-        String vnp_OrderType = "billpayment"; // Change if needed
-        String vnp_Amount = String.valueOf((Integer.parseInt(req.getParameter("amount")) * 100)); // Amount in VND * 100
-        String vnp_Locale = "vn"; // or 'en' for English
-        String vnp_ReturnUrl = "http://localhost:8080/HappiCleanse/VNPayServlet"; // The return URL after payment
-        String vnp_IpAddr = req.getRemoteAddr(); // User's IP
+        String orderType = "other";
+        float number = Float.parseFloat(request.getParameter("amount")) * 100;
+        int amount = (int) number * 1000;
+        String bankCode = request.getParameter("bankCode");
 
-        // Construct the URL parameters for VNPay
+        String vnp_TxnRef = VnPayEncryption.getRandomNumber(8);
+        String vnp_IpAddr = VnPayEncryption.getIpAddress(request);
+
+        String vnp_TmnCode = VnPayEncryption.vnp_TmnCode;
+
         Map<String, String> vnp_Params = new HashMap<>();
         vnp_Params.put("vnp_Version", vnp_Version);
         vnp_Params.put("vnp_Command", vnp_Command);
         vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
-        vnp_Params.put("vnp_Amount", vnp_Amount);
+        vnp_Params.put("vnp_Amount", String.valueOf(amount));
         vnp_Params.put("vnp_CurrCode", "VND");
+
+        if (bankCode != null && !bankCode.isEmpty()) {
+            vnp_Params.put("vnp_BankCode", bankCode);
+        }
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-        vnp_Params.put("vnp_OrderInfo", vnp_OrderInfo);
-        vnp_Params.put("vnp_OrderType", vnp_OrderType);
-        vnp_Params.put("vnp_Locale", vnp_Locale);
-        vnp_Params.put("vnp_ReturnUrl", vnp_ReturnUrl);
+        vnp_Params.put("vnp_OrderInfo", "Nap tien vao vi FlexFood\nMa giao dich: " + vnp_TxnRef);
+        vnp_Params.put("vnp_OrderType", orderType);
+
+        String locate = request.getParameter("language");
+        if (locate != null && !locate.isEmpty()) {
+            vnp_Params.put("vnp_Locale", locate);
+        } else {
+            vnp_Params.put("vnp_Locale", "vn");
+        }
+        vnp_Params.put("vnp_ReturnUrl", VnPayEncryption.vnp_ReturnUrl);
         vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
 
-        // Add VNPay specific details (signature generation)
-        String vnp_HashSecret = "LMY8A1M01U175JJRIUXKXXHTEU1VYPBE"; // Get from VNPay
-        String paymentUrl = VNPayConfig.generatePaymentUrl(vnp_Params, vnp_HashSecret);
+        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        String vnp_CreateDate = formatter.format(cld.getTime());
+        vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
 
-        // Redirect user to VNPay for payment
-        resp.sendRedirect(paymentUrl);
+        cld.add(Calendar.MINUTE, 15);
+        String vnp_ExpireDate = formatter.format(cld.getTime());
+        vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
+
+        List fieldNames = new ArrayList(vnp_Params.keySet());
+        Collections.sort(fieldNames);
+        StringBuilder hashData = new StringBuilder();
+        StringBuilder query = new StringBuilder();
+        Iterator itr = fieldNames.iterator();
+        while (itr.hasNext()) {
+            String fieldName = (String) itr.next();
+            String fieldValue = (String) vnp_Params.get(fieldName);
+            if ((fieldValue != null) && (fieldValue.length() > 0)) {
+                //Build hash data
+                hashData.append(fieldName);
+                hashData.append('=');
+                hashData.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                //Build query
+                query.append(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII.toString()));
+                query.append('=');
+                query.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                if (itr.hasNext()) {
+                    query.append('&');
+                    hashData.append('&');
+                }
+            }
+        }
+        String queryUrl = query.toString();
+        String vnp_SecureHash = VnPayEncryption.hmacSHA512(VnPayEncryption.secretKey, hashData.toString());
+        queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
+        String paymentUrl = VnPayEncryption.vnp_PayUrl + "?" + queryUrl;
+        com.google.gson.JsonObject job = new JsonObject();
+        job.addProperty("code", "00");
+        job.addProperty("message", "success");
+        job.addProperty("data", paymentUrl);
+        Gson gson = new Gson();
+        response.getWriter().write(gson.toJson(job));
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
- 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
-        String vnp_TmnCode = "2LAF05XX";  // Get from VNPay
-        String vnp_TxnRef = String.valueOf(System.currentTimeMillis()); // Order ID (unique)
-        String vnp_OrderInfo = "Payment for order #" + vnp_TxnRef;
-        String vnp_OrderType = "billpayment"; // Change if needed
-        String vnp_Amount = String.valueOf(100000 * 100); // Amount in VND * 100
-        String vnp_Locale = "vn"; // or 'en' for English
-        String vnp_ReturnUrl = "/HappiCleanse/VNPayServlet"; // The return URL after payment
-        String vnp_IpAddr = req.getRemoteAddr(); // User's IP
+        String orderType = "other";
+        int amount = Integer.parseInt(request.getParameter("amount")) * 100;
+        String bankCode = request.getParameter("bankCode");
 
-        // Generate current date and time in the required format
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-        String vnp_CreateDate = now.format(formatter);
-        
-        // Construct the URL parameters for VNPay
+        String vnp_TxnRef = VnPayEncryption.getRandomNumber(8);
+        String vnp_IpAddr = VnPayEncryption.getIpAddress(request);
+
+        String vnp_TmnCode = VnPayEncryption.vnp_TmnCode;
+
         Map<String, String> vnp_Params = new HashMap<>();
         vnp_Params.put("vnp_Version", vnp_Version);
         vnp_Params.put("vnp_Command", vnp_Command);
-        vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
         vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
-        vnp_Params.put("vnp_Amount", vnp_Amount);
+        vnp_Params.put("vnp_Amount", String.valueOf(amount));
         vnp_Params.put("vnp_CurrCode", "VND");
+
+        if (bankCode != null && !bankCode.isEmpty()) {
+            vnp_Params.put("vnp_BankCode", bankCode);
+        }
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-        vnp_Params.put("vnp_OrderInfo", vnp_OrderInfo);
-        vnp_Params.put("vnp_OrderType", vnp_OrderType);
-        vnp_Params.put("vnp_Locale", vnp_Locale);
-        vnp_Params.put("vnp_ReturnUrl", vnp_ReturnUrl);
+        vnp_Params.put("vnp_OrderInfo", "Nap tien vao vi FlexFood\nMa giao dich: " + vnp_TxnRef);
+        vnp_Params.put("vnp_OrderType", orderType);
+
+        String locate = request.getParameter("language");
+        if (locate != null && !locate.isEmpty()) {
+            vnp_Params.put("vnp_Locale", locate);
+        } else {
+            vnp_Params.put("vnp_Locale", "vn");
+        }
+        vnp_Params.put("vnp_ReturnUrl", VnPayEncryption.vnp_ReturnUrl);
         vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
 
-        // Add VNPay specific details (signature generation)
-        String vnp_HashSecret = "LMY8A1M01U175JJRIUXKXXHTEU1VYPBE"; // Get from VNPay
-        String paymentUrl = VNPayConfig.generatePaymentUrl(vnp_Params, vnp_HashSecret);
-System.out.println(paymentUrl);
-        // Redirect user to VNPay for payment
-        resp.sendRedirect(paymentUrl);
-        
-               // Handle the return from VNPay
-//        Map<String, String> vnp_ResponseParams = new HashMap<>();
-//        req.getParameterMap().forEach((key, value) -> vnp_ResponseParams.put(key, value[0]));
-//
-//        String vnp_SecureHash = vnp_ResponseParams.get("vnp_SecureHash");
-//        vnp_ResponseParams.remove("vnp_SecureHash");
-//
-//        String vnp_HashSecret = "LMY8A1M01U175JJRIUXKXXHTEU1VYPBE"; // Your VNPay secret key
-//        boolean isValidResponse = VNPayConfig.verifyResponse(vnp_ResponseParams, vnp_SecureHash, vnp_HashSecret);
-//
-//        if (isValidResponse) {
-//            // Handle successful payment
-//            String transactionStatus = vnp_ResponseParams.get("vnp_ResponseCode");
-//            if ("00".equals(transactionStatus)) {
-//                resp.getWriter().println("Payment Successful!");
-//            } else {
-//                resp.getWriter().println("Payment failed with code: " + transactionStatus);
-//            }
-//        } else {
-//            // Handle invalid response
-//            resp.getWriter().println("Invalid payment response.");
-//        }
+        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        String vnp_CreateDate = formatter.format(cld.getTime());
+        vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
+
+        cld.add(Calendar.MINUTE, 15);
+        String vnp_ExpireDate = formatter.format(cld.getTime());
+        vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
+
+        List fieldNames = new ArrayList(vnp_Params.keySet());
+        Collections.sort(fieldNames);
+        StringBuilder hashData = new StringBuilder();
+        StringBuilder query = new StringBuilder();
+        Iterator itr = fieldNames.iterator();
+        while (itr.hasNext()) {
+            String fieldName = (String) itr.next();
+            String fieldValue = (String) vnp_Params.get(fieldName);
+            if ((fieldValue != null) && (fieldValue.length() > 0)) {
+                //Build hash data
+                hashData.append(fieldName);
+                hashData.append('=');
+                hashData.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                //Build query
+                query.append(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII.toString()));
+                query.append('=');
+                query.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                if (itr.hasNext()) {
+                    query.append('&');
+                    hashData.append('&');
+                }
+            }
+        }
+        String queryUrl = query.toString();
+        String vnp_SecureHash = VnPayEncryption.hmacSHA512(VnPayEncryption.secretKey, hashData.toString());
+        queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
+        String paymentUrl = VnPayEncryption.vnp_PayUrl + "?" + queryUrl;
+        com.google.gson.JsonObject job = new JsonObject();
+        job.addProperty("code", "00");
+        job.addProperty("message", "success");
+        job.addProperty("data", paymentUrl);
+        Gson gson = new Gson();
+        response.getWriter().write(gson.toJson(job));
     }
 
 }

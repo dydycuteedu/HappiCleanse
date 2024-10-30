@@ -1,11 +1,10 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
     <head>
         <meta charset="utf-8" />
-        <title>Chỉnh sửa Đơn hàng</title>
+        <title>Tao moi Dịch vụ</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
         <meta content="Themesdesign" name="author" />
@@ -52,33 +51,36 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="card-title">
-                                            <h4 >Chỉnh Sửa Đơn Hàng</h4>
+                                            <h4 >Tạo Mới Dich Vu</h4>
                                         </div>
-                                        <form action="${pageContext.request.contextPath}/OrderServlet" method="post" style="display: inline;">
+                                        <form action="${pageContext.request.contextPath}/ServiceServlet" method="post" style="display: inline;">
                                             <div class="row mb-3">
 
-                                                <input type="hidden" name="id" value="${o.idOrder}">
-                                                <label for="rolename" class="col-sm-2 col-form-label">Tên Dịch vụ</label>
+                                                <label for="example-text-input" class="col-sm-2 col-form-label">Mã Loại Dịch vụ</label>
                                                 <div class="col-sm-10">
-                                                    <p class="form-control">${detailshift.service.nameService}</p>
+                                                    <input class="form-control" type="number" name="servicecategoryid" id="example-text-input" placeholder="${dish.dishCategoryID}">
                                                 </div>
-                                                <label for="status" class="col-sm-2 col-form-label">Chọn nhân viên làm việc</label>
+                                                <label for="example-text-input" class="col-sm-2 col-form-label">Tên Dịch vụ</label>
                                                 <div class="col-sm-10">
-                                                    <select class="form-select" name="staff" aria-label="Default select example">
-                                                        <c:forEach var="staff" items="${staff}">
-                                                            <option value="${staff.idUser}">${staff.fullname}</option>
-                                                        </c:forEach>
-                                                    </select>
+                                                    <input class="form-control" type="text" name="name" id="example-text-input" placeholder="${dish.name}">
+                                                </div>
+                                                <label for="example-text-input" class="col-sm-2 col-form-label">Mô tả Dịch vụ</label>
+                                                <div class="col-sm-10">
+                                                    <input class="form-control" type="text" name="description" id="example-text-input" placeholder="${dish.description}">
+                                                </div>
+                                                <label for="example-text-input" class="col-sm-2 col-form-label">Hình ảnh</label>
+                                                <div class="col-sm-10">
+                                                    <input class="form-control" type="text" name="imgurl" id="example-text-input" placeholder="${dish.imgURL}">
                                                 </div>
                                             </div>
                                             <div class="mb-0">
                                                 <div>
-                                                    <input type="submit" class="btn btn-primary waves-effect waves-light me-1" name="action" value="Save"/>
-                                                    <a href="${pageContext.request.contextPath}/AdminServlet" class="btn btn-secondary waves-effect">
+                                                    <input type="submit" class="btn btn-primary waves-effect waves-light me-1" name="action" value="Add">
+                                                    <a href="${pageContext.request.contextPath}/ServiceServlet?action=management" class="btn btn-secondary waves-effect">
                                                         Quay trở lại
                                                     </a>
                                                 </div>
-                                            </div>
+                                            </div> 
                                         </form>
                                     </div>
                                 </div>

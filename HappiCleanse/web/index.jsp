@@ -87,11 +87,13 @@
                     <c:forEach var="servicecategoryList" items="${servicecategoryList}">
                         <div class="col-lg-4 col-md-6 service-item-top wow fadeInUp" data-wow-delay="0.1s">
                             <div class="overflow-hidden">
-                                <img class="img-fluid w-100 h-100" src="${servicecategoryList.imgURL}" alt="">
+                                <img style="    width: 100%;
+                                     height: 175px;
+                                     object-fit: cover;" src="${servicecategoryList.imgURL}" alt="">
                             </div>
                             <div class="d-flex align-items-center justify-content-between bg-light p-4">
                                 <h5 class="text-truncate me-3 mb-0">${servicecategoryList.nameServiceCategory}</h5>
-                                <a class="btn btn-square btn-outline-primary border-2 border-white flex-shrink-0" href=""><i class="fa fa-arrow-right"></i></a>
+                                <a  class="btn btn-square btn-outline-primary border-2 border-white flex-shrink-0" href="#"><i class="fa fa-arrow-right"></i></a>
                             </div>
                         </div>
                     </c:forEach>
@@ -244,7 +246,9 @@
                             <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                                 <div class="team-item">
                                     <div class="position-relative overflow-hidden">
-                                        <img class="img-fluid" src="${staffList.avatar}" alt="">
+                                        <img class="img-fluid" src="${staffList.avatar}" alt="" style="width: 100%;
+                                             height: 250px;
+                                             object-fit: cover;">
                                     </div>
                                     <div class="team-text">
                                         <div class="bg-light">
@@ -278,9 +282,11 @@
                         <c:forEach var="feedback" items="${feedbackList}">
                             <div class="testimonial-item text-center">
                                 <div class="testimonial-text bg-light text-center p-4 mb-4">
-                                    <p class="mb-0">${feedback.contentFeedback}</p>
+                                    <p class="mb-0" style="white-space: nowrap;
+                                       overflow: hidden;
+                                       text-overflow: ellipsis;">${feedback.contentFeedback}</p>
                                 </div>
-                                <img class="bg-light rounded-circle p-2 mx-auto mb-2" src="img/testimonial-1.jpg" style="width: 80px; height: 80px;">
+                                <img class="bg-light rounded-circle p-2 mx-auto mb-2" src="${feedback.user.getAvatar()}" style="width: 80px; height: 80px;">
                                 <div class="mb-2">
                                     <c:forEach var="i" begin="1" end="${feedback.ratings}">
                                         <small class="fa fa-star text-secondary"></small>

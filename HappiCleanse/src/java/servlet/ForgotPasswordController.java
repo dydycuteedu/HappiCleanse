@@ -51,8 +51,8 @@ public class ForgotPasswordController extends HttpServlet {
             }
             if (account != null) {
                 Email email = new Email();
-                email.setFrom("chumlu2102@gmail.com");
-                email.setFromPassword("bjnc zrsr wlqz iyjp");
+                email.setFrom("trantrucvy265@gmail.com");
+                email.setFromPassword("igww uwrd ytua jmja");
                 email.setTo(emailAddress);
                 email.setSubject("Forgot Password Function");
                 StringBuilder sb = new StringBuilder();

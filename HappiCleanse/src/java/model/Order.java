@@ -20,9 +20,9 @@ public class Order {
     private LocalDateTime dateCreate;
     private LocalDateTime dateService;
     
-    private List<Shifts> shifts;
+    private Shifts shifts;
 
-    public Order(int idOrder, User user, String notes, String statusOrder, LocalDateTime dateCreate,LocalDateTime dateService, List<Shifts> shifts) {
+    public Order(int idOrder, User user, String notes, String statusOrder, LocalDateTime dateCreate,LocalDateTime dateService, Shifts shifts, User staff) {
         this.idOrder = idOrder;
         this.user = user;
         this.notes = notes;
@@ -30,6 +30,7 @@ public class Order {
         this.dateCreate = dateCreate;
         this.dateService = dateService;
         this.shifts = shifts;
+        this.staff = staff;
     }
 
     public Order() {
@@ -82,15 +83,15 @@ public class Order {
     public void setDateService(LocalDateTime dateService) {
         this.dateService = dateService;
     }
-    
 
-    public List<Shifts> getShifts() {
+    public Shifts getShifts() {
         return shifts;
     }
 
-    public void setShifts(List<Shifts> shifts) {
+    public void setShifts(Shifts shifts) {
         this.shifts = shifts;
     }
+    
 
     public User getStaff() {
         return staff;

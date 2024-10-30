@@ -49,15 +49,15 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav me-auto">
                     <a href="/HappiCleanse/home" class="nav-item nav-link active">Home</a>
-                    <a href="/HappiCleanse/Hiring.jsp" class="nav-item nav-link">Hiring</a>
-                    <a href="ListServiceServlet" class="nav-item nav-link">Services</a>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                        <div class="dropdown-menu fade-up m-0">
-                            <a href="BookingServlet" class="dropdown-item">Booking</a>
-                        </div>
-                    </div>
-                    <a href="contact.html" class="nav-item nav-link">Contact</a>
+                    <c:if test="${sessionScope.acc.role != 'Staff'}">
+                        <a href="/HappiCleanse/Hiring.jsp" class="nav-item nav-link">Hiring</a>
+                        <a href="ListServiceServlet" class="nav-item nav-link">Services</a>
+                        <a href="BookingServlet" class="nav-item nav-link">Booking</a>
+                        <a href="contact.html" class="nav-item nav-link">Contact</a>
+                    </c:if>
+                    <c:if test="${sessionScope.acc.role == 'Staff'}">
+                        <a href="StaffWorkingServlet" class="nav-item nav-link">Order Booking List</a>
+                    </c:if>
                 </div>
 
                 <c:if test="${sessionScope.acc == null}">
@@ -83,6 +83,9 @@
                                     <span class="profile-name">${sessionScope.acc.fullname}</span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
+                                    <c:if test="${sessionScope.acc.getRole() eq 'Admin'}">
+                                        <li><a class="dropdown-item" href="${pageContext.request.contextPath}/AdminServlet">Admin Management</a></li>
+                                        </c:if>
                                     <li><a class="dropdown-item" href="editProfile">Profile</a></li>
                                     <li><a class="dropdown-item" href="#">Settings</a></li>
                                     <li><a class="dropdown-item" href="/HappiCleanse/Logout">Logout</a></li>

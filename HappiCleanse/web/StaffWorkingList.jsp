@@ -7,7 +7,7 @@
 
     <head>
         <meta charset="utf-8">
-        <title>Service List</title>
+        <title>Working List</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
@@ -67,7 +67,7 @@
         <!-- Page Header Start -->
         <div class="container-fluid page-header mb-5 py-5">
             <div class="container">
-                <h1 class="display-3 text-white mb-3 animated slideInDown">Booking History</h1>
+                <h1 class="display-3 text-white mb-3 animated slideInDown">Working List</h1>
                 <nav aria-label="breadcrumb animated slideInDown">
                     <ol class="breadcrumb text-uppercase">
                         <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
@@ -85,7 +85,7 @@
                 <div class="col-md-12 col-lg-9">
                     <div class="ms-lg-5 ps-lg-5">
                         <div class="text-center text-lg-start wow fadeInUp" data-wow-delay="0.1s">
-                            <h1 class="mb-5">Your Order History</h1>
+                            <h1 class="mb-5">Order Working List</h1>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-bordered text-center">
@@ -95,7 +95,8 @@
                                         <th>Notes</th>
                                         <th>Status</th>
                                         <th>Order Date</th>
-                                        <th>Tên nhân viên làm việc</th>
+                                        <th>Tên khách hàng</th>
+                                        <th>Địa chỉ</th>
                                         <th>Total Price</th>
                                         <th>Action</th>
                                     </tr>
@@ -118,28 +119,17 @@
                                                 <td><span class="badge bg-danger">Cancelled</span></td>
                                             </c:if>
                                             <td>${order.dateService}</td>
-                                            <c:if test="${order.staff.fullname == null}">
-                                                <td>Not yet</td>
-                                            </c:if>
-                                            <c:if test="${order.staff.fullname != null}">
-                                                <td>${order.staff.fullname}</td>
-                                            </c:if>
+                                            <td>${order.user.fullname}</td>
+                                            <td>${order.user.address}</td>
                                             <td>${order.shifts.price}00 vnd</td>
-                                            <c:if test="${order.statusOrder == 'Pending'}">
+                                            <c:if test="${order.statusOrder == 'In Progress'}">
                                                 <td>
-                                                    <form action="BookingServlet" method="post" style="display: inline;">
+                                                    <form action="StaffWorkingServlet" method="post" style="display: inline;">
                                                         <input type="hidden" name="id" value="${order.idOrder}">
-                                                        <button type="submit" class="btn btn-sm btn-danger" id="sa-params">
-                                                            <i class="ri-delete-bin-fill">Cancel</i>
+                                                        <button type="submit" class="btn btn-sm btn-success">
+                                                            <i class="">Completed</i>
                                                         </button>
                                                     </form>
-                                                </td>
-                                            </c:if>
-                                            <c:if test="${order.statusOrder == 'Completed'}">
-                                                <td>
-                                                    <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#createDishModal">
-                                                        <i class="ri-delete-bin-fill">Feedback</i>
-                                                    </button>
                                                 </td>
                                             </c:if>
                                         </tr>

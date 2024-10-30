@@ -51,23 +51,18 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="card-title">
-                                            <h4 >Thông Tin Đơn Hàng</h4>
+                                            <h4 >Thông Tin Loại Món Ăn</h4>
                                         </div>
                                         <div class="profile-details">
                                             <ul>
-                                                <li><strong>Mã Đơn hàng:</strong> ${o.idOrder}</li>
-                                                <li><strong>Tên khách hàng:</strong> ${o.user.fullname}</li>
-                                                <li><strong>Nội dung:</strong> ${o.notes}</li>
-                                                <li><strong>Ngày đặt:</strong> ${o.dateService}</li>
-                                                <li><strong>Trạng thái đơn hàng:</strong> ${o.statusOrder}</li>
-                                                <li><strong>Nhân viên làm việc:</strong> ${o.staff.fullname}</li>
-                                                <li><strong>Dịch vụ:</strong> ${detailshift.service.nameService}</li>
-                                                <li><strong>Tổng giá tiền:</strong> ${shift.price}</li>
+                                                <li><strong>Mã Loại Món Ăn:</strong> ${dishcategory.dishCategoryID}</li>
+                                                <li><strong>Tên Loại Món Ăn:</strong> ${dishcategory.name}</li>
+                                                <li><strong>Trạng thái:</strong> ${dishcategory.status}</li>
                                             </ul>
                                         </div>
                                         <div class="mb-0">
                                             <div>
-                                                <a href="${pageContext.request.contextPath}/AdminServlet" class="btn btn-secondary waves-effect">
+                                                <a href="${pageContext.request.contextPath}/DishCategoryServlet?actor=admin&action=management" class="btn btn-secondary waves-effect">
                                                     Quay trở lại
                                                 </a>
                                             </div>

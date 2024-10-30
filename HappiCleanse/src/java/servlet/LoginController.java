@@ -44,7 +44,7 @@ public class LoginController extends HttpServlet {
          if (a == null) {
              request.setAttribute("error", "Sai username hoac password!");
              request.getRequestDispatcher("login.jsp").forward(request, response);
-         } else {
+         } else if( a.getIsValid() ==1) {
              HttpSession session = request.getSession();
              session.setAttribute("acc", a);
              session.setMaxInactiveInterval(60*60*24);
@@ -62,9 +62,12 @@ public class LoginController extends HttpServlet {
              response.addCookie(u);//luu u va p len Chrome
              response.addCookie(p);
              if(a.getRole().equals("Admin")){
-                 request.getRequestDispatcher("Admin/home/index.jsp").forward(request, response);
+                 request.getRequestDispatcher("AdminServlet").forward(request, response);
              }else
                 request.getRequestDispatcher("/home").forward(request, response);
+         } else{
+             request.setAttribute("error", "User khong ton tai");
+             request.getRequestDispatcher("login.jsp").forward(request, response);
          }
     }
 

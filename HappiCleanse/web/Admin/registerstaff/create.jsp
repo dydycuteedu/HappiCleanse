@@ -1,11 +1,10 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
     <head>
         <meta charset="utf-8" />
-        <title>Chỉnh sửa Đơn hàng</title>
+        <title>Data Tables | Upcube - Admin & Dashboard Template</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
         <meta content="Themesdesign" name="author" />
@@ -52,33 +51,29 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="card-title">
-                                            <h4 >Chỉnh Sửa Đơn Hàng</h4>
+                                            <h4 >Tạo Mới Vai Trò</h4>
                                         </div>
-                                        <form action="${pageContext.request.contextPath}/OrderServlet" method="post" style="display: inline;">
+                                        <form action="${pageContext.request.contextPath}/DishCategoryServlet" method="post" style="display: inline;">
                                             <div class="row mb-3">
-
-                                                <input type="hidden" name="id" value="${o.idOrder}">
-                                                <label for="rolename" class="col-sm-2 col-form-label">Tên Dịch vụ</label>
+                                                <input type="hidden" name="actor" value="admin">
+                                                <label for="rolename" class="col-sm-2 col-form-label">Tên Loại Món Ăn</label>
                                                 <div class="col-sm-10">
-                                                    <p class="form-control">${detailshift.service.nameService}</p>
+                                                    <input class="form-control" type="text" name="name" id="rolename">
                                                 </div>
-                                                <label for="status" class="col-sm-2 col-form-label">Chọn nhân viên làm việc</label>
+                                                <label for="status" class="col-sm-2 col-form-label">Trạng thái</label>
                                                 <div class="col-sm-10">
-                                                    <select class="form-select" name="staff" aria-label="Default select example">
-                                                        <c:forEach var="staff" items="${staff}">
-                                                            <option value="${staff.idUser}">${staff.fullname}</option>
-                                                        </c:forEach>
-                                                    </select>
+                                                    <input type="checkbox" id="switch1" name="status" switch="none" checked />
+                                                    <label for="switch1" data-on-label="On" data-off-label="Off"></label>
                                                 </div>
                                             </div>
                                             <div class="mb-0">
                                                 <div>
-                                                    <input type="submit" class="btn btn-primary waves-effect waves-light me-1" name="action" value="Save"/>
-                                                    <a href="${pageContext.request.contextPath}/AdminServlet" class="btn btn-secondary waves-effect">
+                                                    <input type="submit" class="btn btn-primary waves-effect waves-light me-1" name="action" value="Add">
+                                                    <a href="${pageContext.request.contextPath}/DishCategoryServlet?actor=admin&action=management" class="btn btn-secondary waves-effect">
                                                         Quay trở lại
                                                     </a>
                                                 </div>
-                                            </div>
+                                            </div> 
                                         </form>
                                     </div>
                                 </div>

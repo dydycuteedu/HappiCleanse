@@ -57,7 +57,8 @@ public class Dao {
                             rs.getString("address"),
                             rs.getInt("isValid"),
                             rs.getInt("isCheck"),
-                            rs.getString("Role")
+                            rs.getString("Role"),
+                            rs.getString("CVURL")
                     );
                 }
             }
@@ -89,7 +90,8 @@ public class Dao {
                         rs.getString("address"),
                         rs.getInt("isValid"),
                         rs.getInt("isCheck"),
-                        rs.getString("Role")
+                        rs.getString("Role"),
+                        rs.getString("CVURL")
                 );
             }
         } catch (Exception e) {
@@ -119,7 +121,8 @@ public class Dao {
                         rs.getString("address"),
                         rs.getInt("isValid"),
                         rs.getInt("isCheck"),
-                        rs.getString("Role")
+                        rs.getString("Role"),
+                        rs.getString("CVURL")
                 );
             }
         } catch (Exception e) {
@@ -149,6 +152,7 @@ public class Dao {
                 u.setIsValid(rs.getInt(10));
                 u.setIsCheck(rs.getInt(11));
                 u.setRole(rs.getString(12));
+                u.setCvUrl(rs.getString(13));
                 list.add(u);
             }
             con.close();
@@ -182,7 +186,8 @@ public class Dao {
                         rs.getString("address"),
                         rs.getInt("isValid"),
                         rs.getInt("isCheck"),
-                        rs.getString("Role")
+                        rs.getString("Role"),
+                        rs.getString("CVURL")
                 );
             }
         } catch (Exception e) {
@@ -204,6 +209,24 @@ public class Dao {
             ps.setString(8, user.getAddress());
             ps.setInt(9, user.getIsValid());
             ps.setInt(10, user.getIdUser());
+            ps.executeUpdate();
+        }
+    }
+    
+    public void approveStaff(User user) throws Exception {
+        String sql = "UPDATE Users SET isCheck = ? WHERE idUser = ?";
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, user.getIsCheck());
+            ps.setInt(2, user.getIdUser());
+            ps.executeUpdate();
+        }
+    }
+    
+    public void denyStaff(User user) throws Exception {
+        String sql = "UPDATE Users SET isValid = ? WHERE idUser = ?";
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, user.getIsValid());
+            ps.setInt(2, user.getIdUser());
             ps.executeUpdate();
         }
     }
@@ -363,23 +386,42 @@ public class Dao {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     User user = getUser(rs.getInt("idUser"));
-                    List<Shifts> shifts = getAllShiftByOrder(rs.getInt("idOrder"));
-                    return new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), ConvertConstant.convertStringtoLocalDateTime(rs.getString("dateService")), shifts);
+                    User staff = getUser(rs.getInt("idStaff"));
+                    Shifts shifts = getAllShiftByOrder(rs.getInt("idOrder"));
+                    return new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), ConvertConstant.convertDateToLocalDate(rs.getDate("dateService")), shifts,staff);
                 }
             }
         }
         return null;
     }
+    
+     public List<Order> getOrderinprogressbystaffID(int id) throws SQLException, Exception {
+        String sql = "SELECT * FROM Orders WHERE idStaff = ? and statusOrder = 'In Progress'";
+        List<Order> orders = new ArrayList<>();
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    User user = getUser(rs.getInt("idUser"));
+                    User staff = getUser(rs.getInt("idStaff"));
+                    Shifts shifts = getAllShiftByOrder(rs.getInt("idOrder"));
+                    orders.add(new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), ConvertConstant.convertDateToLocalDate(rs.getDate("dateService")), shifts,staff));
+                }
+            }
+        }
+        return orders;
+    }
 
     public List<Order> getAllOrders() throws SQLException, Exception {
-        String sql = "SELECT * FROM Orders";
+        String sql = "SELECT * FROM Orders ORDER by idOrder desc";
         List<Order> orders = new ArrayList<>();
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
 
                 User user = getUser(rs.getInt("idUser"));
-                List<Shifts> shifts = getAllShiftByOrder(rs.getInt("idOrder"));
-                orders.add(new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), ConvertConstant.convertStringtoLocalDateTime(rs.getString("dateService")), shifts));
+                User staff = getUser(rs.getInt("idStaff"));
+                Shifts shifts = getAllShiftByOrder(rs.getInt("idOrder"));
+                orders.add(new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), ConvertConstant.convertDateToLocalDate(rs.getDate("dateService")), shifts,staff));
             }
         }
         return orders;
@@ -392,6 +434,16 @@ public class Dao {
             ps.setString(2, order.getNotes());
             ps.setString(3, order.getStatusOrder());
             ps.setInt(4, order.getIdOrder());
+            ps.executeUpdate();
+        }
+    }
+    
+    public void updateStaffOrder(Order order) throws SQLException, Exception {
+        String sql = "UPDATE Orders SET idStaff = ?, statusOrder = ? WHERE idOrder = ?";
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, order.getStaff().getIdUser());
+            ps.setString(2, order.getStatusOrder());
+            ps.setInt(3, order.getIdOrder());
             ps.executeUpdate();
         }
     }
@@ -448,19 +500,19 @@ public class Dao {
         }
     }
 
-    public List<Shifts> getAllShiftByOrder(int orderId) {
+    public Shifts getAllShiftByOrder(int orderId) {
         String sql = "SELECT s.*\n"
                 + "FROM Shifts s\n"
                 + "JOIN DetailOrder d ON s.idShift = d.idShift\n"
                 + "WHERE d.idOrder = ?";
-        List<Shifts> shifts = new ArrayList<>();
+        Shifts shifts = new Shifts();
         try (Connection conn = DBContext.getConnection();) {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, orderId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 TypeShift typeShift = getTypeShift(rs.getInt("idTypeShift"));
-                shifts.add(new Shifts(rs.getInt("idShift"), typeShift, rs.getDouble("price")));
+                shifts = new Shifts(rs.getInt("idShift"), typeShift, rs.getDouble("price"));
             }
         } catch (Exception ex) {
             Logger.getLogger(Dao.class.getName()).log(Level.SEVERE, null, ex);
@@ -790,15 +842,31 @@ public class Dao {
     }
 
     public List<Order> getOrderByUserId(int idUser) throws Exception {
-        String sql = "SELECT * FROM Orders WHERE idUser = ?";
+        String sql = "SELECT * FROM Orders WHERE idUser = ? ORDER by idOrder desc";
         List<Order> orders = new ArrayList<>();
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql);) {
             ps.setInt(1, idUser);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 User user = getUser(rs.getInt("idUser"));
-                List<Shifts> shifts = getAllShiftByOrder(rs.getInt("idOrder"));
-                orders.add(new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), ConvertConstant.convertDateToLocalDate(rs.getDate("dateService")), shifts));
+                User staff = getUser(rs.getInt("idStaff"));
+                Shifts shifts = getAllShiftByOrder(rs.getInt("idOrder"));
+                orders.add(new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), ConvertConstant.convertDateToLocalDate(rs.getDate("dateService")), shifts,staff));
+            }
+        }
+        return orders;
+    }
+    public List<Order> getOrderByStaffId(int idUser) throws Exception {
+        String sql = "SELECT * FROM Orders WHERE idStaff = ? ORDER by idOrder desc";
+        List<Order> orders = new ArrayList<>();
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql);) {
+            ps.setInt(1, idUser);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                User user = getUser(rs.getInt("idUser"));
+                User staff = getUser(rs.getInt("idStaff"));
+                Shifts shifts = getAllShiftByOrder(rs.getInt("idOrder"));
+                orders.add(new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), ConvertConstant.convertDateToLocalDate(rs.getDate("dateService")), shifts,staff));
             }
         }
         return orders;
@@ -819,14 +887,12 @@ public class Dao {
     }
 
     // Read (Get a specific DetailShift)
-    public DetailShifts getDetailShift(int idShift, int idUser, int idService) throws Exception {
-        String sql = "SELECT * FROM DetailShift WHERE idShifts = ? AND idUser = ? AND idService = ?";
+    public DetailShifts getDetailShift(int idShift) throws Exception {
+        String sql = "SELECT * FROM DetailShift WHERE idShifts = ?";
         DetailShifts detailShift = null;
 
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql);) {
             ps.setInt(1, idShift);
-            ps.setInt(2, idUser);
-            ps.setInt(3, idService);
 
             ResultSet rs = ps.executeQuery();
 
@@ -930,6 +996,7 @@ public class Dao {
 
         return shifts.getLast();
     }
+    
 
     // GET SERVICE BY SHIFTS
     public List<Service> getServiceByShift(int idShift) throws Exception {

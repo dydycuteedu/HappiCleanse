@@ -105,10 +105,7 @@ public class CreateOrderServlet extends HttpServlet {
             TypeShift typeShift = dao.getTypeShift(CheckShift.checkHoliday(localDateTime));
             Shifts shifts = new Shifts(0, typeShift, typeShift.getCoefficient() * 120);
             dao.addShift(shifts);
-            List<Shifts> shiftses = new ArrayList<>();
-            
-            shiftses.add(shifts);
-            Order order = new Order(0, user, notes, "Pending", LocalDateTime.now(),localDateTime, shiftses);
+            Order order = new Order(0, user, notes, "Pending", LocalDateTime.now(),localDateTime, shifts,null);
             dao.addOrder(order);
             dao.insertDetailOrder(typeShift.getCoefficient() * 120, dao.getAllOrders().getLast().getIdOrder(), dao.getAllShifts().getLast().getIdShift());
             DetailShifts detailShifts = new DetailShifts(dao.getAllShifts().getLast(), user, service);

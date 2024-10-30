@@ -28,7 +28,7 @@ public class User {
 
     private String role;
 
-    public User(int idUser, String fullname, String username, String password, String email, String phonenumber, String gender, String avatar, String address, int isValid, int isCheck, String role) {
+    public User(int idUser, String fullname, String username, String password, String email, String phonenumber, String gender, String avatar, String address, int isValid, int isCheck, String role,String CVURL) {
         this.idUser = idUser;
         this.fullname = fullname;
         this.username = username;
@@ -41,6 +41,7 @@ public class User {
         this.isValid = isValid;
         this.isCheck = isCheck;
         this.role = role;
+        this.cvUrl = CVURL;
     }
 
     public User(int idUser, String fullname, String username, String password, String email, String phonenumber, String gender, String avatar, String cvUrl, String address, int isValid, int isCheck, String role) {

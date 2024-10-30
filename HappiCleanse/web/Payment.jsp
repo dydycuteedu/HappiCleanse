@@ -72,21 +72,8 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-6">
                         <div class="bg-light text-center p-5">
-                            <h2 class="mb-4">Select Payment Option</h2>
-                            <form action="PaymentServlet" method="post">
-                                <!-- Radio Button for Payment Options -->
-                                <div class="form-check mb-3">
-                                    <input class="form-check-input" type="radio" name="paymentMethod" id="payByCash" value="cash" required>
-                                    <label class="form-check-label" for="payByCash">
-                                        Pay by Cash
-                                    </label>
-                                </div>
-                                <div class="form-check mb-4">
-                                    <input class="form-check-input" type="radio" name="paymentMethod" id="payByVNPay" value="vnpay" required>
-                                    <label class="form-check-label" for="payByVNPay">
-                                        Pay by VNPay
-                                    </label>
-                                </div>
+                            <form action="PaymentServlet " method="post">
+                                <h2 class="mb-4">Select Payment Option</h2>
 
                                 <!-- Service Summary -->
                                 <div class="row g-3 mb-4">
@@ -97,10 +84,70 @@
                                         <p><strong>Amount:</strong>${totalMoney}</p> <!-- Replace with actual amount -->
                                     </div>
                                 </div>
-
-                                <!-- Submit Button -->
-                                <button class="btn btn-primary w-100 py-3" type="submit">Proceed to Payment</button>
+                                    <button class="btn btn-primary w-100 py-3" style="border-radius: 5px; font-size: 14px; margin-bottom: 20px" type="submit">
+                                    Proceed to Payment by Cash
+                                </button>
                             </form>
+                            <button class="btn btn-primary w-100 py-3" style="border-radius: 5px; font-size: 14px;" data-bs-toggle="modal" data-bs-target="#depositModal">
+                                Proceed to Payment VNPay
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="depositModal" tabindex="-1" aria-labelledby="depositModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered"> <!-- Thêm modal-dialog-centered -->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="depositModalLabel">Thanh toan</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="VNPayServlet" id="frmCreateOrder" method="post">     
+                                    <input type="hidden" name="actor" value="customer">
+                                    <input type="hidden" name="action" value="deposit">
+
+                                    <div class="form-group mb-4">
+                                        <input class="form-control" data-val="true" data-val-number="The field Amount must be a number." data-val-required="The Amount field is required." 
+                                               id="amount" max="100000000" min="10000" name="amount" type="hidden" step="10000" value="${totalMoney}"/>
+                                    </div>
+
+                                    <h4 class="mb-3">Chọn phương thức thanh toán</h4>
+                                    <div class="form-group mb-4">
+                                        <div class="form-check">
+                                            <input type="radio" class="form-check-input" id="vnpayQR" name="bankCode" value="" >
+                                            <label class="form-check-label" for="vnpayQR">Cổng thanh toán VNPAYQR</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="radio" class="form-check-input" id="vnpayQRApp" name="bankCode" value="VNPAYQR">
+                                            <label class="form-check-label" for="vnpayQRApp">Thanh toán bằng ứng dụng hỗ trợ VNPAYQR</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="radio" class="form-check-input" id="vnbank" name="bankCode" value="VNBANK" checked>
+                                            <label class="form-check-label" for="vnbank">Thanh toán qua thẻ ATM/Tài khoản nội địa</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="radio" class="form-check-input" id="intlCard" name="bankCode" value="INTCARD">
+                                            <label class="form-check-label" for="intlCard">Thanh toán qua thẻ quốc tế</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group mb-4">
+                                        <h5>Chọn ngôn ngữ giao diện thanh toán:</h5>
+                                        <div class="form-check">
+                                            <input type="radio" class="form-check-input" id="languageVietnamese" name="language" value="vn" checked>
+                                            <label class="form-check-label" for="languageVietnamese">Tiếng Việt</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="radio" class="form-check-input" id="languageEnglish" name="language" value="en">
+                                            <label class="form-check-label" for="languageEnglish">Tiếng Anh</label>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary w-100">Thanh toán</button>
+                                </form>
+
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -129,6 +176,43 @@
 
         <!-- Template Javascript -->
         <script src="js/main.js"></script>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+            <c:if test="${isSuccess == true}">
+                $("#successModal").modal("show");
+            </c:if>
+            <c:if test="${isSuccess == false}">
+                $("#successModal").modal("show");
+            </c:if>
+            });
+        </script>
+        <script type="text/javascript">
+            $("#frmCreateOrder").submit(function () {
+                var postData = $("#frmCreateOrder").serialize();
+                var submitUrl = $("#frmCreateOrder").attr("action");
+                $.ajax({
+                    type: "POST",
+                    url: submitUrl,
+                    data: postData,
+                    dataType: 'JSON',
+                    success: function (x) {
+                        if (x.code === '00') {
+                            if (window.vnpay) {
+                                vnpay.open({width: 768, height: 600, url: x.data});
+                            } else {
+                                location.href = x.data;
+                            }
+                            return false;
+                        } else {
+                            alert(x.Message);
+                        }
+                    }
+                });
+                return false;
+            });
+        </script>       
     </body>
 
 </html>

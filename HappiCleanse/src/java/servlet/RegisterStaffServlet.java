@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import model.Email;
+import model.EmailUtils;
 import model.User;
 
 /**
@@ -91,13 +93,13 @@ public class RegisterStaffServlet extends HttpServlet {
             filePart.write(filePath);
             String firstName = request.getParameter("firstName");
             String lastName = request.getParameter("lastName");
-            String email = request.getParameter("email");
+            String emailAddress = request.getParameter("email");
             String phone = request.getParameter("phone");
             String gender = request.getParameter("gender");
             User user = new User();
             user.setCvUrl("img/" + fileName);
-            user.setEmail(email);
-            user.setFullname(firstName + " "+ lastName);
+            user.setEmail(emailAddress);
+            user.setFullname(firstName + " " + lastName);
             user.setIsCheck(0);
             user.setIsValid(1);
             user.setUsername(lastName);
@@ -106,13 +108,31 @@ public class RegisterStaffServlet extends HttpServlet {
             user.setPhonenumber(phone);
             user.setGender(gender);
             Dao dao = new Dao();
-            dao.registerStaff(user);
-            
+            if (dao.registerStaff(user)) {
+                Email email = new Email();
+                email.setFrom("trantrucvy265@gmail.com");
+                email.setFromPassword("igww uwrd ytua jmja");
+                email.setTo(emailAddress);
+                email.setSubject("Welcome to HappiCleanse!!!");
+                StringBuilder sb = new StringBuilder();
+                sb.append("Dear ").append(firstName + " " + lastName).append("<br>");
+                sb.append("You have just registered to be a cleaning staff at HappiCleanse. <br> ");
+                sb.append("Please wait, we will review your application and notify you as soon as possible. <br> ");
+                sb.append("Regards<br>");
+                sb.append("Administrator");
+
+                email.setContent(sb.toString());
+                EmailUtils.send(email);
+            }
+            request.getRequestDispatcher("index.jsp").forward(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(RegisterStaffServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.getRequestDispatcher("Hiring.jsp").forward(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(RegisterStaffServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.getRequestDispatcher("Hiring.jsp").forward(request, response);
         }
-        
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+
     }
 
     /**
