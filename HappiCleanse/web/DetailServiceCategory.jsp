@@ -170,7 +170,7 @@
             <div class="main flex spaced" bis_skin_checked="1">
                 <article class="half" id="ContentZone">
                     <div id="MainContent" class="content" data-content="true" tabindex="0" bis_skin_checked="1">
-                        <h1>Dịch vụ ${servicecategory.nameServiceCategory}</h1>
+                        <h1>${servicecategory.nameServiceCategory}</h1>
                     </div>
                     <div id="MainContent2" class="content" bis_skin_checked="1">
                         <h2>
@@ -205,7 +205,7 @@
                     <nav class="side-nav ui-repeater" id="SideNav" role="menu" universal_="true">
                         <header>
                             <a href="/cleaning-services/">
-                                <h4 style="color: white">Dịch vụ ${servicecategory.nameServiceCategory}</h4>
+                                <h4 style="color: white">${servicecategory.nameServiceCategory}</h4>
                             </a>
                         </header>
                         <ul class="el-tab-box" role="tablist" aria-label="Navigation menu for Cleaning Services">
