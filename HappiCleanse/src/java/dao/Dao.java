@@ -146,13 +146,13 @@ public class Dao {
                 u.setPassword(rs.getString(4));
                 u.setEmail(rs.getString(5));
                 u.setPhonenumber(rs.getString(6));
-                u.setGender(rs.getString(7));
-                u.setAvatar(rs.getString(8));
-                u.setAddress(rs.getString(9));
-                u.setIsValid(rs.getInt(10));
-                u.setIsCheck(rs.getInt(11));
-                u.setRole(rs.getString(12));
-                u.setCvUrl(rs.getString(13));
+                u.setAddress(rs.getString(7));
+                u.setGender(rs.getString(8));
+                u.setAvatar(rs.getString(9));              
+                u.setCvUrl(rs.getString(10));
+                u.setIsValid(rs.getInt(11));
+                u.setIsCheck(rs.getInt(12));
+                u.setRole(rs.getString(13));
                 list.add(u);
             }
             con.close();
@@ -268,7 +268,7 @@ public class Dao {
     }
 
     public boolean singupStaff(String fullname, String username, String pass, String email, String phonenumber, String address, String gender, String avatar) throws SQLException {
-        String sql = "INSERT INTO Users (fullname, username, password, email, phonenumber, address, gender, avatar, role, isValid,isCheck) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,1)";
+        String sql = "INSERT INTO Users (fullname, username, password, email, phonenumber, address, gender, avatar, Role, isValid,isCheck) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,1)";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, fullname);
             ps.setString(2, username);
@@ -316,71 +316,16 @@ public class Dao {
         }
     }
 
-    // Notification 28/09
-    public void addNotification(Notification notification) throws SQLException, Exception {
-        String sql = "INSERT INTO Notification (idUser, content) VALUES (?, ?)";
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, notification.getUser().getIdUser());
-            ps.setString(2, notification.getContent());
-            ps.executeUpdate();
-        }
-    }
-
-    public Notification getNotification(int id) throws SQLException, Exception {
-        String sql = "SELECT * FROM Notification WHERE idNotification = ?";
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    User user = getUser(rs.getInt("idUser"));
-                    return new Notification(rs.getInt("idNotification"), user, rs.getString("content"));
-                }
-            }
-        }
-        return null;
-    }
-
-    public List<Notification> getAllNotifications() throws SQLException, Exception {
-        String sql = "SELECT * FROM Notification";
-        List<Notification> notifications = new ArrayList<>();
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                User user = getUser(rs.getInt("idUser"));
-                notifications.add(new Notification(rs.getInt("idNotification"), user, rs.getString("content")));
-            }
-        }
-        return notifications;
-    }
-
-    public void updateNotification(Notification notification) throws SQLException, Exception {
-        String sql = "UPDATE Notification SET idUser = ?, content = ? WHERE idNotification = ?";
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, notification.getUser().getIdUser());
-            ps.setString(2, notification.getContent());
-            ps.setInt(3, notification.getIdNotification());
-            ps.executeUpdate();
-        }
-    }
-
-    public void deleteNotification(int id) throws SQLException, Exception {
-        String sql = "DELETE FROM Notification WHERE idNotification = ?";
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            ps.executeUpdate();
-        }
-    }
-
     // order 28/09
     public void addOrder(Order order) throws SQLException, Exception {
-        String sql = "INSERT INTO Orders (idUser, notes, statusOrder, dateCreate,dateService) VALUES (?, ?, ?, ?,?)";
+        String sql = "INSERT INTO Orders (idUser, notes,idService, statusOrder, timeStart) VALUES (?, ?,?, ?, ?)";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, order.getUser().getIdUser());
             ps.setString(2, order.getNotes());
-            ps.setString(3, order.getStatusOrder());
-            ps.setDate(4, ConvertConstant.convertLocalDateToDate(LocalDateTime.now()));
-            // Định dạng ngày giờ theo ý muốn
+            ps.setInt(3, order.getService().getIdService());
+            ps.setString(4, order.getStatusOrder());
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            String dateServiceString = order.getDateService().format(formatter);
+            String dateServiceString = order.getTimeStart().format(formatter);
             ps.setString(5, dateServiceString);
             ps.executeUpdate();
         }
@@ -395,7 +340,8 @@ public class Dao {
                     User user = getUser(rs.getInt("idUser"));
                     User staff = getUser(rs.getInt("idStaff"));
                     Shifts shifts = getAllShiftByOrder(rs.getInt("idOrder"));
-                    return new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), ConvertConstant.convertDateToLocalDate(rs.getDate("dateService")), shifts, staff);
+                    Service service = getService(rs.getInt("idOrder"));
+                    return new Order(rs.getInt("idOrder"), user,staff,service, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("timeStart")), ConvertConstant.convertDateToLocalDate(rs.getDate("timeEnd")), shifts);
                 }
             }
         }
@@ -412,7 +358,8 @@ public class Dao {
                     User user = getUser(rs.getInt("idUser"));
                     User staff = getUser(rs.getInt("idStaff"));
                     Shifts shifts = getAllShiftByOrder(rs.getInt("idOrder"));
-                    orders.add(new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), ConvertConstant.convertDateToLocalDate(rs.getDate("dateService")), shifts, staff));
+                    Service service = getService(rs.getInt("idService"));
+                    orders.add(new Order(rs.getInt("idOrder"), user,staff,service, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("timeStart")), ConvertConstant.convertDateToLocalDate(rs.getDate("timeEnd")), shifts));
                 }
             }
         }
@@ -428,7 +375,8 @@ public class Dao {
                 User user = getUser(rs.getInt("idUser"));
                 User staff = getUser(rs.getInt("idStaff"));
                 Shifts shifts = getAllShiftByOrder(rs.getInt("idOrder"));
-                orders.add(new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), ConvertConstant.convertDateToLocalDate(rs.getDate("dateService")), shifts, staff));
+                Service service = getService(rs.getInt("idService"));
+                orders.add(new Order(rs.getInt("idOrder"), user,staff,service, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("timeStart")), ConvertConstant.convertDateToLocalDate(rs.getDate("timeEnd")), shifts));
             }
         }
         return orders;
@@ -479,7 +427,7 @@ public class Dao {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return new TypeShift(rs.getInt("idTypeShift"), rs.getString("colorTypeShift"), rs.getDouble("coefficient"));
+                    return new TypeShift(rs.getInt("idTypeShift"), rs.getDouble("coefficient"));
                 }
             }
         }
@@ -491,7 +439,7 @@ public class Dao {
         List<TypeShift> typeShifts = new ArrayList<>();
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                typeShifts.add(new TypeShift(rs.getInt("idTypeShift"), rs.getString("colorTypeShift"), rs.getDouble("coefficient")));
+                typeShifts.add(new TypeShift(rs.getInt("idTypeShift"), rs.getDouble("coefficient")));
             }
         }
         return typeShifts;
@@ -688,17 +636,15 @@ public class Dao {
 //    }
     // service
     public void addService(Service service) throws SQLException, Exception {
-        String sql = "INSERT INTO Service (nameService, description, img1, img2, img3, idServiceCategory) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Service (idServiceCategory,nameService, description, img1, img2, img3) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBContext.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, service.getNameService());
-            stmt.setString(2, service.getDescription());
-            stmt.setString(3, service.getImg1());
-            stmt.setString(4, service.getImg2());
-            stmt.setString(5, service.getImg3());
-            stmt.setInt(6, service.getServiceCategory().getIdServiceCategory());
-
+            stmt.setInt(1, service.getServiceCategory().getIdServiceCategory());
+            stmt.setString(2, service.getNameService());
+            stmt.setString(3, service.getDescription());
+            stmt.setString(4, service.getImg1());
+            stmt.setString(5, service.getImg2());
+            stmt.setString(6, service.getImg3());
             stmt.executeUpdate();
-
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     service.setIdService(generatedKeys.getInt(1));
@@ -817,6 +763,8 @@ public class Dao {
         serviceCategory.setIdServiceCategory(rs.getInt("idServiceCategory"));
         serviceCategory.setNameServiceCategory(rs.getString("nameServiceCategory"));
         serviceCategory.setImgURL(rs.getString("imgURL"));
+        serviceCategory.setSubDescription(rs.getString("subDescription"));
+        serviceCategory.setDescription(rs.getString("description"));
         return serviceCategory;
     }
 
@@ -847,9 +795,10 @@ public class Dao {
                 u.setGender(rs.getString(7));
                 u.setAvatar(rs.getString(8));
                 u.setAddress(rs.getString(9));
-                u.setIsValid(rs.getInt(10));
-                u.setIsCheck(rs.getInt(11));
-                u.setRole(rs.getString(12));
+                u.setCvUrl(rs.getString(10));
+                u.setIsValid(rs.getInt(11));
+                u.setIsCheck(rs.getInt(12));
+                u.setRole(rs.getString(13));
                 if (list.size() < 4) {
                     list.add(u);
                 }
@@ -872,7 +821,8 @@ public class Dao {
                 User user = getUser(rs.getInt("idUser"));
                 User staff = getUser(rs.getInt("idStaff"));
                 Shifts shifts = getAllShiftByOrder(rs.getInt("idOrder"));
-                orders.add(new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), ConvertConstant.convertDateToLocalDate(rs.getDate("dateService")), shifts, staff));
+                Service service = getService(rs.getInt("idService"));
+                orders.add(new Order(rs.getInt("idOrder"), user,staff,service, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("timeStart")), ConvertConstant.convertDateToLocalDate(rs.getDate("timeEnd")), shifts));
             }
         }
         return orders;
@@ -888,102 +838,12 @@ public class Dao {
                 User user = getUser(rs.getInt("idUser"));
                 User staff = getUser(rs.getInt("idStaff"));
                 Shifts shifts = getAllShiftByOrder(rs.getInt("idOrder"));
-                orders.add(new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), ConvertConstant.convertDateToLocalDate(rs.getDate("dateService")), shifts, staff));
-            }
+                Service service = getService(rs.getInt("idService"));
+                orders.add(new Order(rs.getInt("idOrder"), user,staff,service, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("timeStart")), ConvertConstant.convertDateToLocalDate(rs.getDate("timeEnd")), shifts));}
         }
         return orders;
     }
 
-    // DETAIL SHIFT
-    public void insertDetailShift(DetailShifts detailShift) throws Exception {
-        String sql = "INSERT INTO DetailShift (idShifts, idUser, idService) VALUES (?, ?, ?)";
-
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql);) {
-            ps.setInt(1, detailShift.getShifts().getIdShift());
-            ps.setInt(2, detailShift.getUser().getIdUser());
-            ps.setInt(3, detailShift.getService().getIdService());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Read (Get a specific DetailShift)
-    public DetailShifts getDetailShift(int idShift) throws Exception {
-        String sql = "SELECT * FROM DetailShift WHERE idShifts = ?";
-        DetailShifts detailShift = null;
-
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql);) {
-            ps.setInt(1, idShift);
-
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                detailShift = new DetailShifts(
-                        getShift(rs.getInt("idShifts")),
-                        getUser(rs.getInt("idUser")),
-                        getService(rs.getInt("idService"))
-                );
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return detailShift;
-    }
-
-    // Read All (Get all DetailShifts)
-    public List<DetailShifts> getAllDetailShifts() throws Exception {
-        String sql = "SELECT * FROM DetailShift";
-        List<DetailShifts> detailShifts = new ArrayList<>();
-
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql);) {
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                DetailShifts detailShift = new DetailShifts(
-                        getShift(rs.getInt("idShifts")),
-                        getUser(rs.getInt("idUser")),
-                        getService(rs.getInt("idService"))
-                );
-                detailShifts.add(detailShift);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return detailShifts;
-    }
-
-    // Update
-    public void updateDetailShift(DetailShifts detailShift) throws Exception {
-        String sql = "UPDATE DetailShift SET idUser = ?, idService = ? WHERE idShifts = ?";
-
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql);) {
-            ps.setInt(1, detailShift.getShifts().getIdShift());
-            ps.setInt(2, detailShift.getUser().getIdUser());
-            ps.setInt(3, detailShift.getService().getIdService());
-
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Delete
-    public void deleteDetailShift(int idShift, int idUser, int idService) throws Exception {
-        String sql = "DELETE FROM DetailShift WHERE idShifts = ? AND idUser = ? AND idService = ?";
-
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql);) {
-            ps.setInt(1, idShift);
-            ps.setInt(2, idUser);
-            ps.setInt(3, idService);
-
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     // INSERT DETAIL ORDER
     public void insertDetailOrder(double totalMoney, int idOrder, int idShifts) throws Exception {

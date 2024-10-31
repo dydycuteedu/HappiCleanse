@@ -135,9 +135,9 @@ public class OrderServlet extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             Order o = dao.getOrder(id);
             Shifts shift = dao.getShiftsByIdOrder(id);
-            DetailShifts detailshift = dao.getDetailShift(shift.getIdShift());
+            //DetailShifts detailshift = dao.getDetailShift(shift.getIdShift());
             request.setAttribute("o", o);
-            request.setAttribute("detailshift", detailshift);
+            //request.setAttribute("detailshift", detailshift);
             request.setAttribute("shift", shift);
             RequestDispatcher dispatcher = request.getRequestDispatcher("Admin/order/detail.jsp");
             dispatcher.forward(request, response);
@@ -153,7 +153,7 @@ public class OrderServlet extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             Order o = dao.getOrder(id);
             Shifts shift = dao.getShiftsByIdOrder(id);
-            DetailShifts detailshift = dao.getDetailShift(shift.getIdShift());
+            //DetailShifts detailshift = dao.getDetailShift(shift.getIdShift());
             ArrayList<User> allUsers = dao.getAllUsers();
 
             // Filter users with role 'customer'
@@ -168,7 +168,7 @@ public class OrderServlet extends HttpServlet {
                 List<Order> orderlist = dao.getOrderinprogressbystaffID(u.getIdUser());
                 if (!orderlist.isEmpty()) {
                     for (Order oder : orderlist) {
-                        if (!o.getDateService().equals(oder.getDateService())) {
+                        if (!o.getTimeStart().equals(oder.getTimeStart())) {
                             staffavailable.add(u);
                         }
                     }
@@ -178,7 +178,7 @@ public class OrderServlet extends HttpServlet {
             }
             request.setAttribute("o", o);
             request.setAttribute("staff", staffavailable);
-            request.setAttribute("detailshift", detailshift);
+            //request.setAttribute("detailshift", detailshift);
             request.setAttribute("shift", shift);
             RequestDispatcher dispatcher = request.getRequestDispatcher("Admin/order/edit.jsp");
             dispatcher.forward(request, response);

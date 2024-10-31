@@ -9,16 +9,19 @@ public class ServiceCategory {
 
     private int idServiceCategory;
     private String nameServiceCategory;
+    private String subDescription;
+    private String description;
 
     private String imgURL;
 
     public ServiceCategory() {
     }
 
-    public ServiceCategory(int idServiceCategory, String nameServiceCategory, String imgURL) {
+    public ServiceCategory(int idServiceCategory, String nameServiceCategory, String subDescription, String description, String imgURL) {
         this.idServiceCategory = idServiceCategory;
         this.nameServiceCategory = nameServiceCategory;
-
+        this.subDescription = subDescription;
+        this.description = description;
         this.imgURL = imgURL;
     }
 
@@ -38,6 +41,23 @@ public class ServiceCategory {
         this.nameServiceCategory = nameServiceCategory;
     }
 
+    public String getSubDescription() {
+        return subDescription;
+    }
+
+    public void setSubDescription(String subDescription) {
+        this.subDescription = subDescription;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
+
     public String getImgURL() {
         return imgURL;
     }
@@ -46,9 +66,5 @@ public class ServiceCategory {
         this.imgURL = imgURL;
     }
 
-    @Override
-    public String toString() {
-        return "ServiceCategory{" + "idServiceCategory=" + idServiceCategory + ", nameServiceCategory=" + nameServiceCategory + ", imgURL=" + imgURL + '}';
-    }
 
 }

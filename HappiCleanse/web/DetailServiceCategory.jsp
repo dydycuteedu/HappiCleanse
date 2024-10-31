@@ -174,19 +174,10 @@
                     </div>
                     <div id="MainContent2" class="content" bis_skin_checked="1">
                         <h2>
-                            Merry Maids<sup>®</sup> for Small Spaces
+                            ${servicecategory.subDescription}
                         </h2>
                         <p>
-                            Our house cleaning services aren’t only for houses! Every living
-                            space deserves a thorough cleaning that you can see
-                            <i>and</i> feel. Merry Maids<sup>®</sup> is proud to offer a program designed to serve residents of
-                            apartments,
-                            condominiums, and other small spaces. Our Merry Maids<sup>®</sup> for Small Spaces service offers
-                            customized pricing to groups of residents
-                            in the same apartment complex who register for weekly or bi-weekly service.
-                            In addition, customers who start apartment cleaning services through this
-                            program will receive a discount applied to their "first-time-in"
-                            service fee.
+                            ${servicecategory.description}
                         </p>
                     </div>
 

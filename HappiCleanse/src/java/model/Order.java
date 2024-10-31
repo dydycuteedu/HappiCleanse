@@ -6,31 +6,43 @@
 package model;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 
 public class Order {
     private int idOrder;
     private User user;
     private User staff;
+    private Service service;
 
     private String notes;
 
     private String statusOrder;
-    private LocalDateTime dateCreate;
-    private LocalDateTime dateService;
+    private LocalDateTime timeStart;
+    private LocalDateTime timeEnd;
     
     private Shifts shifts;
 
-    public Order(int idOrder, User user, String notes, String statusOrder, LocalDateTime dateCreate,LocalDateTime dateService, Shifts shifts, User staff) {
+    public Order(int idOrder, User user, Service service, String notes, String statusOrder, LocalDateTime timeStart, LocalDateTime timeEnd, Shifts shifts) {
         this.idOrder = idOrder;
         this.user = user;
+        this.service = service;
         this.notes = notes;
         this.statusOrder = statusOrder;
-        this.dateCreate = dateCreate;
-        this.dateService = dateService;
+        this.timeStart = timeStart;
+        this.timeEnd = timeEnd;
         this.shifts = shifts;
+    }
+
+    public Order(int idOrder, User user, User staff, Service service, String notes, String statusOrder, LocalDateTime timeStart, LocalDateTime timeEnd, Shifts shifts) {
+        this.idOrder = idOrder;
+        this.user = user;
         this.staff = staff;
+        this.service = service;
+        this.notes = notes;
+        this.statusOrder = statusOrder;
+        this.timeStart = timeStart;
+        this.timeEnd = timeEnd;
+        this.shifts = shifts;
     }
 
     public Order() {
@@ -68,21 +80,31 @@ public class Order {
         this.statusOrder = statusOrder;
     }
 
-    public LocalDateTime getDateCreate() {
-        return dateCreate;
+    public Service getService() {
+        return service;
     }
 
-    public void setDateCreate(LocalDateTime dateCreate) {
-        this.dateCreate = dateCreate;
+    public void setService(Service service) {
+        this.service = service;
     }
 
-    public LocalDateTime getDateService() {
-        return dateService;
+    public LocalDateTime getTimeStart() {
+        return timeStart;
     }
 
-    public void setDateService(LocalDateTime dateService) {
-        this.dateService = dateService;
+    public void setTimeStart(LocalDateTime timeStart) {
+        this.timeStart = timeStart;
     }
+
+    public LocalDateTime getTimeEnd() {
+        return timeEnd;
+    }
+
+    public void setTimeEnd(LocalDateTime timeEnd) {
+        this.timeEnd = timeEnd;
+    }
+
+    
 
     public Shifts getShifts() {
         return shifts;
@@ -100,11 +122,4 @@ public class Order {
     public void setStaff(User staff) {
         this.staff = staff;
     }
-
-    @Override
-    public String toString() {
-        return "Order{" + "idOrder=" + idOrder + ", user=" + user + ", notes=" + notes + ", statusOrder=" + statusOrder + ", dateCreate=" + dateCreate + ", shifts=" + shifts + '}';
-    }
-    
-    
 }

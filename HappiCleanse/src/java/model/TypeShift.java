@@ -7,12 +7,10 @@ package model;
 public class TypeShift {
 
     private int idTypeShift;
-    private String colorTypeShift;
     private double coefficient;
 
-    public TypeShift(int idTypeShift, String colorTypeShift, double coefficient) {
+    public TypeShift(int idTypeShift,  double coefficient) {
         this.idTypeShift = idTypeShift;
-        this.colorTypeShift = colorTypeShift;
         this.coefficient = coefficient;
     }
 
@@ -27,14 +25,6 @@ public class TypeShift {
         this.idTypeShift = idTypeShift;
     }
 
-    public String getColorTypeShift() {
-        return colorTypeShift;
-    }
-
-    public void setColorTypeShift(String colorTypeShift) {
-        this.colorTypeShift = colorTypeShift;
-    }
-
     public double getCoefficient() {
         return coefficient;
     }
@@ -42,10 +32,4 @@ public class TypeShift {
     public void setCoefficient(double coefficient) {
         this.coefficient = coefficient;
     }
-
-    @Override
-    public String toString() {
-        return "TypeShift{" + "idTypeShift=" + idTypeShift + ", colorTypeShift=" + colorTypeShift + ", coefficient=" + coefficient + '}';
-    }
-    
 }
