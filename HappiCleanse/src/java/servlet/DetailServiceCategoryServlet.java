@@ -6,44 +6,49 @@ package servlet;
 
 import dao.Dao;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Service;
+import model.ServiceCategory;
 
-
-@WebServlet(name = "DetailService", urlPatterns = {"/DetailService"})
-public class DetailServiceServlet extends HttpServlet {
+/**
+ *
+ * @author CHUC DY
+ */
+public class DetailServiceCategoryServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             Dao dao = new Dao();
-            int idService = Integer.parseInt(request.getParameter("idService"));
-            Service service = dao.getService(idService);
+            int idServiceCategory = Integer.parseInt(request.getParameter("idServiceCategory"));
+            ServiceCategory servicecategory = dao.getServiceCategory(idServiceCategory);
+            List<Service> service = dao.getAllServicesbycategoryid(idServiceCategory);
+            request.setAttribute("servicecategory", servicecategory);
             request.setAttribute("service", service);
-            request.getRequestDispatcher("DetailService.jsp").forward(request, response);
+            request.getRequestDispatcher("DetailServiceCategory.jsp").forward(request, response);
         } catch (Exception ex) {
             Logger.getLogger(DetailServiceServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
 
- 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int idService = Integer.parseInt(request.getParameter("idService"));
-        Dao dao = new Dao();
         try {
-            Service service = dao.getService(idService);
+            Dao dao = new Dao();
+            int idServiceCategory = Integer.parseInt(request.getParameter("idServiceCategory"));
+            ServiceCategory servicecategory = dao.getServiceCategory(idServiceCategory);
+            List<Service> service = dao.getAllServicesbycategoryid(idServiceCategory);
+            request.setAttribute("servicecategory", servicecategory);
             request.setAttribute("service", service);
-            request.getRequestDispatcher("DetailService.jsp").forward(request, response);
+            request.getRequestDispatcher("DetailServiceCategory.jsp").forward(request, response);
         } catch (Exception ex) {
             Logger.getLogger(DetailServiceServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -71,6 +76,5 @@ public class DetailServiceServlet extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
+    }// </editor-fold>}
 }

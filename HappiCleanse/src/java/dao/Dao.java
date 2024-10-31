@@ -211,7 +211,7 @@ public class Dao {
             ps.executeUpdate();
         }
     }
-    
+
     public void approveStaff(User user) throws Exception {
         String sql = "UPDATE Users SET isCheck = ? WHERE idUser = ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -220,7 +220,7 @@ public class Dao {
             ps.executeUpdate();
         }
     }
-    
+
     public void denyStaff(User user) throws Exception {
         String sql = "UPDATE Users SET isValid = ? WHERE idUser = ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -245,7 +245,7 @@ public class Dao {
         return false;
     }
 //sign up staff with full profile
-    
+
     public boolean registerStaff(User user) throws SQLException {
         String sql = "INSERT INTO Users (fullname, username, password, email,phonenumber,gender,isValid,isCheck,Role,CVURL) VALUES (?, ?, ?, ?,?,?,?,?,?,?)";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -266,7 +266,7 @@ public class Dao {
         }
         return false;
     }
-    
+
     public boolean singupStaff(String fullname, String username, String pass, String email, String phonenumber, String address, String gender, String avatar) throws SQLException {
         String sql = "INSERT INTO Users (fullname, username, password, email, phonenumber, address, gender, avatar, role, isValid,isCheck) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,1)";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -296,7 +296,7 @@ public class Dao {
             ps.executeUpdate();
         }
     }
-    
+
     public void unbanUser(int id) throws SQLException, Exception {
         String sql = "UPDATE Users set isValid = 1 WHERE idUser = ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -304,7 +304,7 @@ public class Dao {
             ps.executeUpdate();
         }
     }
-   
+
     public void changePassword(String password, int idUser) {
         String sql = "UPDATE Users set password = ? WHERE idUser = ? ";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -395,14 +395,14 @@ public class Dao {
                     User user = getUser(rs.getInt("idUser"));
                     User staff = getUser(rs.getInt("idStaff"));
                     Shifts shifts = getAllShiftByOrder(rs.getInt("idOrder"));
-                    return new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), ConvertConstant.convertDateToLocalDate(rs.getDate("dateService")), shifts,staff);
+                    return new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), ConvertConstant.convertDateToLocalDate(rs.getDate("dateService")), shifts, staff);
                 }
             }
         }
         return null;
     }
-    
-     public List<Order> getOrderinprogressbystaffID(int id) throws SQLException, Exception {
+
+    public List<Order> getOrderinprogressbystaffID(int id) throws SQLException, Exception {
         String sql = "SELECT * FROM Orders WHERE idStaff = ? and statusOrder = 'In Progress'";
         List<Order> orders = new ArrayList<>();
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -412,7 +412,7 @@ public class Dao {
                     User user = getUser(rs.getInt("idUser"));
                     User staff = getUser(rs.getInt("idStaff"));
                     Shifts shifts = getAllShiftByOrder(rs.getInt("idOrder"));
-                    orders.add(new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), ConvertConstant.convertDateToLocalDate(rs.getDate("dateService")), shifts,staff));
+                    orders.add(new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), ConvertConstant.convertDateToLocalDate(rs.getDate("dateService")), shifts, staff));
                 }
             }
         }
@@ -428,7 +428,7 @@ public class Dao {
                 User user = getUser(rs.getInt("idUser"));
                 User staff = getUser(rs.getInt("idStaff"));
                 Shifts shifts = getAllShiftByOrder(rs.getInt("idOrder"));
-                orders.add(new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), ConvertConstant.convertDateToLocalDate(rs.getDate("dateService")), shifts,staff));
+                orders.add(new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), ConvertConstant.convertDateToLocalDate(rs.getDate("dateService")), shifts, staff));
             }
         }
         return orders;
@@ -444,7 +444,7 @@ public class Dao {
             ps.executeUpdate();
         }
     }
-    
+
     public void updateStaffOrder(Order order) throws SQLException, Exception {
         String sql = "UPDATE Orders SET idStaff = ?, statusOrder = ? WHERE idOrder = ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -732,6 +732,20 @@ public class Dao {
         return services;
     }
 
+    public List<Service> getAllServicesbycategoryid(int id) throws SQLException, Exception {
+        List<Service> services = new ArrayList<>();
+        String sql = "SELECT * FROM Service WHERE idServiceCategory = ? ";
+        try (Connection connn = DBContext.getConnection(); PreparedStatement stmt = connn.prepareStatement(sql);) {
+            stmt.setInt(1, id);
+            try (ResultSet rsH = stmt.executeQuery()) {
+                while (rsH.next()) {
+                    services.add(mapService(rsH));
+                }
+            }
+        }
+        return services;
+    }
+
     public void updateService(Service service) throws SQLException, Exception {
         String sql = "UPDATE Service SET nameService = ?, description = ?, img1 = ?, img2 = ?, img3 = ?, idServiceCategory = ? WHERE idService = ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -836,7 +850,7 @@ public class Dao {
                 u.setIsValid(rs.getInt(10));
                 u.setIsCheck(rs.getInt(11));
                 u.setRole(rs.getString(12));
-                if(list.size()<4){
+                if (list.size() < 4) {
                     list.add(u);
                 }
             }
@@ -858,11 +872,12 @@ public class Dao {
                 User user = getUser(rs.getInt("idUser"));
                 User staff = getUser(rs.getInt("idStaff"));
                 Shifts shifts = getAllShiftByOrder(rs.getInt("idOrder"));
-                orders.add(new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), ConvertConstant.convertDateToLocalDate(rs.getDate("dateService")), shifts,staff));
+                orders.add(new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), ConvertConstant.convertDateToLocalDate(rs.getDate("dateService")), shifts, staff));
             }
         }
         return orders;
     }
+
     public List<Order> getOrderByStaffId(int idUser) throws Exception {
         String sql = "SELECT * FROM Orders WHERE idStaff = ? ORDER by idOrder desc";
         List<Order> orders = new ArrayList<>();
@@ -873,7 +888,7 @@ public class Dao {
                 User user = getUser(rs.getInt("idUser"));
                 User staff = getUser(rs.getInt("idStaff"));
                 Shifts shifts = getAllShiftByOrder(rs.getInt("idOrder"));
-                orders.add(new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), ConvertConstant.convertDateToLocalDate(rs.getDate("dateService")), shifts,staff));
+                orders.add(new Order(rs.getInt("idOrder"), user, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("dateCreate")), ConvertConstant.convertDateToLocalDate(rs.getDate("dateService")), shifts, staff));
             }
         }
         return orders;
@@ -1003,7 +1018,6 @@ public class Dao {
 
         return shifts.getLast();
     }
-    
 
     // GET SERVICE BY SHIFTS
     public List<Service> getServiceByShift(int idShift) throws Exception {

@@ -94,6 +94,10 @@
         <servlet-name>StaffWorkingServlet</servlet-name>
         <servlet-class>servlet.StaffWorkingServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DetailServiceCategoryServlet</servlet-name>
+        <servlet-class>servlet.DetailServiceCategoryServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/Logout</url-pattern>
@@ -157,6 +161,10 @@
     <servlet-mapping>
         <servlet-name>StaffWorkingServlet</servlet-name>
         <url-pattern>/StaffWorkingServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DetailServiceCategoryServlet</servlet-name>
+        <url-pattern>/DetailServiceCategoryServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
