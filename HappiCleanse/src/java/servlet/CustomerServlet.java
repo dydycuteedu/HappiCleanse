@@ -72,9 +72,9 @@ public class CustomerServlet extends HttpServlet {
             case "edit":
                 Edit(request, response);
                 break;
-//            case "delete":
-//                Delete(request, response);
-//                break;
+            case "delete":
+                Delete(request, response);
+                break;
 //            case "Save":
 //                Save(request, response);
 //                break;
@@ -83,6 +83,9 @@ public class CustomerServlet extends HttpServlet {
 //                break;
             case "create":
                 Create(request, response);
+                break;
+            case "unban":
+                Unban(request, response);
                 break;
         }
     }
@@ -110,9 +113,9 @@ public class CustomerServlet extends HttpServlet {
                 case "edit":
                     Edit(request, response);
                     break;
-//            case "delete":
-//                Delete(request, response);
-//                break;
+                case "delete":
+                    Delete(request, response);
+                    break;
                 case "Save":
                     Save(request, response);
                     break;
@@ -121,6 +124,9 @@ public class CustomerServlet extends HttpServlet {
 //                    break;
                 case "create":
                     Create(request, response);
+                    break;
+                case "unban":
+                    Unban(request, response);
                     break;
             }
         } catch (Exception ex) {
@@ -135,22 +141,22 @@ public class CustomerServlet extends HttpServlet {
     }// </editor-fold>
 
     private void Management(HttpServletRequest request, HttpServletResponse response)
-        throws IOException, ServletException {
-    Dao dao = new Dao();
-    ArrayList<User> allUsers = dao.getAllUsers();
-    
-    // Filter users with role 'customer'
-    ArrayList<User> customerList = new ArrayList<>();
-    for (User user : allUsers) {
-        if ("Customer".equals(user.getRole())) {
-            customerList.add(user);
-        }
-    }
+            throws IOException, ServletException {
+        Dao dao = new Dao();
+        ArrayList<User> allUsers = dao.getAllUsers();
 
-    request.setAttribute("list", customerList);
-    RequestDispatcher dispatcher = request.getRequestDispatcher("Admin/customer/index.jsp");
-    dispatcher.forward(request, response);
-}
+        // Filter users with role 'customer'
+        ArrayList<User> customerList = new ArrayList<>();
+        for (User user : allUsers) {
+            if ("Customer".equals(user.getRole())) {
+                customerList.add(user);
+            }
+        }
+
+        request.setAttribute("list", customerList);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("Admin/customer/index.jsp");
+        dispatcher.forward(request, response);
+    }
 
     private void Create(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
@@ -183,13 +189,14 @@ public class CustomerServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("Admin/customer/edit.jsp");
         dispatcher.forward(request, response);
     }
-   private void Save(HttpServletRequest request, HttpServletResponse response)
+
+    private void Save(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException, Exception {
         int uid = Integer.parseInt(request.getParameter("id"));
         String uname = request.getParameter("name");
         boolean status = request.getParameter("status") != null;
         int isValid = 0;
-        if(status){
+        if (status) {
             isValid = 1;
         }
         Dao dao = new Dao();
@@ -198,6 +205,29 @@ public class CustomerServlet extends HttpServlet {
         user.setIsValid(isValid);
         dao.editProfile(user);
         Management(request, response);
-    } 
-}
+    }
 
+    private void Delete(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Dao dao = new Dao();
+            dao.deleteStaff(id);
+            Management(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void Unban(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Dao dao = new Dao();
+            dao.unbanUser(id);
+            Management(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+}

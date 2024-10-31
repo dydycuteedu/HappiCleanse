@@ -1,9 +1,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>Data Tables | Upcube - Admin & Dashboard Template</title>
+        <title>ORDER DETAIL</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
         <meta content="Themesdesign" name="author" />
@@ -26,6 +27,33 @@
         <link href="${pageContext.request.contextPath}/Admin\assets/css/icons.min.css" rel="stylesheet" type="text/css" />
         <!-- App Css-->
         <link href="${pageContext.request.contextPath}/Admin\assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+        <style>
+            body{
+                background:#eee;
+            }
+            .card {
+                box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
+            }
+            .card {
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                min-width: 0;
+                word-wrap: break-word;
+                background-color: #fff;
+                background-clip: border-box;
+                border: 0 solid rgba(0,0,0,.125);
+                border-radius: 1rem;
+            }
+            .text-reset {
+                --bs-text-opacity: 1;
+                color: inherit!important;
+            }
+            a {
+                color: #5465ff;
+                text-decoration: none;
+            }
+        </style>
     </head>
 
     <body data-topbar="dark">
@@ -50,20 +78,116 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <div class="card-title">
-                                            <h4 >Thông Tin Đơn Hàng</h4>
-                                        </div>
-                                        <div class="profile-details">
-                                            <ul>
-                                                <li><strong>Mã Đơn hàng:</strong> ${o.idOrder}</li>
-                                                <li><strong>Tên khách hàng:</strong> ${o.user.fullname}</li>
-                                                <li><strong>Nội dung:</strong> ${o.notes}</li>
-                                                <li><strong>Ngày đặt:</strong> ${o.dateService}</li>
-                                                <li><strong>Trạng thái đơn hàng:</strong> ${o.statusOrder}</li>
-                                                <li><strong>Nhân viên làm việc:</strong> ${o.staff.fullname}</li>
-                                                <li><strong>Dịch vụ:</strong> ${detailshift.service.nameService}</li>
-                                                <li><strong>Tổng giá tiền:</strong> ${shift.price}</li>
-                                            </ul>
+
+                                        <div class="container">
+                                            <!-- Title -->
+                                            <div class="d-flex justify-content-between align-items-center py-3">
+                                                <h2 class="h5 mb-0"><a href="#" class="text-muted"></a> Mã Đơn hàng #${o.idOrder}</h2>
+                                            </div>
+
+                                            <!-- Main content -->
+                                            <div class="row">
+                                                <div class="col-lg-8">
+                                                    <!-- Details -->
+                                                    <div class="card mb-4">
+                                                        <div class="card-body">
+                                                            <div class="mb-3 d-flex justify-content-between">
+                                                                <div>
+                                                                    <span class="me-3">Thời gian hoàn thành</span>
+                                                                    <span class="me-3">#${o.idOrder}</span>
+
+                                                                </div>
+
+                                                            </div>
+                                                            <table class="table table-borderless">
+                                                                <tfoot>
+                                                                    <tr>
+                                                                        <td colspan="2">Tên dịch vụ</td>
+                                                                        <td class="text-end">120.000VND</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td colspan="2">Phí dịch vụ</td>
+                                                                        <td class="text-end">120.000VND * coeficient</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td colspan="2">Tổng thời gian hoàn thành dịch vụ</td>
+                                                                        <td class="text-end">timeEnd - timeStart</td>
+                                                                    </tr>
+
+                                                                    <tr class="fw-bold">
+                                                                        <td colspan="2">Tổng tiền</td>
+                                                                        <td class="text-end">Phí dịch vụ * số giờ hoàn thành</td>
+                                                                    </tr>
+                                                                </tfoot>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Payment -->
+                                                    <div class="card mb-4">
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-lg-6">
+                                                                    <h3 class="h6">Phương thức thanh toán</h3>
+                                                                    <p>Tiền mặt<br>
+                                                                        Total: $169,98 
+                                                                        <span class="badge bg-success rounded-pill">PAID</span>
+                                                                    </p>
+                                                                    <p>VNPAY<br>
+                                                                        Total: $169,98 
+                                                                        <span class="badge bg-success rounded-pill">PAID</span>
+                                                                    </p>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <h3 class="h6">Thông tin khách hàng</h3>
+                                                                    <address>
+                                                                        <strong>${o.user.fullname}</strong>
+                                                                        <br>
+                                                                        ${o.user.address}
+                                                                        <br>
+                                                                        ${o.user.phonenumber}
+
+                                                                    </address>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <!-- Customer Notes -->
+                                                    <div class="card mb-4">
+                                                        <div class="card-body">
+                                                            <h3 class="h6">Ghi chú của khách hàng</h3>
+                                                            <p>${o.notes}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card mb-4">
+                                                        <div class="card-body">
+                                                            <h3 class="h6">Trạng thái đơn hàng</h3>
+                                                            <c:if test="${o.statusOrder == 'Completed'}">
+                                                                <span class="badge bg-success">Completed</span>
+                                                            </c:if>
+                                                            <c:if test="${o.statusOrder == 'Pending'}">
+                                                                <span class="badge bg-warning">Pending</span>
+                                                            </c:if>
+                                                            <c:if test="${o.statusOrder == 'In Progress'}">
+                                                                <span class="badge bg-warning">In Progress</span>
+                                                            </c:if>
+                                                            <c:if test="${o.statusOrder == 'Cancelled'}">
+                                                                <span class="badge bg-danger">Cancelled</span>
+                                                            </c:if>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card mb-4">
+                                                        <!-- Staff information -->
+                                                        <div class="card-body">
+                                                            <h3 class="h6">Thông tin nhân viên</h3>
+                                                            <strong>${o.staff.fullname}</strong>
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="mb-0">
                                             <div>

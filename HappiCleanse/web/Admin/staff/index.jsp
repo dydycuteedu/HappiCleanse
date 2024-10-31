@@ -128,7 +128,7 @@
                                                                     <input type="hidden" name="id" value="${user.idUser}">
                                                                     <input type="hidden" name="action" value="delete">
                                                                   
-                                                                    <button type="submit" class="btn btn-sm btn-danger" id="sa-params">
+                                                                    <button type="submit" class="btn btn-sm btn-danger">
                                                                         <i class="ri-delete-bin-fill"></i>
                                                                     </button>
                                                                 </form>

@@ -112,7 +112,7 @@
                                 <h1 class="mb-4">Book This Service</h1>
                                 <form action="CreateOrderServlet" method="POST">
                                     <div class="row g-3">
-                                        
+
                                         <div class="col-12 col-sm-6">
                                             <select class="form-select border-0" style="height: 55px;" name="idService">
                                                 <option value="${service.idService}">${service.nameService}</option>
@@ -120,13 +120,10 @@
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="date" id="date1" data-target-input="nearest">
-                                                <input type="datetime-local"
-                                                       class="form-control border-0 datetimepicker-input"
-                                                       placeholder="Service Date" style="height: 55px;" name="dateShift">
-                                                
+                                                <input type="datetime-local" class="form-control border-0" style="height: 55px;"  min="" name="dateShift" id="datetime">
                                             </div>
                                         </div>
-                                            
+
                                         <div class="col-12">
                                             <textarea class="form-control border-0" placeholder="Special Request" name="notes"></textarea>
                                         </div>

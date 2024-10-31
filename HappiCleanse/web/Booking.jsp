@@ -93,11 +93,12 @@
                                     <tr>
                                         <th>Order Number</th>
                                         <th>Notes</th>
-                                        <th>Status</th>
-                                        <th>Order Date</th>
+                                        <th>Trạng thái</th>
+                                        <th>Thời gian bắt đầu</th>
+                                        <th>Thời gian hoàn thành</th> 
                                         <th>Tên nhân viên làm việc</th>
-                                        <th>Total Price</th>
-                                        <th>Action</th>
+                                        <th>Tổng tiền</th>
+                                        <th>Hành động</th>
                                     </tr>
                                 </thead>
                                 <tbody>

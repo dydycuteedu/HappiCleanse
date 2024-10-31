@@ -65,10 +65,8 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="card-title">
-                                            <h4 >Quản Lí Customer</h4>
-                                            <a href="${pageContext.request.contextPath}/CustomerServlet?action=create" id="editable-sample_new" class="btn btn-primary">
-                                                Tạo mới <i class="fa fa-plus"></i>
-                                            </a>
+                                            <h4 >Danh sách Khách hàng</h4>
+
                                         </div>
 
 
@@ -76,12 +74,11 @@
                                             <thead>
                                                 <tr>
 
+                                                    <th>Họ và tên</th>
                                                     <th>Username</th>
-
                                                     <th>Email</th>
-
                                                     <th>Giới tính</th>
-                                                    <th>Vai Trò</th>
+                                                    <th>Địa chỉ</th>
                                                     <th>Trạng Thái</th>
                                                     <th>Hành Động</th>
                                                 </tr>
@@ -89,49 +86,41 @@
                                             <tbody>
                                                 <c:forEach var="user" items="${list}">
                                                     <tr>
-
+                                                        <td>${user.fullname}</td>
                                                         <td><img class="rounded-circle header-profile-user" src="${user.avatar}" alt="avatar"/> ${user.username}</td>
-
-
-
                                                         <td>${user.email}</td>
-
                                                         <td>${user.gender}</td>
-                                                        <td>${user.role}</td>
-                                                        <td>
-                                                            <input type="checkbox" id="switch" switch="none" name="status" disabled
-                                                                   <c:if test="${user.isValid == 1}">checked</c:if> />
-                                                                   <label for="switch" data-on-label="On" data-off-label="Off"></label>
-                                                            </td>
+                                                        <td>${user.address}</td>
+                                                        <c:if test="${user.isValid == 1}"><td>Available</td></c:if>
+                                                        <c:if test="${user.isValid == 0}"><td>Banned</td></c:if>
                                                             <td>
                                                                 <div class="btn-group" role="group">
-
-                                                                    <form action="${pageContext.request.contextPath}/CustomerServlet" method="POST" style="display: inline;">
+                                                                <form action="${pageContext.request.contextPath}/CustomerServlet" method="POST" style="display: inline;">
                                                                     <input type="hidden" name="id" value="${user.idUser}">
                                                                     <input type="hidden" name="action" value="view">
-                                                                   
                                                                     <button type="submit" class="btn btn-sm btn-primary" style="margin-right: 5px;">
                                                                         <i class="ri-profile-fill"></i>
                                                                     </button>
                                                                 </form>
 
-                                                                <form action="${pageContext.request.contextPath}/CustomerServlet" method="GET" style="display: inline;">
-                                                                    <input type="hidden" name="id" value="${user.idUser}">
-                                                                    <input type="hidden" name="action" value="edit">
-                                                                   
-                                                                    <button type="submit" class="btn btn-sm btn-warning" style="margin-right: 5px;" >
-                                                                        <i class="ri-pencil-fill"></i>
-                                                                    </button>
-                                                                </form>
-
-                                                                <form action="${pageContext.request.contextPath}/CustomerServlet" method="GET" style="display: inline;">
-                                                                    <input type="hidden" name="id" value="${user.idUser}">
-                                                                    <input type="hidden" name="action" value="delete">
-                                                                  
-                                                                    <button type="submit" class="btn btn-sm btn-danger" id="sa-params">
-                                                                        <i class="ri-delete-bin-fill"></i>
-                                                                    </button>
-                                                                </form>
+                                                                <c:if test="${user.isValid == 1}">
+                                                                    <form action="${pageContext.request.contextPath}/CustomerServlet" method="GET" style="display: inline;">
+                                                                        <input type="hidden" name="id" value="${user.idUser}">
+                                                                        <input type="hidden" name="action" value="delete">
+                                                                        <button type="submit" class="btn btn-sm btn-danger">
+                                                                            <i class="ri-indeterminate-circle-fill"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                </c:if>
+                                                                <c:if test="${user.isValid == 0}">
+                                                                    <form action="${pageContext.request.contextPath}/CustomerServlet" method="GET" style="display: inline;">
+                                                                        <input type="hidden" name="id" value="${user.idUser}">
+                                                                        <input type="hidden" name="action" value="unban">
+                                                                        <button type="submit" class="btn btn-sm btn-success">
+                                                                            <i class="ri-checkbox-circle-fill"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                </c:if>
                                                             </div>
                                                         </td>
                                                     </tr>

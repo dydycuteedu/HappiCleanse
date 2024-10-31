@@ -24,7 +24,7 @@ import model.User;
  * @author CHUC DY
  */
 public class UserServlet extends HttpServlet {
-    
+
     private static String key;
 
     /**
@@ -52,7 +52,7 @@ public class UserServlet extends HttpServlet {
             out.println("</html>");
         }
     }
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -67,12 +67,12 @@ public class UserServlet extends HttpServlet {
             case "edit":
                 Edit(request, response);
                 break;
-//            case "delete":
-//                Delete(request, response);
-//                break;
-//            case "Save":
-//                Save(request, response);
-//                break;
+            case "delete":
+                Delete(request, response);
+                break;
+            case "unban":
+                Unban(request, response);
+                break;
             case "Add":
                 Add(request, response);
                 break;
@@ -81,7 +81,7 @@ public class UserServlet extends HttpServlet {
                 break;
         }
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -97,24 +97,27 @@ public class UserServlet extends HttpServlet {
                 case "edit":
                     Edit(request, response);
                     break;
-//            case "delete":
-//                Delete(request, response);
-//                break;
+                case "delete":
+                    Delete(request, response);
+                    break;
                 case "Save":
                     Save(request, response);
                     break;
-            case "Add":
-                Add(request, response);
-                break;
-            case "create":
-                Create(request, response);
-                break;
+                case "Add":
+                    Add(request, response);
+                    break;
+                case "create":
+                    Create(request, response);
+                    break;
+                case "unban":
+                    Unban(request, response);
+                    break;
             }
         } catch (Exception ex) {
             Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @Override
     public String getServletInfo() {
         return "Short description";
@@ -135,15 +138,16 @@ public class UserServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 //
+
     private void View(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
         Dao dao = new Dao();
         int uid = Integer.parseInt(request.getParameter("id"));
-        
+
         User user = dao.getUser(uid);
-        
+
         request.setAttribute("user", user);
-        
+
         RequestDispatcher dispatcher = request.getRequestDispatcher("Admin/user/detail.jsp");
         dispatcher.forward(request, response);
     }
@@ -159,15 +163,30 @@ public class UserServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("Admin/user/edit.jsp");
         dispatcher.forward(request, response);
     }
-//
-//    private void Delete(HttpServletRequest request, HttpServletResponse response)
-//            throws IOException, ServletException {
-//        int rid = Integer.parseInt(request.getParameter("id"));
-//        Dao dao = new Dao();
-//        Dao.delete(rid);
-//        Management(request, response);
-//    }
 
+    private void Delete(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Dao dao = new Dao();
+            dao.deleteStaff(id);
+            Management(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void Unban(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Dao dao = new Dao();
+            dao.unbanUser(id);
+            Management(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     private void Save(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException, Exception {
@@ -175,7 +194,7 @@ public class UserServlet extends HttpServlet {
         String uname = request.getParameter("name");
         boolean status = request.getParameter("status") != null;
         int isValid = 0;
-        if(status){
+        if (status) {
             isValid = 1;
         }
         Dao dao = new Dao();
@@ -186,14 +205,15 @@ public class UserServlet extends HttpServlet {
         Management(request, response);
     }
 //
+
     private void Add(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
         String uname = request.getParameter("username");
         String upass = request.getParameter("password");
         String uemail = request.getParameter("email");
         String username = request.getParameter("fullname");
-         Dao dao = new Dao();
-         User user = new User();
+        Dao dao = new Dao();
+        User user = new User();
         user.setUsername(uname);
         user.setPassword(upass);
         user.setEmail(uemail);

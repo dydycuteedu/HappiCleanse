@@ -66,7 +66,7 @@
                                                 </div>
                                                 <label for="example-text-input" class="col-sm-2 col-form-label">Mật Khẩu</label>
                                                 <div class="col-sm-10">
-                                                    <input class="form-control" type="text" name="password" id="example-text-input" required>
+                                                    <input class="form-control" type="password" name="password" id="example-text-input" required>
                                                 </div>
                                                 <label for="example-text-input" class="col-sm-2 col-form-label">Email</label>
                                                 <div class="col-sm-10">

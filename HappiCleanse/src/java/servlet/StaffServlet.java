@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -16,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Order;
 import model.User;
 
 /**
@@ -148,7 +150,7 @@ public class StaffServlet extends HttpServlet {
         // Filter users with role 'staff'
         ArrayList<User> customerList = new ArrayList<>();
         for (User user : allUsers) {
-            if ("Staff".equals(user.getRole()) && user.getIsCheck()==1) {
+            if ("Staff".equals(user.getRole()) && user.getIsCheck() == 1) {
                 customerList.add(user);
             }
         }
@@ -179,13 +181,20 @@ public class StaffServlet extends HttpServlet {
     }
 //
 //  
-private void Delete(HttpServletRequest request, HttpServletResponse response)
+
+    private void Delete(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException, Exception {
         int rid = Integer.parseInt(request.getParameter("id"));
         Dao dao = new Dao();
-        dao.deleteStaff(rid);
+        List<Order> orderlist = dao.getOrderinprogressbystaffID(rid);
+        if (!orderlist.isEmpty()) {
+            Management(request, response);
+        } else {
+            dao.deleteStaff(rid);
+        }
         Management(request, response);
     }
+
     private void Edit(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
         int uid = Integer.parseInt(request.getParameter("id"));
@@ -206,7 +215,6 @@ private void Delete(HttpServletRequest request, HttpServletResponse response)
         String ugender = request.getParameter("gender");
         String uaddress = request.getParameter("address");
         String uavatar = request.getParameter("avatar");
-        String urole = request.getParameter("role");
         Dao dao = new Dao();
         try {
             dao.singupStaff(ufullname, uname, upass, uemail, uphone, uaddress, ugender, uavatar);
@@ -216,6 +224,7 @@ private void Delete(HttpServletRequest request, HttpServletResponse response)
         Management(request, response);
     }
 //save for edit
+
     private void Save(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException, Exception {
         int uid = Integer.parseInt(request.getParameter("id"));

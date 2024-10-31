@@ -197,7 +197,7 @@ public class Dao {
     }
 
     public void editProfile(User user) throws Exception {
-        String sql = "UPDATE Users SET fullname = ?, username = ?, password = ?, email = ?, phonenumber = ?, gender = ?,avatar=?, address = ?, isValid = ? WHERE idUser = ?";
+        String sql = "UPDATE Users SET fullname = ?, username = ?, password = ?, email = ?, phonenumber = ?, gender = ?, address = ?, isValid = ? WHERE idUser = ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, user.getFullname());
             ps.setString(2, user.getUsername());
@@ -205,10 +205,9 @@ public class Dao {
             ps.setString(4, user.getEmail());
             ps.setString(5, user.getPhonenumber());
             ps.setString(6, user.getGender());
-            ps.setString(7, user.getAvatar());
-            ps.setString(8, user.getAddress());
-            ps.setInt(9, user.getIsValid());
-            ps.setInt(10, user.getIdUser());
+            ps.setString(7, user.getAddress());
+            ps.setInt(8, user.getIsValid());
+            ps.setInt(9, user.getIdUser());
             ps.executeUpdate();
         }
     }
@@ -269,7 +268,7 @@ public class Dao {
     }
     
     public boolean singupStaff(String fullname, String username, String pass, String email, String phonenumber, String address, String gender, String avatar) throws SQLException {
-        String sql = "INSERT INTO Users (fullname, username, password, email, phonenumber, address, gender, avatar, role, isValid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Users (fullname, username, password, email, phonenumber, address, gender, avatar, role, isValid,isCheck) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,1)";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, fullname);
             ps.setString(2, username);
@@ -291,13 +290,21 @@ public class Dao {
 
     //delete staff
     public void deleteStaff(int id) throws SQLException, Exception {
-        String sql = "DELETE FROM Users WHERE idUser = ?";
+        String sql = "UPDATE Users set isValid = 0 WHERE idUser = ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             ps.executeUpdate();
         }
     }
-
+    
+    public void unbanUser(int id) throws SQLException, Exception {
+        String sql = "UPDATE Users set isValid = 1 WHERE idUser = ?";
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        }
+    }
+   
     public void changePassword(String password, int idUser) {
         String sql = "UPDATE Users set password = ? WHERE idUser = ? ";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {

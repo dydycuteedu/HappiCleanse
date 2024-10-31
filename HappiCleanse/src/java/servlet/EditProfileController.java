@@ -44,11 +44,9 @@ public class EditProfileController extends HttpServlet {
             String email = request.getParameter("email");
             String phoneNumber = request.getParameter("phoneNumber");
             String gender = request.getParameter("gender");
-            String avatar = request.getParameter("avatar");
             String address = request.getParameter("address");
             a.setAddress(address);
             a.setIdUser(id);
-            a.setAvatar(avatar);
             a.setEmail(email);
             a.setGender(gender);
             a.setPhonenumber(phoneNumber);
