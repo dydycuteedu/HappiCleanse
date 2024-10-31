@@ -28,7 +28,7 @@
                 </div>
                 <div class="h-100 d-inline-flex align-items-center me-4">
                     <i class="far fa-envelope-open text-primary me-2"></i>
-                    <p class="m-0">happicleanse@gmail.com.com</p>
+                    <p class="m-0">happicleanse@gmail.com</p>
                 </div>
 
             </div>

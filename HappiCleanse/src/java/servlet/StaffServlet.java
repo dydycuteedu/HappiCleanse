@@ -145,7 +145,7 @@ public class StaffServlet extends HttpServlet {
         Dao dao = new Dao();
         ArrayList<User> allUsers = dao.getAllUsers();
 
-        // Filter users with role 'customer'
+        // Filter users with role 'staff'
         ArrayList<User> customerList = new ArrayList<>();
         for (User user : allUsers) {
             if ("Staff".equals(user.getRole()) && user.getIsCheck()==1) {

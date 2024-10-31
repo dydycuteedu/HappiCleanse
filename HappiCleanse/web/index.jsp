@@ -109,7 +109,7 @@
                 <div class="row g-5">
                     <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
                         <h6 class="text-secondary text-uppercase">About Us</h6>
-                        <h1 class="mb-4">Chúng tôi được thành lập vaod năm 2024</h1>
+                        <h1 class="mb-4">Chúng tôi được thành lập vào năm 2024</h1>
                         <p class="mb-4">Đáp ứng nhu cầu cho các mái ấm nơi có các hộ gia đình, người phụ nữ nội trợ bận bịu với công việc văn phòng không có thời gian chăm lo cho ngôi nhà. Vì thế chúng tôi ra đời để phục vụ các bạn!!!</p>
                         <p class="fw-medium text-primary"><i class="fa fa-check text-success me-3"></i>Residential & commercial plumbing</p>
                         <p class="fw-medium text-primary"><i class="fa fa-check text-success me-3"></i>Quality services at affordable prices</p>

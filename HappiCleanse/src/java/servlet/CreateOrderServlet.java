@@ -107,10 +107,10 @@ public class CreateOrderServlet extends HttpServlet {
             dao.addShift(shifts);
             Order order = new Order(0, user, notes, "Pending", LocalDateTime.now(),localDateTime, shifts,null);
             dao.addOrder(order);
-            dao.insertDetailOrder(typeShift.getCoefficient() * 120, dao.getAllOrders().getLast().getIdOrder(), dao.getAllShifts().getLast().getIdShift());
+            dao.insertDetailOrder(typeShift.getCoefficient() * 120, dao.getAllOrders().getFirst().getIdOrder(), dao.getAllShifts().getLast().getIdShift());
             DetailShifts detailShifts = new DetailShifts(dao.getAllShifts().getLast(), user, service);
             dao.insertDetailShift(detailShifts);
-            response.sendRedirect("PaymentServlet?idOrder=" + dao.getAllOrders().getLast().getIdOrder());
+            response.sendRedirect("PaymentServlet?idOrder=" + dao.getAllOrders().getFirst().getIdOrder());
         } catch (Exception ex) {
             Logger.getLogger(CreateOrderServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
