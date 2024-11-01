@@ -171,7 +171,7 @@
                                                 </td>
                                             </c:if>
                                         </tr>
-                                    <div class="modal fade" id="createDishModal" tabindex="20" aria-hidden="true">
+                                    <div class="modal fade" id="createDishModal" tabindex="10000" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">

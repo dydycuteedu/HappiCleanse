@@ -592,13 +592,12 @@ public class Dao {
 
     //feedback 28/09
     public void addFeedback(Feedback feedback) throws SQLException, Exception {
-        String sql = "INSERT INTO Feedback (contentFeedback, ratings, editedTime, idOrder, idUser) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Feedback (contentFeedback, ratings, idOrder, idUser) VALUES (?, ?, ?, ?)";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, feedback.getContentFeedback());
             ps.setInt(2, feedback.getRatings());
-            ps.setDate(3, ConvertConstant.convertLocalDateToDate(LocalDateTime.now()));
-            ps.setInt(4, feedback.getOrder().getIdOrder());
-            ps.setInt(5, feedback.getUser().getIdUser());
+            ps.setInt(3, feedback.getOrder().getIdOrder());
+            ps.setInt(4, feedback.getUser().getIdUser());
             ps.executeUpdate();
         }
     }
@@ -639,7 +638,6 @@ public class Dao {
                         rsH.getInt("idFeedback"),
                         rsH.getString("contentFeedback"),
                         rsH.getInt("ratings"),
-                        rsH.getDate("editedTime").toLocalDate(),
                         order,
                         user
                 ));
@@ -863,9 +861,9 @@ public class Dao {
                 u.setPassword(rs.getString(4));
                 u.setEmail(rs.getString(5));
                 u.setPhonenumber(rs.getString(6));
-                u.setGender(rs.getString(7));
-                u.setAvatar(rs.getString(8));
-                u.setAddress(rs.getString(9));
+                u.setAddress(rs.getString(7));   
+                u.setGender(rs.getString(8));
+                u.setAvatar(rs.getString(9));
                 u.setCvUrl(rs.getString(10));
                 u.setIsValid(rs.getInt(11));
                 u.setIsCheck(rs.getInt(12));

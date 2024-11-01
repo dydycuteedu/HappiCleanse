@@ -125,7 +125,7 @@
                         <div class="bg-light text-center p-5">
                             <h1 class="mb-4">Book For A Service</h1>
                             <!--create order-->
-                            <form>
+                            <form action="CreateOrderServlet" method="POST">
                                 <div class="row g-3">
                                     <div class="col-12 col-sm-6">
                                         <input type="text" class="form-control border-0" placeholder="Your Name" style="height: 55px;">
@@ -166,31 +166,34 @@
 
         <!-- Testimonial Start -->
         <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
-            <div class="container">
-                <div class="text-center">
-                    <h6 class="text-secondary text-uppercase">Testimonial</h6>
-                    <h1 class="mb-5">Our Clients Say!</h1>
-                </div>
-                <div class="owl-carousel testimonial-carousel position-relative wow fadeInUp" data-wow-delay="0.1s">
-                    <c:forEach items="${feedbackList}" var="feedback" >
-                        <div class="testimonial-item text-center">
-                            <div class="testimonial-text bg-light text-center p-4 mb-4">
-                                <p class="mb-0">${feedback.contentFeedback}</p>
+                <div class="container">
+                    <div class="text-center">
+
+                        <h1 class="mb-5">Khách hàng nói gì về chúng tôi?</h1>
+                    </div>
+
+                    <div class="owl-carousel testimonial-carousel position-relative wow fadeInUp" data-wow-delay="0.1s">
+                        <c:forEach var="feedback" items="${feedbackList}">
+                            <div class="testimonial-item text-center">
+                                <div class="testimonial-text bg-light text-center p-4 mb-4">
+                                    <p class="mb-0" style="white-space: nowrap;
+                                       overflow: hidden;
+                                       text-overflow: ellipsis;">${feedback.contentFeedback}</p>
+                                </div>
+                                <img class="bg-light rounded-circle p-2 mx-auto mb-2" src="${feedback.user.getAvatar()}" style="width: 80px; height: 80px;">
+                                <div class="mb-2">
+                                    <c:forEach var="i" begin="1" end="${feedback.ratings}">
+                                        <small class="fa fa-star text-secondary"></small>
+                                    </c:forEach>
+                                </div>
+                                <h5 class="mb-1">${feedback.user.getFullname()}</h5>
+                                <p class="m-0">${feedback.editedTime}</p>
                             </div>
-                            <img class="bg-light rounded-circle p-2 mx-auto mb-2" src="img/testimonial-1.jpg" style="width: 80px; height: 80px;">
-                            <div class="mb-2">
-                                <c:forEach var="i" begin="1" end="${feedback.ratings}">
-                                    <small class="fa fa-star text-secondary"></small>
-                                </c:forEach>
-                            </div>
-                            <h5 class="mb-1">${feedback.user.fullname}</h5>
-                           
-                        </div>
-                    </c:forEach>
+                        </c:forEach>
+                    </div>
 
                 </div>
             </div>
-        </div>
         <!-- Testimonial End -->
 
         <%@include file="Footer.jsp" %>

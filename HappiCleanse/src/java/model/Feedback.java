@@ -22,11 +22,10 @@ public class Feedback {
 
     private User user;
 
-    public Feedback(int idFeedback, String contentFeedback, int ratings, LocalDate editedTime, Order order, User user) {
+    public Feedback(int idFeedback, String contentFeedback, int ratings,Order order, User user) {
         this.idFeedback = idFeedback;
         this.contentFeedback = contentFeedback;
         this.ratings = ratings;
-        this.editedTime = editedTime;
         this.order = order;
         this.user = user;
     }
