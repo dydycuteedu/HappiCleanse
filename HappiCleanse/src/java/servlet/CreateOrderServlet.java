@@ -7,6 +7,8 @@ package servlet;
 import dao.Dao;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -92,7 +94,9 @@ public class CreateOrderServlet extends HttpServlet {
             String timeStart = request.getParameter("dateShift");
             String notes = request.getParameter("notes");
             Service service = dao.getService(idService);
-            Order order = new Order(user,service, notes, "Pending", ConvertConstant.convertStringtoLocalDateTime(timeStart));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+            LocalDateTime localDateTime = LocalDateTime.parse(timeStart, formatter);
+            Order order = new Order(user,service, notes, "Pending", localDateTime);
             dao.addOrder(order);
             response.sendRedirect("BookingServlet");
         } catch (Exception ex) {
