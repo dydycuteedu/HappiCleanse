@@ -5,16 +5,24 @@
 package utils.LoginGoogle;
 
 public class GooglePojo {
-    private String id;
-    private String email;
-    private boolean verified_email;
-    private String name;
-    private String given_name;
-    private String family_name;
-    private String link;
-    private String picture;
 
-   
+    private String id, email, name, first_name, given_name, family_name, picture;
+
+    private boolean verified_email;
+
+    public GooglePojo() {
+    }
+
+    public GooglePojo(String id, String email, String name, String first_name, String given_name, String family_name, String picture, boolean verified_email) {
+        this.id = id;
+        this.email = email;
+        this.name = name;
+        this.first_name = first_name;
+        this.given_name = given_name;
+        this.family_name = family_name;
+        this.picture = picture;
+        this.verified_email = verified_email;
+    }
 
     public String getId() {
         return id;
@@ -32,20 +40,20 @@ public class GooglePojo {
         this.email = email;
     }
 
-    public boolean isVerified_email() {
-        return verified_email;
-    }
-
-    public void setVerified_email(boolean verified_email) {
-        this.verified_email = verified_email;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getFirst_name() {
+        return first_name;
+    }
+
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
     }
 
     public String getGiven_name() {
@@ -64,14 +72,6 @@ public class GooglePojo {
         this.family_name = family_name;
     }
 
-    public String getLink() {
-        return link;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
-    }
-
     public String getPicture() {
         return picture;
     }
@@ -79,5 +79,17 @@ public class GooglePojo {
     public void setPicture(String picture) {
         this.picture = picture;
     }
-    
+
+    public boolean isVerified_email() {
+        return verified_email;
+    }
+
+    public void setVerified_email(boolean verified_email) {
+        this.verified_email = verified_email;
+    }
+
+    @Override
+    public String toString() {
+        return "GoogleAccount{" + "id=" + id + ", email=" + email + ", name=" + name + ", first_name=" + first_name + ", given_name=" + given_name + ", family_name=" + family_name + ", picture=" + picture + ", verified_email=" + verified_email + '}';
+    }
 }

@@ -91,8 +91,8 @@
                             <table class="table table-bordered text-center">
                                 <thead class="bg-light">
                                     <tr>
-                                        <th>Order Number</th>
-                                        <th>Notes</th>
+                                        <th>Dịch vụ thuê</th>
+                                        <th>Ghi chú</th>
                                         <th>Trạng thái</th>
                                         <th>Thời gian bắt đầu</th>
                                         <th>Thời gian hoàn thành</th> 
@@ -104,7 +104,7 @@
                                 <tbody>
                                     <c:forEach items="${orderList}" var="order">
                                         <tr>
-                                            <td>${order.idOrder}</td>
+                                            <td>${order.service.nameService}</td>
                                             <td>${order.notes}</td>
                                             <c:if test="${order.statusOrder == 'Completed'}">
                                                 <td><span class="badge bg-success">Completed</span></td>
@@ -118,7 +118,13 @@
                                             <c:if test="${order.statusOrder == 'Cancelled'}">
                                                 <td><span class="badge bg-danger">Cancelled</span></td>
                                             </c:if>
-                                            <td>${order.dateService}</td>
+                                            <td>${order.timeStart}</td>
+                                            <c:if test="${order.timeEnd != null}">
+                                                <td>${order.timeEnd}</td>
+                                            </c:if>
+                                            <c:if test="${order.timeEnd == null}">
+                                                <td>Waiting for working</td>
+                                            </c:if>
                                             <c:if test="${order.staff.fullname == null}">
                                                 <td>Not yet</td>
                                             </c:if>
@@ -212,7 +218,11 @@
                                     </script>
                                 </c:forEach>
                                 </tbody>
+                                
                             </table>
+                            <c:if test="${empty orderList}">
+                                <h3 style="text-align: center">Bạn chưa đặt đơn hàng nào</h3>
+                                </c:if>
                         </div>
                     </div>
                 </div>

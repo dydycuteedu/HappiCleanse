@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -16,15 +17,14 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 //import model.Address;
-import model.DetailShifts;
 import model.Feedback;
-import model.Notification;
 import model.Order;
 import model.Service;
 import model.Shifts;
 import model.ServiceCategory;
 import model.TypeShift;
 import model.User;
+import model.WorkingHour;
 import utils.BCryptPassword;
 import utils.ConvertConstant;
 
@@ -148,7 +148,7 @@ public class Dao {
                 u.setPhonenumber(rs.getString(6));
                 u.setAddress(rs.getString(7));
                 u.setGender(rs.getString(8));
-                u.setAvatar(rs.getString(9));              
+                u.setAvatar(rs.getString(9));
                 u.setCvUrl(rs.getString(10));
                 u.setIsValid(rs.getInt(11));
                 u.setIsCheck(rs.getInt(12));
@@ -163,17 +163,15 @@ public class Dao {
         return list;
     }
 
-    public User checkAccountExistByUsernameAndEmail(String username, String email) {
+    public User checkAccountExistByUsernameAndEmail(String email) {
         String query = "select * from Users\n"
-                + "where username = ? AND email = ?\n";
+                + "where email = ?";
         try {
             conn = new DBContext().getConnection();//mo ket noi voi sql
             ps = conn.prepareStatement(query);
-            ps.setString(1, username);
-            ps.setString(2, email);
+            ps.setString(1, email);
             rs = ps.executeQuery();
             while (rs.next()) {
-
                 return new User(
                         rs.getInt("idUser"),
                         rs.getString("fullname"),
@@ -237,6 +235,22 @@ public class Dao {
             ps.setString(2, username);
             ps.setString(3, BCryptPassword.hash(pass));
             ps.setString(4, email);
+            ps.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
+    public boolean singupbyEmail(User user) throws SQLException {
+        String sql = "INSERT INTO Users (fullname, username, password, email,avatar) VALUES (?, ?, ?, ?,?)";
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, user.getFullname());
+            ps.setString(2, user.getUsername());
+            ps.setString(3, BCryptPassword.hash(user.getPassword()));
+            ps.setString(4, user.getEmail());
+            ps.setString(5, user.getAvatar());
             ps.executeUpdate();
             return true;
         } catch (Exception e) {
@@ -340,8 +354,22 @@ public class Dao {
                     User user = getUser(rs.getInt("idUser"));
                     User staff = getUser(rs.getInt("idStaff"));
                     Shifts shifts = getAllShiftByOrder(rs.getInt("idOrder"));
-                    Service service = getService(rs.getInt("idOrder"));
-                    return new Order(rs.getInt("idOrder"), user,staff,service, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("timeStart")), ConvertConstant.convertDateToLocalDate(rs.getDate("timeEnd")), shifts);
+                    Service service = getService(rs.getInt("idService"));
+                    Order o = new Order();
+                    o.setIdOrder(rs.getInt("idOrder"));
+                    o.setUser(user);
+                    o.setStaff(staff);
+                    o.setService(service);
+                    o.setNotes(rs.getString("notes"));
+                    o.setStatusOrder(rs.getString("statusOrder"));
+                    o.setTimeStart(ConvertConstant.convertStringtoLocalDateTime(rs.getString("timeStart")));
+                    if (rs.getString("timeEnd") == null) {
+                        o.setTimeEnd(null);
+                    } else {
+                        o.setTimeEnd(ConvertConstant.convertStringtoLocalDateTime(rs.getString("timeEnd")));
+                    }
+                    o.setShifts(shifts);
+                    return o;
                 }
             }
         }
@@ -359,7 +387,21 @@ public class Dao {
                     User staff = getUser(rs.getInt("idStaff"));
                     Shifts shifts = getAllShiftByOrder(rs.getInt("idOrder"));
                     Service service = getService(rs.getInt("idService"));
-                    orders.add(new Order(rs.getInt("idOrder"), user,staff,service, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("timeStart")), ConvertConstant.convertDateToLocalDate(rs.getDate("timeEnd")), shifts));
+                    Order o = new Order();
+                    o.setIdOrder(rs.getInt("idOrder"));
+                    o.setUser(user);
+                    o.setStaff(staff);
+                    o.setService(service);
+                    o.setNotes(rs.getString("notes"));
+                    o.setStatusOrder(rs.getString("statusOrder"));
+                    o.setTimeStart(ConvertConstant.convertStringtoLocalDateTime(rs.getString("timeStart")));
+                    if (rs.getString("timeEnd") == null) {
+                        o.setTimeEnd(null);
+                    } else {
+                        o.setTimeEnd(ConvertConstant.convertStringtoLocalDateTime(rs.getString("timeEnd")));
+                    }
+                    o.setShifts(shifts);
+                    orders.add(o);
                 }
             }
         }
@@ -376,7 +418,21 @@ public class Dao {
                 User staff = getUser(rs.getInt("idStaff"));
                 Shifts shifts = getAllShiftByOrder(rs.getInt("idOrder"));
                 Service service = getService(rs.getInt("idService"));
-                orders.add(new Order(rs.getInt("idOrder"), user,staff,service, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("timeStart")), ConvertConstant.convertDateToLocalDate(rs.getDate("timeEnd")), shifts));
+                Order o = new Order();
+                o.setIdOrder(rs.getInt("idOrder"));
+                o.setUser(user);
+                o.setStaff(staff);
+                o.setService(service);
+                o.setNotes(rs.getString("notes"));
+                o.setStatusOrder(rs.getString("statusOrder"));
+                o.setTimeStart(ConvertConstant.convertStringtoLocalDateTime(rs.getString("timeStart")));
+                if (rs.getString("timeEnd") == null) {
+                    o.setTimeEnd(null);
+                } else {
+                    o.setTimeEnd(ConvertConstant.convertStringtoLocalDateTime(rs.getString("timeEnd")));
+                }
+                o.setShifts(shifts);
+                orders.add(o);
             }
         }
         return orders;
@@ -416,6 +472,18 @@ public class Dao {
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, order.getStatusOrder());
             ps.setInt(2, order.getIdOrder());
+            ps.executeUpdate();
+        }
+    }
+
+    public void completeOrder(Order order) throws SQLException, Exception {
+        String sql = "UPDATE Orders SET statusOrder = ?, timeEnd =? WHERE idOrder = ? ";
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, order.getStatusOrder());
+            ps.setInt(3, order.getIdOrder());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String dateServiceString = order.getTimeEnd().format(formatter);
+            ps.setString(2, dateServiceString);
             ps.executeUpdate();
         }
     }
@@ -822,7 +890,21 @@ public class Dao {
                 User staff = getUser(rs.getInt("idStaff"));
                 Shifts shifts = getAllShiftByOrder(rs.getInt("idOrder"));
                 Service service = getService(rs.getInt("idService"));
-                orders.add(new Order(rs.getInt("idOrder"), user,staff,service, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("timeStart")), ConvertConstant.convertDateToLocalDate(rs.getDate("timeEnd")), shifts));
+                Order o = new Order();
+                o.setIdOrder(rs.getInt("idOrder"));
+                o.setUser(user);
+                o.setStaff(staff);
+                o.setService(service);
+                o.setNotes(rs.getString("notes"));
+                o.setStatusOrder(rs.getString("statusOrder"));
+                o.setTimeStart(ConvertConstant.convertStringtoLocalDateTime(rs.getString("timeStart")));
+                if (rs.getString("timeEnd") == null) {
+                    o.setTimeEnd(null);
+                } else {
+                    o.setTimeEnd(ConvertConstant.convertStringtoLocalDateTime(rs.getString("timeEnd")));
+                }
+                o.setShifts(shifts);
+                orders.add(o);
             }
         }
         return orders;
@@ -839,11 +921,25 @@ public class Dao {
                 User staff = getUser(rs.getInt("idStaff"));
                 Shifts shifts = getAllShiftByOrder(rs.getInt("idOrder"));
                 Service service = getService(rs.getInt("idService"));
-                orders.add(new Order(rs.getInt("idOrder"), user,staff,service, rs.getString("notes"), rs.getString("statusOrder"), ConvertConstant.convertDateToLocalDate(rs.getDate("timeStart")), ConvertConstant.convertDateToLocalDate(rs.getDate("timeEnd")), shifts));}
+                Order o = new Order();
+                o.setIdOrder(rs.getInt("idOrder"));
+                o.setUser(user);
+                o.setStaff(staff);
+                o.setService(service);
+                o.setNotes(rs.getString("notes"));
+                o.setStatusOrder(rs.getString("statusOrder"));
+                o.setTimeStart(ConvertConstant.convertStringtoLocalDateTime(rs.getString("timeStart")));
+                if (rs.getString("timeEnd") == null) {
+                    o.setTimeEnd(null);
+                } else {
+                    o.setTimeEnd(ConvertConstant.convertStringtoLocalDateTime(rs.getString("timeEnd")));
+                }
+                o.setShifts(shifts);
+                orders.add(o);
+            }
         }
         return orders;
     }
-
 
     // INSERT DETAIL ORDER
     public void insertDetailOrder(double totalMoney, int idOrder, int idShifts) throws Exception {
@@ -910,5 +1006,25 @@ public class Dao {
 
         return services;
     }
-
+    public WorkingHour getWorkingHourbyHours(int hour) {
+        WorkingHour workinghour = new WorkingHour();
+        try {
+            Connection con = DBContext.getConnection();
+            PreparedStatement cstmt = con.prepareStatement("SELECT TOP(1) *\n"
+                    + "FROM WorkingHour WHERE ? < hours\n"
+                    + "ORDER BY hours");
+            cstmt.setInt(1, hour);
+            ResultSet rs = cstmt.executeQuery();
+            while (rs.next()) {
+                workinghour.setIdWorkingHour(rs.getInt(1));
+                workinghour.setHour(rs.getInt(2));
+                workinghour.setPricePerHour(rs.getDouble(3));
+            }
+            cstmt.close();
+            con.close();
+        } catch (Exception e) {
+            System.out.println("Error" + e);
+        }
+        return workinghour;
+    }
 }

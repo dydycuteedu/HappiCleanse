@@ -8,6 +8,8 @@ package servlet;
 import dao.Dao;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,7 +19,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Order;
+import model.Shifts;
+import model.TypeShift;
 import model.User;
+import model.WorkingHour;
+import utils.CheckShift;
 
 /**
  *
@@ -68,7 +74,7 @@ public class StaffWorkingServlet extends HttpServlet {
             request.setAttribute("orderList", orderList);
             request.getRequestDispatcher("StaffWorkingList.jsp").forward(request, response);
         } catch (Exception ex) {
-            Logger.getLogger(BookingServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(StaffWorkingServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     } 
 
@@ -86,11 +92,18 @@ public class StaffWorkingServlet extends HttpServlet {
             int idOrder = Integer.parseInt(request.getParameter("id"));
             Dao dao = new Dao();
             Order order = dao.getOrder(idOrder);
+            order.setTimeEnd(LocalDateTime.now());
             order.setStatusOrder("Completed");
-            dao.cancelOrder(order);
+            dao.completeOrder(order);
+            int hoursDifference = (int) Duration.between(order.getTimeStart(), order.getTimeEnd()).toHours();
+            TypeShift typeShift = dao.getTypeShift(CheckShift.checkHoliday(order.getTimeStart()));
+            WorkingHour wk = dao.getWorkingHourbyHours(hoursDifference);
+            Shifts shifts = new Shifts(0, typeShift, wk.getPricePerHour());
+            dao.addShift(shifts);
+            dao.insertDetailOrder(typeShift.getCoefficient() * shifts.getPrice() * hoursDifference, order.getIdOrder(), shifts.getIdShift());
             doGet(request, response);
         } catch (Exception ex) {
-            Logger.getLogger(BookingServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(StaffWorkingServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

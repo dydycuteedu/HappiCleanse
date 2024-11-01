@@ -43,7 +43,7 @@ public class ForgotPasswordController extends HttpServlet {
             String username = request.getParameter("username");
 
             Dao dao = new Dao();
-            User account = dao.checkAccountExistByUsernameAndEmail(username, emailAddress);
+            User account = dao.checkAccountExistByUsernameAndEmail( emailAddress);
             request.getSession().setAttribute("acc", account);
             if (account == null) {
                 request.setAttribute("message", new MessageStatus(2, "Your account not exist"));

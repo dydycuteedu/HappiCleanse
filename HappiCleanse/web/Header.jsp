@@ -52,7 +52,7 @@
                     <c:if test="${sessionScope.acc.role != 'Staff'}">
                         <a href="/HappiCleanse/Hiring.jsp" class="nav-item nav-link">Hiring</a>
                         <a href="ListServiceServlet" class="nav-item nav-link">Services</a>
-                        <a href="BookingServlet" class="nav-item nav-link">Booking</a>
+                        <a href="BookingServlet" class="nav-item nav-link">Booking List</a>
                         <a href="contact.html" class="nav-item nav-link">Contact</a>
                     </c:if>
                     <c:if test="${sessionScope.acc.role == 'Staff'}">

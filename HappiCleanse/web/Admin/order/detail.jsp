@@ -31,10 +31,10 @@
             body{
                 background:#eee;
             }
-            .card {
-                box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
+            .card2 {
+                box-shadow: 1px 0 20px rgba(0,0,0, .15);
             }
-            .card {
+            .card2 {
                 position: relative;
                 display: flex;
                 flex-direction: column;
@@ -89,7 +89,7 @@
                                             <div class="row">
                                                 <div class="col-lg-8">
                                                     <!-- Details -->
-                                                    <div class="card mb-4">
+                                                    <div class="card2 mb-4">
                                                         <div class="card-body">
                                                             <div class="mb-3 d-flex justify-content-between">
                                                                 <div>
@@ -123,7 +123,7 @@
                                                         </div>
                                                     </div>
                                                     <!-- Payment -->
-                                                    <div class="card mb-4">
+                                                    <div class="card2 mb-4">
                                                         <div class="card-body">
                                                             <div class="row">
                                                                 <div class="col-lg-6">
@@ -154,13 +154,13 @@
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <!-- Customer Notes -->
-                                                    <div class="card mb-4">
+                                                    <div class="card2 mb-4">
                                                         <div class="card-body">
                                                             <h3 class="h6">Ghi chú của khách hàng</h3>
                                                             <p>${o.notes}</p>
                                                         </div>
                                                     </div>
-                                                    <div class="card mb-4">
+                                                    <div class="card2 mb-4">
                                                         <div class="card-body">
                                                             <h3 class="h6">Trạng thái đơn hàng</h3>
                                                             <c:if test="${o.statusOrder == 'Completed'}">
@@ -177,7 +177,7 @@
                                                             </c:if>
                                                         </div>
                                                     </div>
-                                                    <div class="card mb-4">
+                                                    <div class="card2 mb-4">
                                                         <!-- Staff information -->
                                                         <div class="card-body">
                                                             <h3 class="h6">Thông tin nhân viên</h3>

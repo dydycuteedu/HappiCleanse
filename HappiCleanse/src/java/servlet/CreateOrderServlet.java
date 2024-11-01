@@ -7,10 +7,6 @@ package servlet;
 import dao.Dao;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -19,13 +15,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.DetailShifts;
 import model.Order;
 import model.Service;
-import model.Shifts;
-import model.TypeShift;
 import model.User;
-import utils.CheckShift;
 import utils.ConvertConstant;
 
 
@@ -97,20 +89,12 @@ public class CreateOrderServlet extends HttpServlet {
                 user = dao.getUser(1);
             }
             int idService = Integer.parseInt(request.getParameter("idService"));
-            String dateCreateString = request.getParameter("dateShift");
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-            LocalDateTime localDateTime = LocalDateTime.parse(dateCreateString, formatter);
+            String timeStart = request.getParameter("dateShift");
             String notes = request.getParameter("notes");
             Service service = dao.getService(idService);
-            TypeShift typeShift = dao.getTypeShift(CheckShift.checkHoliday(localDateTime));
-            Shifts shifts = new Shifts(0, typeShift, typeShift.getCoefficient() * 120);
-            dao.addShift(shifts);
-            Order order = new Order(0, user,service, notes, "Pending", localDateTime,null, shifts);
+            Order order = new Order(user,service, notes, "Pending", ConvertConstant.convertStringtoLocalDateTime(timeStart));
             dao.addOrder(order);
-            dao.insertDetailOrder(typeShift.getCoefficient() * 120, dao.getAllOrders().getFirst().getIdOrder(), dao.getAllShifts().getLast().getIdShift());
-            DetailShifts detailShifts = new DetailShifts(dao.getAllShifts().getLast(), user, service);
-            //dao.insertDetailShift(detailShifts);
-            response.sendRedirect("PaymentServlet?idOrder=" + dao.getAllOrders().getFirst().getIdOrder());
+            response.sendRedirect("BookingServlet");
         } catch (Exception ex) {
             Logger.getLogger(CreateOrderServlet.class.getName()).log(Level.SEVERE, null, ex);
         }

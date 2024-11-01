@@ -2,13 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package model;
 
 import java.time.LocalDateTime;
 
-
 public class Order {
+
     private int idOrder;
     private User user;
     private User staff;
@@ -19,7 +18,7 @@ public class Order {
     private String statusOrder;
     private LocalDateTime timeStart;
     private LocalDateTime timeEnd;
-    
+
     private Shifts shifts;
 
     public Order(int idOrder, User user, Service service, String notes, String statusOrder, LocalDateTime timeStart, LocalDateTime timeEnd, Shifts shifts) {
@@ -44,6 +43,15 @@ public class Order {
         this.timeEnd = timeEnd;
         this.shifts = shifts;
     }
+
+    public Order(User user, Service service, String notes, String statusOrder, LocalDateTime timeStart) {
+        this.user = user;
+        this.service = service;
+        this.notes = notes;
+        this.statusOrder = statusOrder;
+        this.timeStart = timeStart;
+    }
+
 
     public Order() {
     }
@@ -104,8 +112,6 @@ public class Order {
         this.timeEnd = timeEnd;
     }
 
-    
-
     public Shifts getShifts() {
         return shifts;
     }
@@ -113,7 +119,6 @@ public class Order {
     public void setShifts(Shifts shifts) {
         this.shifts = shifts;
     }
-    
 
     public User getStaff() {
         return staff;

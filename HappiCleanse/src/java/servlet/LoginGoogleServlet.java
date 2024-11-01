@@ -13,13 +13,14 @@ import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.User;
 import utils.LoginGoogle.GooglePojo;
 import utils.LoginGoogle.GoogleUtils;
-
 
 @WebServlet(name = "LoginGoogleServlet", urlPatterns = {"/login-google"})
 public class LoginGoogleServlet extends HttpServlet {
@@ -62,7 +63,7 @@ public class LoginGoogleServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        HttpSession session = request.getSession();
         String code = request.getParameter("code");
         if (code == null || code.isEmpty()) {
             RequestDispatcher dis = request.getRequestDispatcher("login.jsp");
@@ -71,18 +72,38 @@ public class LoginGoogleServlet extends HttpServlet {
             String accessToken = GoogleUtils.getToken(code);
             GooglePojo googlePojo = GoogleUtils.getUserInfo(accessToken);
             Dao dao = new Dao();
-            User googleUser = dao.checkAccountExistByUsernameAndEmail(googlePojo.getEmail(), googlePojo.getEmail());
+            User googleUser = dao.checkAccountExistByUsernameAndEmail(googlePojo.getEmail());
             User user = new User();
             if (googleUser == null) {
                 try {
-                    dao.singup(googlePojo.getFamily_name() + googlePojo.getGiven_name(), googlePojo.getEmail(), "HappiCleanse@2024", googlePojo.getEmail());
+                    user.setFullname(googlePojo.getGiven_name() + " " + googlePojo.getFamily_name());
+                    user.setUsername(googlePojo.getEmail());
+                    user.setPassword("HappiCleanse@2024");
+                    user.setEmail(googlePojo.getEmail());
+                    user.setAvatar(googlePojo.getPicture());
+                    dao.singupbyEmail(user);
+                    session.setAttribute("acc", user);
+                    session.setMaxInactiveInterval(60 * 60 * 24);
+                    //luu account len tren cookie
+                    Cookie u = new Cookie("userC", user.getUsername());
+                    Cookie p = new Cookie("passC", user.getPassword());
+                    u.setMaxAge(60 * 60 * 24 * 365);//1 nam
+                    response.addCookie(u);//luu u va p len Chrome
+                    response.addCookie(p);
                 } catch (SQLException ex) {
                     Logger.getLogger(LoginGoogleServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            } else if (googleUser != null) {
+                session.setAttribute("acc", googleUser);
+                session.setMaxInactiveInterval(60 * 60 * 24);
+                //luu account len tren cookie
+                Cookie u = new Cookie("userC", googleUser.getUsername());
+                Cookie p = new Cookie("passC", googleUser.getPassword());
+                u.setMaxAge(60 * 60 * 24 * 365);//1 nam
+                response.addCookie(u);//luu u va p len Chrome
+                response.addCookie(p);
             }
-            user = dao.login(googlePojo.getEmail(), "HappiCleanse@2024");
-            request.getSession().setAttribute("acc", user);
-            response.sendRedirect("login");
+            request.getRequestDispatcher("/home").forward(request, response);
         }
 
     }

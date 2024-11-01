@@ -56,11 +56,10 @@
                                         </div>
                                         <form action="${pageContext.request.contextPath}/OrderServlet" method="post" style="display: inline;">
                                             <div class="row mb-3">
-
                                                 <input type="hidden" name="id" value="${o.idOrder}">
                                                 <label for="rolename" class="col-sm-2 col-form-label">Tên Dịch vụ</label>
                                                 <div class="col-sm-10">
-                                                    <p class="form-control">${detailshift.service.nameService}</p>
+                                                    <h5 class="">${o.service.nameService}</h5>
                                                 </div>
                                                 <label for="status" class="col-sm-2 col-form-label">Chọn nhân viên làm việc</label>
                                                 <div class="col-sm-10">

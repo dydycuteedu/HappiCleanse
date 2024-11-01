@@ -91,20 +91,21 @@
                             <table class="table table-bordered text-center">
                                 <thead class="bg-light">
                                     <tr>
-                                        <th>Order Number</th>
-                                        <th>Notes</th>
-                                        <th>Status</th>
-                                        <th>Order Date</th>
+                                        <th>Dịch vụ thuê</th>
+                                        <th>Ghi chú</th>
+                                        <th>Trạng thái</th>
+                                        <th>Thời gian bắt đầu</th>
+                                        <th>Thời gian hoàn thành</th> 
                                         <th>Tên khách hàng</th>
                                         <th>Địa chỉ</th>
-                                        <th>Total Price</th>
-                                        <th>Action</th>
+                                        <th>Tổng tiền</th>
+                                        <th>Hành động</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <c:forEach items="${orderList}" var="order">
                                         <tr>
-                                            <td>${order.idOrder}</td>
+                                            <td>${order.service.nameService}</td>
                                             <td>${order.notes}</td>
                                             <c:if test="${order.statusOrder == 'Completed'}">
                                                 <td><span class="badge bg-success">Completed</span></td>
@@ -118,7 +119,13 @@
                                             <c:if test="${order.statusOrder == 'Cancelled'}">
                                                 <td><span class="badge bg-danger">Cancelled</span></td>
                                             </c:if>
-                                            <td>${order.dateService}</td>
+                                            <td>${order.timeStart}</td>
+                                            <c:if test="${order.timeEnd != null}">
+                                                <td>${order.timeEnd}</td>
+                                            </c:if>
+                                            <c:if test="${order.timeEnd == null}">
+                                                <td>Waiting for working</td>
+                                            </c:if>
                                             <td>${order.user.fullname}</td>
                                             <td>${order.user.address}</td>
                                             <td>${order.shifts.price}00 vnd</td>
@@ -133,72 +140,6 @@
                                                 </td>
                                             </c:if>
                                         </tr>
-                                    <div class="modal fade" id="createDishModal" tabindex="20" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="createDishModalLabel">Feedback Service</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <form action="FeedbackServlet" method="post">
-                                                        <input hidden="true" type="text" class="form-control" name="orderid" value="${order.idOrder}" required>
-                                                        <div class="star-rating">
-                                                            <span class="star" data-value="5">&#9733;</span>
-                                                            <span class="star" data-value="4">&#9733;</span>
-                                                            <span class="star" data-value="3">&#9733;</span>
-                                                            <span class="star" data-value="2">&#9733;</span>
-                                                            <span class="star" data-value="1">&#9733;</span>
-                                                        </div>
-
-                                                        <input hidden="true" type="text" id="rating-value-${order.idOrder}" class="form-control" name="rating">
-                                                        <div class="mb-3">
-                                                            <label for="description" class="form-label">Feedback</label>
-                                                            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
-                                                        </div>     
-                                                        <button name="action" type="create" value="create" class="btn btn-primary">Send Feedback</button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <script>
-                                        document.querySelectorAll('.modal').forEach((modal) => {
-                                            const stars = modal.querySelectorAll('.star'); // Chỉ lấy các 'star' trong modal này
-                                            const ratingInput = modal.querySelector('input[name="rating"]'); // Lấy rating input trong modal này
-
-                                            let selectedRating = 0;
-
-                                            stars.forEach(star => {
-                                                star.addEventListener('click', () => {
-                                                    selectedRating = star.getAttribute('data-value');
-                                                    ratingInput.value = selectedRating;
-                                                    updateStars(stars, selectedRating);
-                                                });
-
-                                                star.addEventListener('mouseover', () => {
-                                                    highlightStars(stars, star.getAttribute('data-value'));
-                                                });
-
-                                                star.addEventListener('mouseout', () => {
-                                                    updateStars(stars, selectedRating);
-                                                });
-                                            });
-
-                                            function highlightStars(stars, rating) {
-                                                stars.forEach(star => {
-                                                    star.classList.toggle('selected', star.getAttribute('data-value') <= rating);
-                                                });
-                                            }
-
-                                            function updateStars(stars, rating) {
-                                                stars.forEach(star => {
-                                                    star.classList.toggle('selected', star.getAttribute('data-value') <= rating);
-                                                });
-                                            }
-                                        });
-
-                                    </script>
                                 </c:forEach>
                                 </tbody>
                             </table>

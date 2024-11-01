@@ -134,11 +134,7 @@ public class OrderServlet extends HttpServlet {
             Dao dao = new Dao();
             int id = Integer.parseInt(request.getParameter("id"));
             Order o = dao.getOrder(id);
-            Shifts shift = dao.getShiftsByIdOrder(id);
-            //DetailShifts detailshift = dao.getDetailShift(shift.getIdShift());
             request.setAttribute("o", o);
-            //request.setAttribute("detailshift", detailshift);
-            request.setAttribute("shift", shift);
             RequestDispatcher dispatcher = request.getRequestDispatcher("Admin/order/detail.jsp");
             dispatcher.forward(request, response);
         } catch (Exception ex) {
@@ -152,7 +148,6 @@ public class OrderServlet extends HttpServlet {
             Dao dao = new Dao();
             int id = Integer.parseInt(request.getParameter("id"));
             Order o = dao.getOrder(id);
-            Shifts shift = dao.getShiftsByIdOrder(id);
             //DetailShifts detailshift = dao.getDetailShift(shift.getIdShift());
             ArrayList<User> allUsers = dao.getAllUsers();
 
@@ -179,7 +174,6 @@ public class OrderServlet extends HttpServlet {
             request.setAttribute("o", o);
             request.setAttribute("staff", staffavailable);
             //request.setAttribute("detailshift", detailshift);
-            request.setAttribute("shift", shift);
             RequestDispatcher dispatcher = request.getRequestDispatcher("Admin/order/edit.jsp");
             dispatcher.forward(request, response);
         } catch (Exception ex) {

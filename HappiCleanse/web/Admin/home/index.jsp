@@ -74,8 +74,11 @@
                                                     <th>Tên khách hàng</th>
                                                     <th>Note</th>
                                                     <th>Trạng Thái</th>
-                                                    <th>Ngày làm</th>
+                                                    <th>Thời gian bắt đầu</th>
+                                                    <th>Thời gian hoàn thành</th> 
                                                     <th>Nhân viên làm việc</th>
+                                                    <th>Dịch vụ thuê</th>
+                                                    <th>Tổng tiền</th>
                                                     <th>Hành Động</th>
                                                 </tr>
                                             </thead>
@@ -97,8 +100,21 @@
                                                         <c:if test="${orderList.statusOrder == 'Cancelled'}">
                                                             <td><span class="badge bg-danger">Cancelled</span></td>
                                                         </c:if>
-                                                        <td>${orderList.dateService}</td>
-                                                        <td>${orderList.staff.fullname}</td>
+                                                        <td>${orderList.timeStart}</td>
+                                                        <c:if test="${orderList.timeEnd != null}">
+                                                            <td>${orderList.timeEnd}</td>
+                                                        </c:if>
+                                                        <c:if test="${orderList.timeEnd == null}">
+                                                            <td>Waiting</td>
+                                                        </c:if>
+                                                        <c:if test="${orderList.staff.fullname == null}">
+                                                            <td>Not yet</td>
+                                                        </c:if>
+                                                        <c:if test="${orderList.staff.fullname != null}">
+                                                            <td>${orderList.staff.fullname}</td>
+                                                        </c:if>
+                                                        <td>${orderList.service.nameService}</td>
+                                                        <td>${orderList.shifts.price}00 vnd</td>
                                                         <td>
                                                             <div class="btn-group" role="group">
                                                                 <form action="${pageContext.request.contextPath}/OrderServlet" method="POST" style="display: inline;">
