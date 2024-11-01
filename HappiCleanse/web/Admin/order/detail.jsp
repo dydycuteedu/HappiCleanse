@@ -93,7 +93,7 @@
                                                         <div class="card-body">
                                                             <div class="mb-3 d-flex justify-content-between">
                                                                 <div>
-                                                                    <span class="me-3">Thời gian hoàn thành</span>
+                                                                    <span class="me-3">${o.timeEnd}</span>
                                                                     <span class="me-3">#${o.idOrder}</span>
 
                                                                 </div>
@@ -103,20 +103,20 @@
                                                                 <tfoot>
                                                                     <tr>
                                                                         <td colspan="2">Tên dịch vụ</td>
-                                                                        <td class="text-end">120.000VND</td>
+                                                                        <td class="text-end">${o.service.nameService}</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td colspan="2">Phí dịch vụ</td>
-                                                                        <td class="text-end">120.000VND * coeficient</td>
+                                                                        <td class="text-end">${o.shifts.price}00 vnđ</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td colspan="2">Tổng thời gian hoàn thành dịch vụ</td>
-                                                                        <td class="text-end">timeEnd - timeStart</td>
+                                                                        <td class="text-end">${hoursDifference}h</td>
                                                                     </tr>
 
                                                                     <tr class="fw-bold">
                                                                         <td colspan="2">Tổng tiền</td>
-                                                                        <td class="text-end">Phí dịch vụ * số giờ hoàn thành</td>
+                                                                        <td class="text-end">${o.totalMoney}00 vnđ</td>
                                                                     </tr>
                                                                 </tfoot>
                                                             </table>
@@ -128,14 +128,21 @@
                                                             <div class="row">
                                                                 <div class="col-lg-6">
                                                                     <h3 class="h6">Phương thức thanh toán</h3>
-                                                                    <p>Tiền mặt<br>
-                                                                        Total: $169,98 
-                                                                        <span class="badge bg-success rounded-pill">PAID</span>
-                                                                    </p>
-                                                                    <p>VNPAY<br>
-                                                                        Total: $169,98 
-                                                                        <span class="badge bg-success rounded-pill">PAID</span>
-                                                                    </p>
+                                                                    <c:if test="${o.statusOrder == 'Completed'}">
+                                                                        <p>Tiền mặt<br>
+                                                                            Tổng tiền: ${o.totalMoney}00 vnđ
+                                                                            <span class="badge bg-success rounded-pill">PAID</span>
+                                                                        </p>
+                                                                        <p>VNPAY<br>
+                                                                            Tổng tiền: ${o.totalMoney}00 vnđ 
+                                                                            <span class="badge bg-success rounded-pill">PAID</span>
+                                                                        </p>
+                                                                    </c:if>
+                                                                    <c:if test="${o.statusOrder != 'Completed'}">
+                                                                        <p>
+                                                                            <span class="badge bg-success rounded-pill">UNPAID</span>
+                                                                        </p>
+                                                                    </c:if>
                                                                 </div>
                                                                 <div class="col-lg-6">
                                                                     <h3 class="h6">Thông tin khách hàng</h3>
@@ -175,14 +182,31 @@
                                                             <c:if test="${o.statusOrder == 'Cancelled'}">
                                                                 <span class="badge bg-danger">Cancelled</span>
                                                             </c:if>
+                                                            <c:if test="${order.statusOrder == 'Check Out'}">
+                                                                <td><span class="badge bg-danger">Check Out</span></td>
+                                                            </c:if>
                                                         </div>
                                                     </div>
                                                     <div class="card2 mb-4">
                                                         <!-- Staff information -->
                                                         <div class="card-body">
                                                             <h3 class="h6">Thông tin nhân viên</h3>
-                                                            <strong>${o.staff.fullname}</strong>
+                                                            <c:if test="${o.staff != null}">
+                                                                <address>
+                                                                    <strong><img src="${o.staff.avatar}" alt="alt" class="rounded-circle profile-pic" style="width: 50px;
+                                                                                 height: 50px;
+                                                                                 margin-right: 10px;
+                                                                                 object-fit: cover;"/> ${o.staff.fullname}</strong>
+                                                                    <br>
+                                                                    ${o.staff.email}
+                                                                    <br>
+                                                                    ${o.staff.phonenumber}
 
+                                                                </address>
+                                                            </c:if>
+                                                            <c:if test="${o.staff == null}">
+                                                                <strong>Chưa có nhân viên nhận việc</strong> 
+                                                            </c:if>
                                                         </div>
                                                     </div>
 

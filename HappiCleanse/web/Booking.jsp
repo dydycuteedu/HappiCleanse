@@ -118,6 +118,9 @@
                                             <c:if test="${order.statusOrder == 'Cancelled'}">
                                                 <td><span class="badge bg-danger">Cancelled</span></td>
                                             </c:if>
+                                            <c:if test="${order.statusOrder == 'Check Out'}">
+                                                <td><span class="badge bg-danger">Check Out</span></td>
+                                            </c:if>
                                             <td>${order.timeStart}</td>
                                             <c:if test="${order.timeEnd != null}">
                                                 <td>${order.timeEnd}</td>
@@ -126,17 +129,25 @@
                                                 <td>Waiting for working</td>
                                             </c:if>
                                             <c:if test="${order.staff.fullname == null}">
-                                                <td>Not yet</td>
+                                                <td>Chưa có nhân viên nhận việc</td>
                                             </c:if>
                                             <c:if test="${order.staff.fullname != null}">
                                                 <td>${order.staff.fullname}</td>
                                             </c:if>
-                                            <td>${order.shifts.price}00 vnd</td>
+                                            <c:if test="${order.statusOrder != 'Completed' && order.statusOrder != 'Check Out'}">
+                                                <td>Giá tiền sẽ được cập nhập sau khi hoàn thành</td>
+                                            </c:if>
+                                            <c:if test="${order.statusOrder == 'Check Out'}">
+                                                <td>${order.totalMoney}00 vnd</td>
+                                            </c:if>
+                                            <c:if test="${order.statusOrder == 'Completed'}">
+                                                <td>${order.totalMoney}00 vnd</td>
+                                            </c:if>
                                             <c:if test="${order.statusOrder == 'Pending'}">
                                                 <td>
                                                     <form action="BookingServlet" method="post" style="display: inline;">
                                                         <input type="hidden" name="id" value="${order.idOrder}">
-                                                        <button type="submit" class="btn btn-sm btn-danger" id="sa-params">
+                                                        <button type="submit" class="btn btn-sm btn-danger">
                                                             <i class="ri-delete-bin-fill">Cancel</i>
                                                         </button>
                                                     </form>
@@ -147,6 +158,16 @@
                                                     <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#createDishModal">
                                                         <i class="ri-delete-bin-fill">Feedback</i>
                                                     </button>
+                                                </td>
+                                            </c:if>
+                                            <c:if test="${order.statusOrder == 'Check Out'}">
+                                                <td>
+                                                    <form action="PaymentServlet" method="post" style="display: inline;">
+                                                        <input type="hidden" name="id" value="${order.idOrder}">
+                                                        <button type="submit" class="btn btn-sm btn-danger">
+                                                            <i class="ri-delete-bin-fill">Check Out</i>
+                                                        </button>
+                                                    </form>
                                                 </td>
                                             </c:if>
                                         </tr>
@@ -218,11 +239,11 @@
                                     </script>
                                 </c:forEach>
                                 </tbody>
-                                
+
                             </table>
                             <c:if test="${empty orderList}">
                                 <h3 style="text-align: center">Bạn chưa đặt đơn hàng nào</h3>
-                                </c:if>
+                            </c:if>
                         </div>
                     </div>
                 </div>

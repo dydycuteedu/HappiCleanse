@@ -18,6 +18,12 @@ public class Shifts {
         this.price = price;
     }
 
+    
+    public Shifts (TypeShift typeShift, double price) {
+        this.typeShift = typeShift;
+        this.price = price;
+    }
+
     public Shifts() {
     }
 

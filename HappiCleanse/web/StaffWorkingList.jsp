@@ -119,6 +119,9 @@
                                             <c:if test="${order.statusOrder == 'Cancelled'}">
                                                 <td><span class="badge bg-danger">Cancelled</span></td>
                                             </c:if>
+                                            <c:if test="${order.statusOrder == 'Check Out'}">
+                                                <td><span class="badge bg-danger">Check Out</span></td>
+                                            </c:if>
                                             <td>${order.timeStart}</td>
                                             <c:if test="${order.timeEnd != null}">
                                                 <td>${order.timeEnd}</td>
@@ -128,7 +131,15 @@
                                             </c:if>
                                             <td>${order.user.fullname}</td>
                                             <td>${order.user.address}</td>
-                                            <td>${order.shifts.price}00 vnd</td>
+                                            <c:if test="${order.statusOrder != 'Completed' && order.statusOrder != 'Check Out'}">
+                                                <td>Giá tiền sẽ được cập nhập sau khi hoàn thành</td>
+                                            </c:if>
+                                            <c:if test="${order.statusOrder == 'Check Out'}">
+                                                <td>${order.totalMoney}00 vnd</td>
+                                            </c:if>
+                                            <c:if test="${order.statusOrder == 'Completed'}">
+                                                <td>${order.totalMoney}00 vnd</td>
+                                            </c:if>
                                             <c:if test="${order.statusOrder == 'In Progress'}">
                                                 <td>
                                                     <form action="StaffWorkingServlet" method="post" style="display: inline;">
@@ -140,7 +151,7 @@
                                                 </td>
                                             </c:if>
                                         </tr>
-                                </c:forEach>
+                                    </c:forEach>
                                 </tbody>
                             </table>
                         </div>

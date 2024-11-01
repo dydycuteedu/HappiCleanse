@@ -100,6 +100,9 @@
                                                         <c:if test="${orderList.statusOrder == 'Cancelled'}">
                                                             <td><span class="badge bg-danger">Cancelled</span></td>
                                                         </c:if>
+                                                        <c:if test="${orderList.statusOrder == 'Check Out'}">
+                                                            <td><span class="badge bg-danger">Check Out</span></td>
+                                                        </c:if>
                                                         <td>${orderList.timeStart}</td>
                                                         <c:if test="${orderList.timeEnd != null}">
                                                             <td>${orderList.timeEnd}</td>
@@ -108,13 +111,21 @@
                                                             <td>Waiting</td>
                                                         </c:if>
                                                         <c:if test="${orderList.staff.fullname == null}">
-                                                            <td>Not yet</td>
+                                                            <td>Chưa có nhân viên nhận việc</td>
                                                         </c:if>
                                                         <c:if test="${orderList.staff.fullname != null}">
                                                             <td>${orderList.staff.fullname}</td>
                                                         </c:if>
                                                         <td>${orderList.service.nameService}</td>
-                                                        <td>${orderList.shifts.price}00 vnd</td>
+                                                        <c:if test="${order.statusOrder != 'Completed' && order.statusOrder != 'Check Out'}">
+                                                            <td>Giá tiền sẽ được cập nhập sau khi hoàn thành</td>
+                                                        </c:if>
+                                                        <c:if test="${orderList.statusOrder == 'Check Out'}">
+                                                            <td>${orderList.totalMoney}00 vnd</td>
+                                                        </c:if>
+                                                        <c:if test="${orderList.statusOrder == 'Completed'}">
+                                                            <td>${orderList.totalMoney}00 vnd</td>
+                                                        </c:if>
                                                         <td>
                                                             <div class="btn-group" role="group">
                                                                 <form action="${pageContext.request.contextPath}/OrderServlet" method="POST" style="display: inline;">

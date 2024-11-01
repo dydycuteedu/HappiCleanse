@@ -12,6 +12,7 @@ public class Order {
     private User user;
     private User staff;
     private Service service;
+    private double totalMoney;
 
     private String notes;
 
@@ -127,4 +128,13 @@ public class Order {
     public void setStaff(User staff) {
         this.staff = staff;
     }
+
+    public double getTotalMoney() {
+        return totalMoney;
+    }
+
+    public void setTotalMoney(double totalMoney) {
+        this.totalMoney = totalMoney;
+    }
+    
 }

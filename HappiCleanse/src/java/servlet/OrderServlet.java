@@ -7,6 +7,7 @@ package servlet;
 import dao.Dao;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -134,7 +135,9 @@ public class OrderServlet extends HttpServlet {
             Dao dao = new Dao();
             int id = Integer.parseInt(request.getParameter("id"));
             Order o = dao.getOrder(id);
+            int hoursDifference = (int) Duration.between(o.getTimeStart(), o.getTimeEnd()).toHours();
             request.setAttribute("o", o);
+            request.setAttribute("hoursDifference", hoursDifference);
             RequestDispatcher dispatcher = request.getRequestDispatcher("Admin/order/detail.jsp");
             dispatcher.forward(request, response);
         } catch (Exception ex) {

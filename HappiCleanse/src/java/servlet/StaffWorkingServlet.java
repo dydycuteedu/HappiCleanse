@@ -93,14 +93,18 @@ public class StaffWorkingServlet extends HttpServlet {
             Dao dao = new Dao();
             Order order = dao.getOrder(idOrder);
             order.setTimeEnd(LocalDateTime.now());
-            order.setStatusOrder("Completed");
+            order.setStatusOrder("Check Out");
             dao.completeOrder(order);
             int hoursDifference = (int) Duration.between(order.getTimeStart(), order.getTimeEnd()).toHours();
+            if(hoursDifference < 1){
+                hoursDifference = 1;
+            }
             TypeShift typeShift = dao.getTypeShift(CheckShift.checkHoliday(order.getTimeStart()));
             WorkingHour wk = dao.getWorkingHourbyHours(hoursDifference);
-            Shifts shifts = new Shifts(0, typeShift, wk.getPricePerHour());
-            dao.addShift(shifts);
-            dao.insertDetailOrder(typeShift.getCoefficient() * shifts.getPrice() * hoursDifference, order.getIdOrder(), shifts.getIdShift());
+            Shifts shift = new Shifts(typeShift, wk.getPricePerHour());
+            dao.addShift(shift);
+            List<Shifts> shifts = dao.getAllShifts();
+            dao.insertDetailOrder(typeShift.getCoefficient() * shift.getPrice() * hoursDifference, order.getIdOrder(), shifts.getLast().getIdShift());
             doGet(request, response);
         } catch (Exception ex) {
             Logger.getLogger(StaffWorkingServlet.class.getName()).log(Level.SEVERE, null, ex);

@@ -71,7 +71,6 @@ public class PaymentServlet extends HttpServlet {
         } catch (Exception ex) {
             Logger.getLogger(PaymentServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
     /**
@@ -85,7 +84,15 @@ public class PaymentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("BookingServlet");
+        try {
+            int idOrder = Integer.parseInt(request.getParameter("id"));
+            Dao dao = new Dao();
+            Order order = dao.getOrder(idOrder);
+            request.setAttribute("order", order);
+            request.getRequestDispatcher("Payment.jsp").forward(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(PaymentServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

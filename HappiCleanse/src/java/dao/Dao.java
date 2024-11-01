@@ -369,6 +369,7 @@ public class Dao {
                         o.setTimeEnd(ConvertConstant.convertStringtoLocalDateTime(rs.getString("timeEnd")));
                     }
                     o.setShifts(shifts);
+                    o.setTotalMoney(getTotalMoneyByIdOrder(rs.getInt("idOrder")));
                     return o;
                 }
             }
@@ -401,6 +402,7 @@ public class Dao {
                         o.setTimeEnd(ConvertConstant.convertStringtoLocalDateTime(rs.getString("timeEnd")));
                     }
                     o.setShifts(shifts);
+                    o.setTotalMoney(getTotalMoneyByIdOrder(rs.getInt("idOrder")));
                     orders.add(o);
                 }
             }
@@ -432,6 +434,7 @@ public class Dao {
                     o.setTimeEnd(ConvertConstant.convertStringtoLocalDateTime(rs.getString("timeEnd")));
                 }
                 o.setShifts(shifts);
+                o.setTotalMoney(getTotalMoneyByIdOrder(rs.getInt("idOrder")));
                 orders.add(o);
             }
         }
@@ -904,6 +907,7 @@ public class Dao {
                     o.setTimeEnd(ConvertConstant.convertStringtoLocalDateTime(rs.getString("timeEnd")));
                 }
                 o.setShifts(shifts);
+                o.setTotalMoney(getTotalMoneyByIdOrder(rs.getInt("idOrder")));
                 orders.add(o);
             }
         }
@@ -935,6 +939,7 @@ public class Dao {
                     o.setTimeEnd(ConvertConstant.convertStringtoLocalDateTime(rs.getString("timeEnd")));
                 }
                 o.setShifts(shifts);
+                o.setTotalMoney(getTotalMoneyByIdOrder(rs.getInt("idOrder")));
                 orders.add(o);
             }
         }
@@ -956,23 +961,22 @@ public class Dao {
     }
 
     // GET SHIFT BY ID ORDER
-    public Shifts getShiftsByIdOrder(int idOrder) throws Exception {
-        String sql = "SELECT idShift FROM DetailOrder WHERE idOrder = ?";
-        List<Shifts> shifts = new ArrayList<>();
+    public double getTotalMoneyByIdOrder(int idOrder) throws Exception {
+        String sql = "SELECT totalMoney FROM DetailOrder WHERE idOrder = ?";
+        double totalMoney = 0;
 
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql);) {
             ps.setInt(1, idOrder);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                int idShift = rs.getInt("idShift");
-                shifts.add(getShift(idShift)); // Add the shift to the list
+                totalMoney = rs.getDouble("totalMoney");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return shifts.getLast();
+        return totalMoney;
     }
 
     // GET SERVICE BY SHIFTS
@@ -1011,7 +1015,7 @@ public class Dao {
         try {
             Connection con = DBContext.getConnection();
             PreparedStatement cstmt = con.prepareStatement("SELECT TOP(1) *\n"
-                    + "FROM WorkingHour WHERE ? < hours\n"
+                    + "FROM WorkingHour WHERE ? <= hours\n"
                     + "ORDER BY hours");
             cstmt.setInt(1, hour);
             ResultSet rs = cstmt.executeQuery();
