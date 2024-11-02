@@ -13,8 +13,8 @@ public class DBContext {
     
      private static String driverClass = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     private static String username = "sa";
-    private static String password = "123";
-    private static String jdbcURL = "jdbc:sqlserver://HAI-NGUYEN\\HAISERVER;databaseName=HappiCleanse;encrypt=true;trustServerCertificate=true;loginTimeout=30";
+    private static String password = "thienbao";
+    private static String jdbcURL = "jdbc:sqlserver://DESKTOP-V2LFEJ4;databaseName=HappiCleanse;encrypt=true;trustServerCertificate=true;loginTimeout=30";
     
     public static Connection getConnection(){
         Connection con = null;

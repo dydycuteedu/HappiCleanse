@@ -51,25 +51,38 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="card-title">
-                                            <h4 >Tạo Mới Vai Trò</h4>
+                                            <h4 >Thêm loại dịch vụ mới</h4>
                                         </div>
-                                        <form action="${pageContext.request.contextPath}/DishCategoryServlet" method="post" style="display: inline;">
+                                        <form action="${pageContext.request.contextPath}/ServiceCategoryServlet" method="post" style="display: inline;">
                                             <div class="row mb-3">
-                                                <input type="hidden" name="actor" value="admin">
-                                                <label for="rolename" class="col-sm-2 col-form-label">Tên Loại Món Ăn</label>
+
+                                                <label for="example-text-input" class="col-sm-2 col-form-label">Mã Loại Dịch vụ</label>
                                                 <div class="col-sm-10">
-                                                    <input class="form-control" type="text" name="name" id="rolename">
+                                                    <input class="form-control" type="number" name="idServiceCategory" id="example-text-input" placeholder="${servicecategory.idServiceCategory}">
                                                 </div>
-                                                <label for="status" class="col-sm-2 col-form-label">Trạng thái</label>
+                                                <label for="example-text-input" class="col-sm-2 col-form-label">Tên Loại Dịch vụ</label>
                                                 <div class="col-sm-10">
-                                                    <input type="checkbox" id="switch1" name="status" switch="none" checked />
-                                                    <label for="switch1" data-on-label="On" data-off-label="Off"></label>
+                                                    <input class="form-control" type="text" name="nameServiceCategory" id="example-text-input" placeholder="${servicecategory.nameServiceCategory}">
+                                                </div>
+                                                <label for="example-text-input" class="col-sm-2 col-form-label">Tiêu đề</label>
+                                                <div class="col-sm-10">
+                                                    <input class="form-control" type="text" name="subDescription" id="example-text-input" placeholder="${servicecategory.subDescription}">
+                                                </div>
+                                                <label for="example-text-input" class="col-sm-2 col-form-label">Mô tả chi tiết</label>
+                                                <div class="col-sm-10">
+                                                    
+                                                    <textarea class="form-control" rows="30" cols="50" type="text" name="description" id="description" placeholder=""${servicecategory.description}"></textarea>
+
+                                                </div>
+                                                <label for="example-text-input" class="col-sm-2 col-form-label">Hình ảnh minh họa</label>
+                                                <div class="col-sm-10">
+                                                    <input class="form-control" type="text" name="imgURL" id="example-text-input" placeholder="${servicecategory.imgURL}">
                                                 </div>
                                             </div>
                                             <div class="mb-0">
                                                 <div>
                                                     <input type="submit" class="btn btn-primary waves-effect waves-light me-1" name="action" value="Add">
-                                                    <a href="${pageContext.request.contextPath}/DishCategoryServlet?actor=admin&action=management" class="btn btn-secondary waves-effect">
+                                                    <a href="${pageContext.request.contextPath}/ServiceServlet?action=management" class="btn btn-secondary waves-effect">
                                                         Quay trở lại
                                                     </a>
                                                 </div>

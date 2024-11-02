@@ -75,7 +75,7 @@
                             <div class="dropdown">
                                 <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                                     <!-- Profile Picture -->
-                                    <img src="${sessionScope.acc.avatar}" alt="Profile" class="rounded-circle profile-pic" style="width: 50px;
+                                    <img src="${pageContext.request.contextPath}/${sessionScope.acc.avatar}" alt="Profile" class="rounded-circle profile-pic" style="width: 50px;
                                          height: 50px;
                                          margin-right: 10px;
                                          object-fit: cover;">

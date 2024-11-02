@@ -79,7 +79,7 @@
                                                     <th>Tên Dịch vụ</th>
                                                     <th>Mô Tả Dịch vụ</th>
                                                     <th>Loại Dịch vụ</th>
-                                                    <th>Hinh anh minh hoa</th>
+                                                    <th>Hinh ảnh minh họa</th>
                                                     <th>Hành Động</th>
                                                 </tr>
                                             </thead>
