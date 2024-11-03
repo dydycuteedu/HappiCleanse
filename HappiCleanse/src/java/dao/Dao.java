@@ -195,7 +195,7 @@ public class Dao {
     }
 
     public void editProfile(User user) throws Exception {
-        String sql = "UPDATE Users SET fullname = ?, username = ?, password = ?, email = ?, phonenumber = ?, gender = ?, address = ?, isValid = ?,avatar=? WHERE idUser = ?";
+        String sql = "UPDATE Users SET fullname = ?, username = ?, password = ?, email = ?, phonenumber = ?, gender = ?, address = ?, isValid = ? WHERE idUser = ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, user.getFullname());
             ps.setString(2, user.getUsername());
@@ -205,8 +205,7 @@ public class Dao {
             ps.setString(6, user.getGender());
             ps.setString(7, user.getAddress());
             ps.setInt(8, user.getIsValid());
-            ps.setString(9, user.getAvatar());
-            ps.setInt(10, user.getIdUser());
+            ps.setInt(9, user.getIdUser());
             ps.executeUpdate();
         }
     }
@@ -763,15 +762,15 @@ public class Dao {
     }
 
     public void updateService(Service service) throws SQLException, Exception {
-        String sql = "UPDATE Service SET nameService = ?, description = ?, idServiceCategory = ? WHERE idService = ?";
+        String sql = "UPDATE Service SET nameService = ?, description = ?, img1 = ?, img2 = ?, img3 = ?, idServiceCategory = ? WHERE idService = ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, service.getNameService());
             stmt.setString(2, service.getDescription());
-//            stmt.setString(3, service.getImg1());
-//            stmt.setString(4, service.getImg2());
-//            stmt.setString(5, service.getImg3());
-            stmt.setInt(3, service.getServiceCategory().getIdServiceCategory());
-            stmt.setInt(4, service.getIdService());
+            stmt.setString(3, service.getImg1());
+            stmt.setString(4, service.getImg2());
+            stmt.setString(5, service.getImg3());
+            stmt.setInt(6, service.getServiceCategory().getIdServiceCategory());
+            stmt.setInt(7, service.getIdService());
             stmt.executeUpdate();
         }
     }
@@ -800,43 +799,6 @@ public class Dao {
     }
 
     //get Service Category
-    public void addServiceCategory(ServiceCategory servicecategory) throws SQLException, Exception {
-        String sql = "INSERT INTO ServiceCategory (nameServiceCategory, subDescription, description, imgURL) VALUES (?, ?, ?, ?)";
-        try (Connection conn = DBContext.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, servicecategory.getNameServiceCategory());
-            stmt.setString(2, servicecategory.getSubDescription());
-            stmt.setString(3, servicecategory.getDescription());
-            stmt.setString(4, servicecategory.getImgURL());
-            stmt.executeUpdate();
-            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    servicecategory.setIdServiceCategory(generatedKeys.getInt(1));
-                }
-            }
-        }
-    }
-
-    public void updateServiceCategory(ServiceCategory servicecategory) throws SQLException, Exception {
-        String sql = "UPDATE ServiceCategory SET nameServiceCategory = ?,subDescription=?, description = ? WHERE idServiceCategory = ?";
-        try (Connection conn = DBContext.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, servicecategory.getNameServiceCategory());
-            stmt.setString(2, servicecategory.getSubDescription());
-            stmt.setString(3, servicecategory.getDescription());
-            stmt.setInt(4, servicecategory.getIdServiceCategory());
- 
-            stmt.executeUpdate();
-        }
-    }
-
-    public void deleteServiceCategory(int idServiceCategory) throws SQLException, Exception {
-        String sql = "DELETE FROM ServiceCategory WHERE idServiceCategory = ?";
-        try (Connection conn = DBContext.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, idServiceCategory);
-            stmt.executeUpdate();
-        }
-    }
-
     public ServiceCategory getServiceCategory(int idServiceCategory) throws SQLException, Exception {
         String sql = "SELECT * FROM ServiceCategory WHERE idServiceCategory = ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -899,7 +861,7 @@ public class Dao {
                 u.setPassword(rs.getString(4));
                 u.setEmail(rs.getString(5));
                 u.setPhonenumber(rs.getString(6));
-                u.setAddress(rs.getString(7));
+                u.setAddress(rs.getString(7));   
                 u.setGender(rs.getString(8));
                 u.setAvatar(rs.getString(9));
                 u.setCvUrl(rs.getString(10));
@@ -1046,7 +1008,6 @@ public class Dao {
 
         return services;
     }
-
     public WorkingHour getWorkingHourbyHours(int hour) {
         WorkingHour workinghour = new WorkingHour();
         try {

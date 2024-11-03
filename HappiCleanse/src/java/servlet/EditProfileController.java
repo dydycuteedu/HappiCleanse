@@ -2,6 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+
 package servlet;
 
 import dao.Dao;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import model.Order;
 import model.User;
 
+
 @WebServlet(name = "EditProfileController", urlPatterns = {"/editProfile"})
 public class EditProfileController extends HttpServlet {
 
@@ -32,8 +34,8 @@ public class EditProfileController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html; charset=UTF-8");
         try {
+            response.setContentType("text/html;charset=UTF-8");
             HttpSession session = request.getSession();
             User a = (User) session.getAttribute("acc");
             Dao dao = new Dao();
@@ -50,9 +52,9 @@ public class EditProfileController extends HttpServlet {
             a.setPhonenumber(phoneNumber);
             a.setFullname(fullname);
             dao.editProfile(a);
-
+            
             request.setAttribute("mess", "Cap nhat tai khoan thanh cong!");
-
+            
             request.getRequestDispatcher("EditProfile.jsp").forward(request, response);
         } catch (Exception ex) {
             Logger.getLogger(EditProfileController.class.getName()).log(Level.SEVERE, null, ex);
@@ -75,6 +77,8 @@ public class EditProfileController extends HttpServlet {
             Dao dao = new Dao();
             HttpSession session = request.getSession();
             User a = (User) session.getAttribute("acc");
+            List<Order> orderList = dao.getOrderByUserId(a.getIdUser());
+            request.setAttribute("orderList", orderList);
             request.getRequestDispatcher("EditProfile.jsp").forward(request, response);
         } catch (Exception ex) {
             Logger.getLogger(EditProfileController.class.getName()).log(Level.SEVERE, null, ex);

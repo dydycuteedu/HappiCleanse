@@ -35,6 +35,37 @@
         <!-- Template Stylesheet -->
         <link href="css/style.css" rel="stylesheet">
         <!-- Add your JavaScript here -->
+        <script>
+            function showProfile() {
+                document.getElementById("profile-section").style.display = "block";
+                document.getElementById("history-section").style.display = "none";
+            }
+
+            function showHistory() {
+                document.getElementById("profile-section").style.display = "none";
+                document.getElementById("history-section").style.display = "block";
+            }
+
+            document.getElementById('profileImage').addEventListener('click', function () {
+                // Trigger the hidden file input when the image is clicked
+                document.getElementById('fileInput').click();
+            });
+
+            document.getElementById('fileInput').addEventListener('change', function (event) {
+                // Check if a file is selected
+                if (event.target.files && event.target.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        // Update the image preview with the new image
+                        document.getElementById('profileImage').src = e.target.result;
+                    };
+
+                    // Read the selected image as a data URL
+                    reader.readAsDataURL(event.target.files[0]);
+                }
+            });
+        </script>
         <style>
             .avatar {
                 width: 300px;              /* Adjust size as needed */
@@ -46,39 +77,6 @@
                 display: block;
                 margin-bottom: 30px;         /* Centers the avatar */
             }
-            .card {
-                box-shadow: 0 0.15rem 1.75rem 0 rgb(33 40 50 / 15%);
-                background-color:  #edf1fc;
-            }
-            .card .card-header {
-                font-weight: 500;
-            }
-            .card-header:first-child {
-                border-radius: 0.35rem 0.35rem 0 0;
-            }
-            .card-header {
-                padding: 1rem 1.35rem;
-                margin-bottom: 0;
-                background-color: rgba(33, 40, 50, 0.03);
-                border-bottom: 1px solid rgba(33, 40, 50, 0.125);
-            }
-            .form-control, .dataTable-input {
-                display: block;
-                width: 100%;
-                padding: 0.875rem 1.125rem;
-                font-size: 0.875rem;
-                font-weight: 400;
-                line-height: 1;
-                color: #69707a;
-                background-color: #fff;
-                background-clip: padding-box;
-                border: 1px solid #c5ccd6;
-                appearance: none;
-                border-radius: 0.35rem;
-                transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-            }
-
-           
         </style>
     </head>
 
@@ -102,89 +100,127 @@
         <!-- Page Header End -->
 
         <!-- Edit Profile Section Start -->
-      
         <div class="container-xxl py-5">
             <div class="container">
-
                 <div class="row justify-content-center">
+                    <!-- Profile Section with Buttons -->
                     <div class="col-lg-4 mb-5">
                         <div class="bg-light p-5 text-center h-100 d-flex flex-column align-items-center justify-content-center">
                             <form action="SaveAvatarServlet" method="post" enctype="multipart/form-data">
 
                                 <div class="mb-4 text-center">
                                     <!-- Clickable profile image -->
-                                    <img id="profileImage" src="${pageContext.request.contextPath}/${sessionScope.acc.avatar}" alt="Profile" class="avatar">
+                                    <img id="profileImage" src="${sessionScope.acc.avatar}" alt="Profile" class="avatar">
                                     <div class="input-group">
                                         <input type="file" class="form-control" name="avatar" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
                                         <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04">Save Avatar</button>
                                     </div>
                                 </div>
                             </form>
-
-                        </div>
-                    </div>
-                    <div class="col-xl-8">
-                        <!-- Account details card-->
-                        <div class="card mb-4">
-                            <div class="card-header">Account Details</div>
-                            <div class="card-body">
-                                <form action="editProfile" method="POST">
-
-                                    <!-- Form Row-->
-                                    <div class="row gx-3 mb-3">
-
-                                        <!-- Form Group (full name)-->
-                                        <div class="col-md-6">
-                                            <label class="form-label" for="name">Full name</label>
-                                            <input type="text" name="fullname" class="form-control" id="name" placeholder="Full Name" value="${sessionScope.acc.fullname}">
-                                        </div>
-                                    </div>
-
-                                    <!-- Form Group (email address)-->
-                                    <div class="mb-3">
-                                        <label class="form-label" for="email">Email address</label>
-                                        <input type="email" name="email" class="form-control" id="email" placeholder="Email" value="${sessionScope.acc.email}">
-                                    </div>
-                                    <!-- Form Row-->
-
-                                    <!-- Form Group (phone number)-->
-                                    <div class="md-3">
-                                        <label class="form-label" for="phone">Phone number</label>
-                                        <input type="text" name="phoneNumber" class="form-control" id="phone" placeholder="Phone Number" value="${sessionScope.acc.phonenumber}">
-                                    </div>
-                                    <!-- Form Group (addresss)-->
-                                    <div class="md-3">
-                                        <label class="form-label" for="address">Address</label>
-                                        <input type="text" name="address" class="form-control" id="address" placeholder="Address" value="${sessionScope.acc.address}">
-                                    </div>
-
-                                    <div class="form-group mb-4">
-                                        <label for="gender" class="form-label me-2">Gender:</label>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="gender" id="male" value="Male"
-                                                   ${sessionScope.acc.gender == 'Male' ? 'checked' : ''}>
-                                            <label class="form-check-label" for="male">Male</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="gender" id="female" value="Female"
-                                                   ${sessionScope.acc.gender == 'Female' ? 'checked' : ''}>
-                                            <label class="form-check-label" for="female">Female</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="gender" id="other" value="Other"
-                                                   ${sessionScope.acc.gender == 'Other' ? 'checked' : ''}>
-                                            <label class="form-check-label" for="other">Other</label>
-                                        </div>
-                                    </div>
-                                    <!-- Save changes button-->
-                                    <button class="btn btn-primary" type="submit">Save changes</button>
-                                </form>
+                            <!-- Buttons -->
+                            <div class="w-100">
+                                <button style="margin-top: 30px" class="btn btn-primary w-100 mb-3 py-2" type="button" onclick="showProfile()">Edit Profile</button>
+                                <button class="btn btn-primary w-100 py-2" type="button" onclick="showHistory()">History</button>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Edit Profile Form Section -->
+                    <div id="profile-section" class="col-lg-6" style="display: block; height: 500px;">
+                        <div class="bg-light p-5 h-100 d-flex align-items-center">
+                            <form class="w-100" action="editProfile" method="POST">
+                                <div class="mb-4">
+                                    <h3 class="text-center">My Profile</h3>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="name" class="form-label">Full Name</label>
+                                    <input type="text" name="fullname" class="form-control" id="name" placeholder="Full Name" value="${sessionScope.acc.fullname}">
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" name="email" class="form-control" id="email" placeholder="Email" value="${sessionScope.acc.email}">
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="phone" class="form-label">Phone Number</label>
+                                    <input type="text" name="phoneNumber" class="form-control" id="phone" placeholder="Phone Number" value="${sessionScope.acc.phonenumber}">
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="address" class="form-label">Address</label>
+                                    <input type="text" name="address" class="form-control" id="address" placeholder="Address" value="${sessionScope.acc.address}">
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="gender" class="form-label me-2">Gender:</label>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="male" value="Male"
+                                               ${sessionScope.acc.gender == 'Male' ? 'checked' : ''}>
+                                        <label class="form-check-label" for="male">Male</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="female" value="Female"
+                                               ${sessionScope.acc.gender == 'Female' ? 'checked' : ''}>
+                                        <label class="form-check-label" for="female">Female</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="other" value="Other"
+                                               ${sessionScope.acc.gender == 'Other' ? 'checked' : ''}>
+                                        <label class="form-check-label" for="other">Other</label>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button class="btn btn-primary w-50 py-2" type="submit">Confirm Update</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Order History Section -->
+                    <div id="history-section" class="col-lg-6" style="display: none;  height: 500px;">
+                        <div class="bg-light p-5">
+                            <h3 class="text-center mb-4">Order History</h3>
+                            <div class="table-responsive">
+                                <table class="table table-bordered text-center">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th>Order Number</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                            <th>Order Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach items="${orderList}" var="order">
+                                            <tr>
+                                                <td>${order.idOrder}</td>
+                                                <td>${order.dateCreate}</td>
+                                                <c:if test="${order.statusOrder == 'Completed'}">
+                                                    <td><span class="badge bg-success">Completed</span></td>
+                                                </c:if>
+                                                <c:if test="${order.statusOrder == 'Pending'}">
+                                                    <td><span class="badge bg-warning">Pending</span></td>
+                                                </c:if>
+                                                <c:if test="${order.statusOrder == 'Cancelled'}">
+                                                    <td><span class="badge bg-danger">Cancelled</span></td>
+                                                </c:if>
+                                                <td>${order.dateCreate}</td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
+        <!-- Edit Profile Section End -->
+
+
         <%@include file="Footer.jsp" %>
 
         <!-- Back to Top -->

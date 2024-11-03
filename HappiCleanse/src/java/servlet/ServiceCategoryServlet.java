@@ -7,6 +7,7 @@ package servlet;
 import dao.Dao;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -74,15 +75,15 @@ public class ServiceCategoryServlet extends HttpServlet {
                 case "edit":
                     Edit(request, response);
                     break;
-                case "delete":
-                    Delete(request, response);
-                    break;
-                case "Save":
-                    Save(request, response);
-                    break;
-                case "Add":
-                    Add(request, response);
-                    break;
+//            case "delete":
+//                Delete(request, response);
+//                break;
+//            case "Save":
+//                Save(request, response);
+//                break;
+//            case "Add":
+//                Add(request, response);
+//                break;
                 case "create":
                     Create(request, response);
                     break;
@@ -115,15 +116,15 @@ public class ServiceCategoryServlet extends HttpServlet {
                 case "edit":
                     Edit(request, response);
                     break;
-                case "delete":
-                    Delete(request, response);
-                    break;
+//            case "delete":
+//                Delete(request, response);
+//                break;
                 case "Save":
                     Save(request, response);
                     break;
-                case "Add":
-                    Add(request, response);
-                    break;
+//                case "Add":
+//                    Add(request, response);
+//                    break;
                 case "create":
                     Create(request, response);
                     break;
@@ -148,7 +149,6 @@ public class ServiceCategoryServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    //dan toi trang add new jsp
     private void Create(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("Admin/servicecategory/create.jsp");
@@ -157,67 +157,44 @@ public class ServiceCategoryServlet extends HttpServlet {
 //
 
     private void View(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException, Exception {
+            throws IOException, ServletException {
         Dao dao = new Dao();
         int uid = Integer.parseInt(request.getParameter("id"));
 
-        ServiceCategory servicecategory = dao.getServiceCategory(uid);
-        request.setAttribute("servicecategory", servicecategory);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("Admin/servicecategory/detail.jsp");
+        User user = dao.getUser(uid);
+
+        request.setAttribute("user", user);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("Admin/customer/detail.jsp");
         dispatcher.forward(request, response);
     }
+//
+//  
 
     private void Edit(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException, Exception {
+            throws IOException, ServletException {
         int uid = Integer.parseInt(request.getParameter("id"));
         Dao dao = new Dao();
-        ServiceCategory servicecategory = dao.getServiceCategory(uid);
-        request.setAttribute("servicecategory", servicecategory);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("Admin/servicecategory/edit.jsp");
+        User user = dao.getUser(uid);
+        request.setAttribute("user", user);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("Admin/customer/edit.jsp");
         dispatcher.forward(request, response);
     }
 
     private void Save(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException, Exception {
         int uid = Integer.parseInt(request.getParameter("id"));
-        String name = request.getParameter("nameServiceCategory");
-        String subDescription = request.getParameter("subDescription");
-        String description = request.getParameter("description");
-
+        String uname = request.getParameter("name");
+        boolean status = request.getParameter("status") != null;
+        int isValid = 0;
+        if (status) {
+            isValid = 1;
+        }
         Dao dao = new Dao();
-
-        ServiceCategory servicecategory = dao.getServiceCategory(uid);
-        servicecategory.setNameServiceCategory(name);
-        servicecategory.setSubDescription(subDescription);
-        servicecategory.setDescription(description);
-
-        dao.updateServiceCategory(servicecategory);
-        Management(request, response);
-    }
-
-    private void Delete(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException, Exception {
-        int rid = Integer.parseInt(request.getParameter("id"));
-        Dao dao = new Dao();
-        dao.deleteServiceCategory(rid);
-        Management(request, response);
-    }
-
-    //them moi vao trong db
-    private void Add(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException, Exception {
-        String name = request.getParameter("nameServiceCategory");
-        String subDescription = request.getParameter("subDescription");
-        String description = request.getParameter("description");
-        String imgURL = request.getParameter("imgURL");
-        Dao dao = new Dao();
-        ServiceCategory servicecategory = new ServiceCategory();
-        servicecategory.setNameServiceCategory(name);
-        servicecategory.setSubDescription(subDescription);
-        servicecategory.setDescription(description);
-        servicecategory.setImgURL(imgURL);
-        
-        dao.addServiceCategory(servicecategory);
+        User user = dao.getUser(uid);
+        user.setUsername(uname);
+        user.setIsValid(isValid);
+        dao.editProfile(user);
         Management(request, response);
     }
 }

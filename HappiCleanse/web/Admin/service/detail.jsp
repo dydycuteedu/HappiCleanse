@@ -57,9 +57,9 @@
                                             <ul>
                                                 <li><strong>Mã Dịch vụ:</strong> ${service.idService}</li>
                                                 <li><strong>Tên Dịch vụ:</strong> ${service.nameService}</li>
-                                                <li><strong>Mô Tả:</strong> ${service.description}</li>
+                                                <li><strong>Mô Tả Dịch vụ:</strong> ${service.description}</li>
                                                 <li><strong>Loại Dịch vụ:</strong> ${service.serviceCategory.nameServiceCategory}</li>
-                                                <li><strong>Hình Ảnh:</strong>
+                                                <li><strong>Hình Ảnh Dịch vụ:</strong>
                                                     <img class="rounded-circle header-profile-user" src="${service.img1}" alt="alt"/>
                                                     <img class="rounded-circle header-profile-user" src="${service.img2}" alt="alt"/>
                                                     <img class="rounded-circle header-profile-user" src="${service.img3}" alt="alt"/>

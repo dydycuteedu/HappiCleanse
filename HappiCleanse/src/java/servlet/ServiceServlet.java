@@ -57,15 +57,15 @@ public class ServiceServlet extends HttpServlet {
                 case "edit":
                     Edit(request, response);
                     break;
-                case "delete":
-                    Delete(request, response);
-                    break;
-                case "Save":
-                    Save(request, response);
-                    break;
-                case "Add":
-                    Add(request, response);
-                    break;
+//            case "delete":
+//                Delete(request, response);
+//                break;
+//            case "Save":
+//                Save(request, response);
+//                break;
+//            case "Add":
+//                Add(request, response);
+//                break;
                 case "create":
                     Create(request, response);
                     break;
@@ -90,15 +90,15 @@ public class ServiceServlet extends HttpServlet {
                 case "edit":
                     Edit(request, response);
                     break;
-                case "delete":
-                    Delete(request, response);
-                    break;
-                case "Save":
-                    Save(request, response);
-                    break;
-                case "Add":
-                    Add(request, response);
-                    break;
+//            case "delete":
+//                Delete(request, response);
+//                break;
+//                case "Save":
+//                    Save(request, response);
+//                    break;
+//                case "Add":
+//                    Add(request, response);
+//                    break;
                 case "create":
                     Create(request, response);
                     break;
@@ -140,6 +140,8 @@ public class ServiceServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("Admin/service/detail.jsp");
         dispatcher.forward(request, response);
     }
+//
+//  
 
     private void Edit(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException, Exception {
@@ -153,54 +155,18 @@ public class ServiceServlet extends HttpServlet {
 
     private void Save(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException, Exception {
-        Dao dao = new Dao();
-
         int uid = Integer.parseInt(request.getParameter("id"));
-        int idServiceCategory = Integer.parseInt(request.getParameter("idServiceCategory"));
-        String name = request.getParameter("nameService");
-        String description = request.getParameter("description");
-        
-        Service service = dao.getService(uid);
-
-        ServiceCategory servicecategory = dao.getServiceCategory(idServiceCategory);
-        service.setServiceCategory(servicecategory);
-
-        service.setNameService(name);
-        service.setDescription(description);
-        dao.updateService(service);
-        Management(request, response);
-    }
-
-    private void Delete(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException, Exception {
-        int rid = Integer.parseInt(request.getParameter("id"));
+        String uname = request.getParameter("name");
+        boolean status = request.getParameter("status") != null;
+        int isValid = 0;
+        if (status) {
+            isValid = 1;
+        }
         Dao dao = new Dao();
-        dao.deleteService(rid);
-        Management(request, response);
-    }
-
-    //them moi vao trong db
-    private void Add(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException, Exception {
-        Dao dao = new Dao();
-        int idServiceCategory = Integer.parseInt(request.getParameter("idServiceCategory"));
-        String name = request.getParameter("nameService");
-
-        String description = request.getParameter("description");
-        String img1 = request.getParameter("img1");
-        String img2 = request.getParameter("img2");
-        String img3 = request.getParameter("img3");
-
-        ServiceCategory servicecategory = dao.getServiceCategory(idServiceCategory);
-        Service service = new Service();
-
-        service.setServiceCategory(servicecategory);
-        service.setDescription(description);
-        service.setImg1(img1);
-        service.setImg2(img2);
-        service.setImg3(img3);
-
-        dao.addService(service);
+        User user = dao.getUser(uid);
+        user.setUsername(uname);
+        user.setIsValid(isValid);
+        dao.editProfile(user);
         Management(request, response);
     }
 }

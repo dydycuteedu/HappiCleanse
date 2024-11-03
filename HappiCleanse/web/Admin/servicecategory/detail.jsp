@@ -3,7 +3,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>SERVICE CATEGORY DATA</title>
+        <title>Data Tables | Upcube - Admin & Dashboard Template</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
         <meta content="Themesdesign" name="author" />
@@ -51,20 +51,18 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="card-title">
-                                            <h4 >Thông Tin Loại Dịch vụ</h4>
+                                            <h4 >Thông Tin Loại Món Ăn</h4>
                                         </div>
                                         <div class="profile-details">
                                             <ul>
-                                                <li><strong>Mã Loại Dịch vụ:</strong> ${servicecategory.idServiceCategory}</li>
-                                                <li><strong>Tên Loại Dịch vụ:</strong> ${servicecategory.nameServiceCategory}</li>
-                                                <li><strong>Tiêu đề:</strong> ${servicecategory.subDescription}</li>
-                                                <li><strong>Mô tả:</strong> ${servicecategory.description}</li>
-                                                <li><strong>Hình ảnh mô tả:</strong> ${servicecategory.imgURL}</li>
+                                                <li><strong>Mã Loại Món Ăn:</strong> ${dishcategory.dishCategoryID}</li>
+                                                <li><strong>Tên Loại Món Ăn:</strong> ${dishcategory.name}</li>
+                                                <li><strong>Trạng thái:</strong> ${dishcategory.status}</li>
                                             </ul>
                                         </div>
                                         <div class="mb-0">
                                             <div>
-                                                <a href="${pageContext.request.contextPath}/ServiceCategoryServlet?action=management" class="btn btn-secondary waves-effect">
+                                                <a href="${pageContext.request.contextPath}/DishCategoryServlet?actor=admin&action=management" class="btn btn-secondary waves-effect">
                                                     Quay trở lại
                                                 </a>
                                             </div>
