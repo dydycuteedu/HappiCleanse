@@ -5,7 +5,7 @@
 
     <head>
         <meta charset="utf-8" />
-        <title>Data Tables | Upcube - Admin & Dashboard Template</title>
+        <title>EDIT SERVICE CATEGORY</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
         <meta content="Themesdesign" name="author" />
@@ -54,24 +54,27 @@
                                         <div class="card-title">
                                             <h4 >Chỉnh Sửa Loại Dịch vụ</h4>
                                         </div>
-                                        <form action="${pageContext.request.contextPath}/DishCategoryServlet" method="post" style="display: inline;">
+                                        <form action="${pageContext.request.contextPath}/ServiceCategoryServlet" method="post" style="display: inline;">
                                             <div class="row mb-3">
-                                                <input type="hidden" name="actor" value="admin">
-                                                <input type="hidden" name="id" value="${servicecategory.serviceCategoryID}">
+                                                
+                                                <input type="hidden" name="id" value="${servicecategory.idServiceCategory}">
                                                 <label for="rolename" class="col-sm-2 col-form-label">Tên Loại Dịch vụ</label>
                                                 <div class="col-sm-10">
-                                                    <input class="form-control" type="text" name="name" id="rolename" value="${servicecategory.name}">
+                                                    <input class="form-control" type="text" name="nameServiceCategory" id="rolename" value="${servicecategory.nameServiceCategory}">
                                                 </div>
-                                                <label for="status" class="col-sm-2 col-form-label">Trạng thái</label>
+                                                <label for="rolename" class="col-sm-2 col-form-label">Tiêu đề dịch vụ</label>
                                                 <div class="col-sm-10">
-                                                    <input type="checkbox" id="switch" switch="none" name="status" <c:if test="${servicecategory.status == true}">checked</c:if> />
-                                                    <label for="switch" data-on-label="On" data-off-label="Off"></label>
+                                                    <input class="form-control" type="text" name="subDescription" id="description" value="${servicecategory.subDescription}" >
                                                 </div>
+                                                <label for="rolename" class="col-sm-2 col-form-label">Mô tả dịch vụ</label>
+                                                <div class="col-sm-10">
+                                                     <textarea class="form-control" rows="30" cols="50" type="text" name="description" id="description">"${servicecategory.description}"</textarea>
+                                                    </div>
                                             </div>
                                             <div class="mb-0">
                                                 <div>
                                                     <input type="submit" class="btn btn-primary waves-effect waves-light me-1" name="action" value="Save"/>
-                                                    <a href="${pageContext.request.contextPath}/ServiceCategoryServlet?actor=admin&action=management" class="btn btn-secondary waves-effect">
+                                                    <a href="${pageContext.request.contextPath}/ServiceCategoryServlet?action=management" class="btn btn-secondary waves-effect">
                                                         Quay trở lại
                                                     </a>
                                                 </div>

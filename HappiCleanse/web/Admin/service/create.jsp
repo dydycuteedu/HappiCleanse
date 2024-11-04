@@ -4,7 +4,7 @@
 
     <head>
         <meta charset="utf-8" />
-        <title>Tao moi Dịch vụ</title>
+        <title>Tạo mới dịch vụ</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
         <meta content="Themesdesign" name="author" />
@@ -51,7 +51,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="card-title">
-                                            <h4 >Tạo Mới Dich Vu</h4>
+                                            <h4 >Thêm dịch vụ mới</h4>
                                         </div>
                                         <form action="${pageContext.request.contextPath}/ServiceServlet" method="post" style="display: inline;">
                                             <div class="row mb-3">

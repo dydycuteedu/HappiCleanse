@@ -5,7 +5,7 @@
 
     <head>
         <meta charset="utf-8" />
-        <title>Danh sách danh mục Dich vụ</title>
+        <title>Danh sách danh mục dịch vụ</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
         <meta content="Themesdesign" name="author" />
@@ -65,7 +65,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="card-title">
-                                            <h4 >Quản Lí Danh Mục Dịch Vu</h4>
+                                            <h4 >Quản Lí danh mục dịch vụ</h4>
                                             <a href="${pageContext.request.contextPath}/ServiceCategoryServlet?&action=create" id="editable-sample_new" class="btn btn-primary">
                                                 Tạo mới <i class="fa fa-plus"></i>
                                             </a>
@@ -76,8 +76,8 @@
                                             <thead>
                                                 <tr>
                                                     <th>Mã Loại Dịch Vụ</th>
-                                                    <th>Tên Loại Dịch Vụ</th>
-                                                    <th>Hinh anh minh hoa</th>
+                                                    <th>Tên Loại dịch vụ</th>
+                                                    <th>Hình ảnh minh họa</th>
                                                     <th>Hành Động</th>
                                                 </tr>
                                             </thead>
