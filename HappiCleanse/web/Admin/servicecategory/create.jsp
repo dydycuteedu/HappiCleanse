@@ -71,7 +71,7 @@
                                                 <label for="example-text-input" class="col-sm-2 col-form-label">Mô tả chi tiết</label>
                                                 <div class="col-sm-10">
                                                     
-                                                    <textarea class="form-control" rows="30" cols="50" type="text" name="description" id="description" placeholder=""${servicecategory.description}"></textarea>
+                                                    <textarea class="form-control" rows="10" cols="30" type="text" name="description" id="description" placeholder=""${servicecategory.description}"></textarea>
 
                                                 </div>
                                                 <label for="example-text-input" class="col-sm-2 col-form-label">Hình ảnh minh họa</label>

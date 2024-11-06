@@ -62,13 +62,13 @@
                                                 <div class="col-sm-10">
                                                     <input class="form-control" type="text" name="nameServiceCategory" id="rolename" value="${servicecategory.nameServiceCategory}">
                                                 </div>
-                                                <label for="rolename" class="col-sm-2 col-form-label">Tiêu đề dịch vụ</label>
+                                                <label for="rolename" class="col-sm-2 col-form-label">Tiêu đề</label>
                                                 <div class="col-sm-10">
                                                     <input class="form-control" type="text" name="subDescription" id="description" value="${servicecategory.subDescription}" >
                                                 </div>
-                                                <label for="rolename" class="col-sm-2 col-form-label">Mô tả dịch vụ</label>
+                                                <label for="rolename" class="col-sm-2 col-form-label">Mô tả</label>
                                                 <div class="col-sm-10">
-                                                     <textarea class="form-control" rows="30" cols="50" type="text" name="description" id="description">"${servicecategory.description}"</textarea>
+                                                     <textarea class="form-control" rows="20" cols="30" type="text" name="description" id="description">"${servicecategory.description}"</textarea>
                                                     </div>
                                             </div>
                                             <div class="mb-0">

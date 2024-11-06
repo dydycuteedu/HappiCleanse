@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -19,8 +20,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Order;
 import model.Service;
+import model.Shifts;
+import model.TypeShift;
 import model.User;
-import utils.ConvertConstant;
+import utils.CheckShift;
 
 
 @WebServlet(name = "CreateOrderServlet", urlPatterns = {"/CreateOrderServlet"})
@@ -80,25 +83,20 @@ public class CreateOrderServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             Dao dao = new Dao();
-            HttpSession session = request.getSession();
-            User user = (User) session.getAttribute("acc");
-            
-            String nameUser = request.getParameter("nameUser");
-            String email = request.getParameter("email");
-            String phoneNumber = request.getParameter("phoneNumber");
-            String address = request.getParameter("address");
-            if (user == null) {
-                user = dao.getUser(1);
-            }
             int idService = Integer.parseInt(request.getParameter("idService"));
             String timeStart = request.getParameter("dateShift");
             String notes = request.getParameter("notes");
             Service service = dao.getService(idService);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
             LocalDateTime localDateTime = LocalDateTime.parse(timeStart, formatter);
-            Order order = new Order(user,service, notes, "Pending", localDateTime);
-            dao.addOrder(order);
-            response.sendRedirect("BookingServlet");
+            TypeShift typeShift = dao.getTypeShift(CheckShift.checkHoliday(localDateTime));
+            double totalMoney = service.getPrice() * typeShift.getCoefficient();
+            request.setAttribute("idService", idService);
+            request.setAttribute("timeStart", timeStart);
+            request.setAttribute("notes", notes);
+            request.setAttribute("service", service);
+            request.setAttribute("totalMoney", totalMoney);
+            request.getRequestDispatcher("Payment.jsp").forward(request, response);
         } catch (Exception ex) {
             Logger.getLogger(CreateOrderServlet.class.getName()).log(Level.SEVERE, null, ex);
         }

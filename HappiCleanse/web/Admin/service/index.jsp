@@ -28,6 +28,8 @@
         <link href="${pageContext.request.contextPath}/Admin\assets/css/icons.min.css" rel="stylesheet" type="text/css" />
         <!-- App Css-->
         <link href="${pageContext.request.contextPath}/Admin\assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+        <!-- Sweet Alert-->
+        <link href="assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
         <style>
             #datatable th, #datatable td {
                 white-space: nowrap; /* Ngăn không cho nội dung xuống dòng */
@@ -79,7 +81,7 @@
                                                     <th>Tên Dịch vụ</th>
                                                     <th>Mô Tả Dịch vụ</th>
                                                     <th>Loại Dịch vụ</th>
-                                                    <th>Hinh ảnh minh họa</th>
+                                                    
                                                     <th>Hành Động</th>
                                                 </tr>
                                             </thead>
@@ -90,10 +92,10 @@
                                                         <td>${service.nameService}</td>
                                                         <td>${service.description}</td>
                                                         <td>${service.serviceCategory.nameServiceCategory}</td>
-                                                        <td><img class="rounded-circle header-profile-user" src="${service.img1}" alt="alt"/>
+<!--                                                        <td><img class="rounded-circle header-profile-user" src="${service.img1}" alt="alt"/>
                                                             <img class="rounded-circle header-profile-user" src="${service.img2}" alt="alt"/>
                                                             <img class="rounded-circle header-profile-user" src="${service.img3}" alt="alt"/>
-                                                        </td>
+                                                        </td>-->
                                                         <td>
                                                             <div class="btn-group" role="group">
 
@@ -116,7 +118,7 @@
                                                                 <form action="${pageContext.request.contextPath}/ServiceServlet" method="GET" style="display: inline;">
                                                                     <input type="hidden" name="id" value="${service.idService}">
                                                                     <input type="hidden" name="action" value="delete">
-                                                                    <button type="submit" class="btn btn-sm btn-danger">
+                                                                    <button type="submit" class="btn btn-sm btn-danger" id="sa-params">
                                                                         <i class="ri-delete-bin-fill"></i>
                                                                     </button>
                                                                 </form>
@@ -180,6 +182,10 @@
         <script src="${pageContext.request.contextPath}/Admin\assets/js/pages/datatables.init.js"></script>
 
         <script src="${pageContext.request.contextPath}/Admin\assets/js/app.js"></script>
+        <!-- Sweet Alerts js -->
+        <script src="assets/libs/sweetalert2/sweetalert2.min.js"></script>
 
+        <!-- Sweet alert init js-->
+        <script src="assets/js/pages/sweet-alerts.init.js"></script>
     </body>
 </html>

@@ -1,4 +1,4 @@
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -63,8 +63,8 @@
                 <div class="row mb-5">
                     <div class="col-md-12 text-center">
                         <h1 class="mb-4">Choose Your Payment Method</h1>
-                        <p class="text-center">You are about to pay for the service: <strong>${order.service.nameService}</strong></p>
-                        <p class="text-center">Amount to be paid: <strong>${order.totalMoney}00 vnđ</strong></p> <!-- Replace with the actual amount -->
+                        <p class="text-center">You are about to pay for the service: <strong>${service.nameService}</strong></p>
+                        <p class="text-center">Amount to be paid: <fmt:formatNumber value="${totalMoney}" type="number" groupingUsed="true" /><strong><span class="text-xs/sp14 font-medium mr-px">₫</span></strong></p> <!-- Replace with the actual amount -->
                     </div>
                 </div>
 
@@ -72,19 +72,22 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-6">
                         <div class="bg-light text-center p-5">
-                            <form action="PaymentServlet " method="post">
+                            <form action="PaymentServlet" method="GET">
                                 <h2 class="mb-4">Select Payment Option</h2>
-
+                                <input type="hidden" name="idService" value="${idService}">
+                                <input type="hidden" name="dateShift" value="${timeStart}">
+                                <input type="hidden" name="notes" value="${notes}">
                                 <!-- Service Summary -->
                                 <div class="row g-3 mb-4">
                                     <div class="col-12">
-                                        <h4 class="text-start">Service Summary</h4>
-                                        <p><strong>Service:</strong> ${order.service.nameService}</p>
-                                        <p><strong>Description:</strong> ${order.service.description}</p>
-                                        <p><strong>Amount:</strong>${order.totalMoney}</p> <!-- Replace with actual amount -->
+                                        <p><strong>Service:</strong> ${service.nameService}</p>
+                                        <p><strong>Description:</strong> ${service.description}</p>
+                                        <p><strong>Time Working:</strong> ${timeStart}</p>
+                                        <p><strong>Notes:</strong> ${notes}</p>
+                                        <p><strong>Amount:</strong><fmt:formatNumber value="${totalMoney}" type="number" groupingUsed="true" /><strong><span class="text-xs/sp14 font-medium mr-px">₫</span></strong></p>
                                     </div>
                                 </div>
-                                    <button class="btn btn-primary w-100 py-3" style="border-radius: 5px; font-size: 14px; margin-bottom: 20px" type="submit">
+                                <button class="btn btn-primary w-100 py-3" style="border-radius: 5px; font-size: 14px; margin-bottom: 20px" type="submit">
                                     Proceed to Payment by Cash
                                 </button>
                             </form>
@@ -103,12 +106,12 @@
                             </div>
                             <div class="modal-body">
                                 <form action="VNPayServlet" id="frmCreateOrder" method="post">     
-                                    <input type="hidden" name="id" value="${order.idOrder}">
-                                    <input type="hidden" name="action" value="deposit">
-
+                                    <input type="hidden" name="idService" value="${idService}">
+                                    <input type="hidden" name="dateShift" value="${timeStart}">
+                                    <input type="hidden" name="notes" value="${notes}">
                                     <div class="form-group mb-4">
                                         <input class="form-control" data-val="true" data-val-number="The field Amount must be a number." data-val-required="The Amount field is required." 
-                                               id="amount" max="100000000" min="10000" name="amount" type="hidden" step="10000" value="${order.totalMoney}"/>
+                                               id="amount" max="100000000" min="10000" name="amount" type="hidden" step="10000" value="${totalMoney}"/>
                                     </div>
 
                                     <h4 class="mb-3">Chọn phương thức thanh toán</h4>

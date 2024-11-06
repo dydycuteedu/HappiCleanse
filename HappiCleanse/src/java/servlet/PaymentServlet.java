@@ -7,6 +7,9 @@ package servlet;
 import dao.Dao;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -14,8 +17,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.Order;
+import model.Service;
 import model.Shifts;
+import model.TypeShift;
+import model.User;
+import utils.CheckShift;
 
 @WebServlet(name = "PaymentServlet", urlPatterns = {"/PaymentServlet"})
 public class PaymentServlet extends HttpServlet {
@@ -59,15 +67,27 @@ public class PaymentServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            int idOrder = Integer.parseInt(request.getParameter("idOrder"));
             Dao dao = new Dao();
-            Order order = dao.getOrder(idOrder);
-            request.setAttribute("order", order);
-            Shifts shift = dao.getAllShiftByOrder(idOrder);
-            request.setAttribute("service", dao.getServiceByShift(shift.getIdShift()).getLast());
-            double totalMoney = order.getShifts().getPrice();
-            request.setAttribute("totalMoney", totalMoney);
-            request.getRequestDispatcher("Payment.jsp").forward(request, response);
+            HttpSession session = request.getSession();
+            User user = (User) session.getAttribute("acc");
+            if (user == null) {
+                user = dao.getUser(1);
+            }
+            int idService = Integer.parseInt(request.getParameter("idService"));
+            String timeStart = request.getParameter("dateShift");
+            String notes = request.getParameter("notes");
+            Service service = dao.getService(idService);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+            LocalDateTime localDateTime = LocalDateTime.parse(timeStart, formatter);
+            Order order = new Order(user, service, notes, "Pending", localDateTime);
+            dao.addOrder(order);
+            order = dao.getOrder(dao.getAllOrders().getFirst().getIdOrder());
+            TypeShift typeShift = dao.getTypeShift(CheckShift.checkHoliday(order.getTimeStart()));
+            Shifts shift = new Shifts(typeShift);
+            dao.addShift(shift);
+            List<Shifts> shifts = dao.getAllShifts();
+            dao.insertDetailOrder(typeShift.getCoefficient() * service.getPrice(), order.getIdOrder(), shifts.getLast().getIdShift());
+            request.getRequestDispatcher("BookingServlet").forward(request, response);
         } catch (Exception ex) {
             Logger.getLogger(PaymentServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -85,11 +105,27 @@ public class PaymentServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            int idOrder = Integer.parseInt(request.getParameter("id"));
             Dao dao = new Dao();
-            Order order = dao.getOrder(idOrder);
-            request.setAttribute("order", order);
-            request.getRequestDispatcher("Payment.jsp").forward(request, response);
+            HttpSession session = request.getSession();
+            User user = (User) session.getAttribute("acc");
+            if (user == null) {
+                user = dao.getUser(1);
+            }
+            int idService = Integer.parseInt(request.getParameter("idService"));
+            String timeStart = request.getParameter("dateShift");
+            String notes = request.getParameter("notes");
+            Service service = dao.getService(idService);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+            LocalDateTime localDateTime = LocalDateTime.parse(timeStart, formatter);
+            Order order = new Order(user, service, notes, "Pending", localDateTime);
+            dao.addOrder(order);
+            order = dao.getOrder(dao.getAllOrders().getFirst().getIdOrder());
+            TypeShift typeShift = dao.getTypeShift(CheckShift.checkHoliday(order.getTimeStart()));
+            Shifts shift = new Shifts(typeShift);
+            dao.addShift(shift);
+            List<Shifts> shifts = dao.getAllShifts();
+            dao.insertDetailOrder(typeShift.getCoefficient() * service.getPrice(), order.getIdOrder(), shifts.getLast().getIdShift());
+            request.getRequestDispatcher("BookingServlet").forward(request, response);
         } catch (Exception ex) {
             Logger.getLogger(PaymentServlet.class.getName()).log(Level.SEVERE, null, ex);
         }

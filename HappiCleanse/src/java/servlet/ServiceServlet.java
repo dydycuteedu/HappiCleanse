@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Service;
 import model.ServiceCategory;
-import model.User;
 
 /**
  *
@@ -190,15 +189,18 @@ public class ServiceServlet extends HttpServlet {
         String img1 = request.getParameter("img1");
         String img2 = request.getParameter("img2");
         String img3 = request.getParameter("img3");
+        double price = Double.parseDouble(request.getParameter("price"));
 
         ServiceCategory servicecategory = dao.getServiceCategory(idServiceCategory);
         Service service = new Service();
 
         service.setServiceCategory(servicecategory);
+        service.setNameService(name);
         service.setDescription(description);
         service.setImg1(img1);
         service.setImg2(img2);
         service.setImg3(img3);
+        service.setPrice(price);
 
         dao.addService(service);
         Management(request, response);

@@ -1,4 +1,4 @@
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -72,7 +72,7 @@
                     <ol class="breadcrumb text-uppercase">
                         <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
                         <li class="breadcrumb-item"><a class="text-white" href="#">Pages</a></li>
-                        <li class="breadcrumb-item text-white active" aria-current="page">Booking History</li>
+                        <li class="breadcrumb-item text-white active" aria-current="page">Working History</li>
                     </ol>
                 </nav>
             </div>
@@ -85,7 +85,7 @@
                 <div class="col-md-12 col-lg-9">
                     <div class="ms-lg-5 ps-lg-5">
                         <div class="text-center text-lg-start wow fadeInUp" data-wow-delay="0.1s">
-                            <h1 class="mb-5">Order Working List</h1>
+                            <h1 class="mb-5">Working List</h1>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-bordered text-center">
@@ -119,9 +119,6 @@
                                             <c:if test="${order.statusOrder == 'Cancelled'}">
                                                 <td><span class="badge bg-danger">Cancelled</span></td>
                                             </c:if>
-                                            <c:if test="${order.statusOrder == 'Check Out'}">
-                                                <td><span class="badge bg-danger">Check Out</span></td>
-                                            </c:if>
                                             <td>${order.timeStart}</td>
                                             <c:if test="${order.timeEnd != null}">
                                                 <td>${order.timeEnd}</td>
@@ -131,15 +128,7 @@
                                             </c:if>
                                             <td>${order.user.fullname}</td>
                                             <td>${order.user.address}</td>
-                                            <c:if test="${order.statusOrder != 'Completed' && order.statusOrder != 'Check Out'}">
-                                                <td>Giá tiền sẽ được cập nhập sau khi hoàn thành</td>
-                                            </c:if>
-                                            <c:if test="${order.statusOrder == 'Check Out'}">
-                                                <td>${order.totalMoney}00 vnd</td>
-                                            </c:if>
-                                            <c:if test="${order.statusOrder == 'Completed'}">
-                                                <td>${order.totalMoney}00 vnd</td>
-                                            </c:if>
+                                            <td><fmt:formatNumber value="${order.totalMoney}" type="number" groupingUsed="true" /><strong><span class="text-xs/sp14 font-medium mr-px">₫</span></strong></td>
                                             <c:if test="${order.statusOrder == 'In Progress'}">
                                                 <td>
                                                     <form action="StaffWorkingServlet" method="post" style="display: inline;">

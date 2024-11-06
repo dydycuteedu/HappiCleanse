@@ -56,7 +56,7 @@
                         <a href="contact.html" class="nav-item nav-link">Contact</a>
                     </c:if>
                     <c:if test="${sessionScope.acc.role == 'Staff'}">
-                        <a href="StaffWorkingServlet" class="nav-item nav-link">Order Booking List</a>
+                        <a href="StaffWorkingServlet" class="nav-item nav-link"> Working List</a>
                     </c:if>
                 </div>
 

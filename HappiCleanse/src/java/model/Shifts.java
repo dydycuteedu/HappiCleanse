@@ -10,18 +10,14 @@ public class Shifts {
 
     private TypeShift typeShift;
 
-    private double price;
-
-    public Shifts(int idShift, TypeShift typeShift, double price) {
+    public Shifts(int idShift, TypeShift typeShift) {
         this.idShift = idShift;
         this.typeShift = typeShift;
-        this.price = price;
     }
 
     
-    public Shifts (TypeShift typeShift, double price) {
+    public Shifts (TypeShift typeShift) {
         this.typeShift = typeShift;
-        this.price = price;
     }
 
     public Shifts() {
@@ -43,18 +39,4 @@ public class Shifts {
         this.typeShift = typeShift;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    @Override
-    public String toString() {
-        return "Shifts{" + "idShift=" + idShift + ", typeShift=" + typeShift + ", price=" + price + '}';
-    }
-    
-    
 }

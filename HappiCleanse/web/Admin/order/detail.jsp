@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -93,9 +94,13 @@
                                                         <div class="card-body">
                                                             <div class="mb-3 d-flex justify-content-between">
                                                                 <div>
-                                                                    <span class="me-3">${o.timeEnd}</span>
-                                                                    <span class="me-3">#${o.idOrder}</span>
-
+                                                                    <c:if test="${o.timeEnd == null}">
+                                                                        <span class="me-3">#${o.idOrder}</span>
+                                                                    </c:if>
+                                                                    <c:if test="${o.timeEnd != null}">
+                                                                        <span class="me-3">${o.timeEnd}</span>
+                                                                        <span class="me-3">#${o.idOrder}</span>
+                                                                    </c:if>
                                                                 </div>
 
                                                             </div>
@@ -107,16 +112,21 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td colspan="2">Phí dịch vụ</td>
-                                                                        <td class="text-end">${o.shifts.price}00 vnđ</td>
+                                                                        <td class="text-end"><fmt:formatNumber value="${o.service.price}" type="number" groupingUsed="true" /><strong><span class="text-xs/sp14 font-medium mr-px">₫</span></strong> * ${o.shifts.typeShift.coefficient}</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td colspan="2">Tổng thời gian hoàn thành dịch vụ</td>
-                                                                        <td class="text-end">${hoursDifference}h</td>
+                                                                        <c:if test="${hoursDifference == 0}">
+                                                                            <td class="text-end">Chưa làm việc</td>
+                                                                        </c:if>
+                                                                        <c:if test="${hoursDifference != 0}">
+                                                                            <td class="text-end">${hoursDifference}h</td>
+                                                                        </c:if>
                                                                     </tr>
 
                                                                     <tr class="fw-bold">
                                                                         <td colspan="2">Tổng tiền</td>
-                                                                        <td class="text-end">${o.totalMoney}00 vnđ</td>
+                                                                        <td class="text-end"><fmt:formatNumber value="${o.totalMoney}" type="number" groupingUsed="true" /><strong><span class="text-xs/sp14 font-medium mr-px">₫</span></strong></td>
                                                                     </tr>
                                                                 </tfoot>
                                                             </table>
@@ -130,11 +140,11 @@
                                                                     <h3 class="h6">Phương thức thanh toán</h3>
                                                                     <c:if test="${o.statusOrder == 'Completed'}">
                                                                         <p>Tiền mặt<br>
-                                                                            Tổng tiền: ${o.totalMoney}00 vnđ
+                                                                            Tổng tiền: <fmt:formatNumber value="${o.totalMoney}" type="number" groupingUsed="true" /><strong><span class="text-xs/sp14 font-medium mr-px">₫</span></strong>
                                                                             <span class="badge bg-success rounded-pill">PAID</span>
                                                                         </p>
                                                                         <p>VNPAY<br>
-                                                                            Tổng tiền: ${o.totalMoney}00 vnđ 
+                                                                            Tổng tiền: <fmt:formatNumber value="${o.totalMoney}" type="number" groupingUsed="true" /><strong><span class="text-xs/sp14 font-medium mr-px">₫</span></strong> 
                                                                             <span class="badge bg-success rounded-pill">PAID</span>
                                                                         </p>
                                                                     </c:if>

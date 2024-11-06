@@ -133,7 +133,10 @@ public class OrderServlet extends HttpServlet {
             Dao dao = new Dao();
             int id = Integer.parseInt(request.getParameter("id"));
             Order o = dao.getOrder(id);
-            int hoursDifference = (int) Duration.between(o.getTimeStart(), o.getTimeEnd()).toHours();
+            int hoursDifference = 0;
+            if (o.getTimeEnd() != null) {
+                hoursDifference = (int) Duration.between(o.getTimeStart(), o.getTimeEnd()).toHours();
+            }
             request.setAttribute("o", o);
             request.setAttribute("hoursDifference", hoursDifference);
             RequestDispatcher dispatcher = request.getRequestDispatcher("Admin/order/detail.jsp");
@@ -164,7 +167,7 @@ public class OrderServlet extends HttpServlet {
                 List<Order> orderlist = dao.getOrderinprogressbystaffID(u.getIdUser());
                 if (!orderlist.isEmpty()) {
                     for (Order oder : orderlist) {
-                        if (!o.getTimeStart().equals(oder.getTimeStart())) {
+                        if (o.getTimeStart().getDayOfMonth() != (oder.getTimeStart().getDayOfMonth())) {
                             staffavailable.add(u);
                         }
                     }
@@ -174,7 +177,6 @@ public class OrderServlet extends HttpServlet {
             }
             request.setAttribute("o", o);
             request.setAttribute("staff", staffavailable);
-            //request.setAttribute("detailshift", detailshift);
             RequestDispatcher dispatcher = request.getRequestDispatcher("Admin/order/edit.jsp");
             dispatcher.forward(request, response);
         } catch (Exception ex) {

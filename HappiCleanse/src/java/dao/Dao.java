@@ -24,7 +24,6 @@ import model.Shifts;
 import model.ServiceCategory;
 import model.TypeShift;
 import model.User;
-import model.WorkingHour;
 import utils.BCryptPassword;
 import utils.ConvertConstant;
 
@@ -230,7 +229,7 @@ public class Dao {
     }
 
     public boolean singup(String fullname, String username, String pass, String email) throws SQLException {
-        String sql = "INSERT INTO Users (fullname, username, password, email) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO Users (fullname, username, password, email,isValid) VALUES (?, ?, ?, ?,1)";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, fullname);
             ps.setString(2, username);
@@ -519,10 +518,9 @@ public class Dao {
 
     // Shift 28/09
     public void addShift(Shifts shift) throws SQLException, Exception {
-        String sql = "INSERT INTO Shifts (idTypeShift, price) VALUES (?, ?)";
+        String sql = "INSERT INTO Shifts (idTypeShift) VALUES (?)";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, shift.getTypeShift().getIdTypeShift());
-            ps.setDouble(2, shift.getPrice());
             ps.executeUpdate();
         }
     }
@@ -539,7 +537,7 @@ public class Dao {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 TypeShift typeShift = getTypeShift(rs.getInt("idTypeShift"));
-                shifts = new Shifts(rs.getInt("idShift"), typeShift, rs.getDouble("price"));
+                shifts = new Shifts(rs.getInt("idShift"), typeShift);
             }
         } catch (Exception ex) {
             Logger.getLogger(Dao.class.getName()).log(Level.SEVERE, null, ex);
@@ -554,7 +552,7 @@ public class Dao {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     TypeShift typeShift = getTypeShift(rs.getInt("idTypeShift"));
-                    return new Shifts(rs.getInt("idShift"), typeShift, rs.getDouble("price"));
+                    return new Shifts(rs.getInt("idShift"), typeShift);
                 }
             }
         }
@@ -567,18 +565,17 @@ public class Dao {
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 TypeShift typeShift = getTypeShift(rs.getInt("idTypeShift"));
-                shifts.add(new Shifts(rs.getInt("idShift"), typeShift, rs.getDouble("price")));
+                shifts.add(new Shifts(rs.getInt("idShift"), typeShift));
             }
         }
         return shifts;
     }
 
     public void updateShift(Shifts shift) throws SQLException, Exception {
-        String sql = "UPDATE Shifts SET idTypeShift = ?, price = ? WHERE idShift = ?";
+        String sql = "UPDATE Shifts SET idTypeShift = ? WHERE idShift = ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, shift.getTypeShift().getIdTypeShift());
-            ps.setDouble(2, shift.getPrice());
-            ps.setInt(3, shift.getIdShift());
+            ps.setInt(2, shift.getIdShift());
             ps.executeUpdate();
         }
     }
@@ -706,7 +703,7 @@ public class Dao {
 //    }
     // service
     public void addService(Service service) throws SQLException, Exception {
-        String sql = "INSERT INTO Service (idServiceCategory,nameService, description, img1, img2, img3) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Service (idServiceCategory,nameService, description, img1, img2, img3,price) VALUES (?, ?, ?, ?, ?, ?,?)";
         try (Connection conn = DBContext.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, service.getServiceCategory().getIdServiceCategory());
             stmt.setString(2, service.getNameService());
@@ -714,6 +711,7 @@ public class Dao {
             stmt.setString(4, service.getImg1());
             stmt.setString(5, service.getImg2());
             stmt.setString(6, service.getImg3());
+            stmt.setDouble(7, service.getPrice());
             stmt.executeUpdate();
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
@@ -792,7 +790,7 @@ public class Dao {
         service.setImg1(rs.getString("img1"));
         service.setImg2(rs.getString("img2"));
         service.setImg3(rs.getString("img3"));
-
+        service.setPrice(rs.getDouble("price"));
         // Assuming you have a ServiceCategoryDAO to get ServiceCategory by id
         ServiceCategory serviceCategory = getServiceCategory(rs.getInt("idServiceCategory"));
         service.setServiceCategory(serviceCategory);
@@ -1017,7 +1015,7 @@ public class Dao {
 
     // GET SERVICE BY SHIFTS
     public List<Service> getServiceByShift(int idShift) throws Exception {
-        String sql = "SELECT s.idService, s.nameService, s.description, s.img1, s.img2, s.img3, idServiceCategory "
+        String sql = "SELECT s.idService, s.nameService, s.description, s.img1, s.img2, s.img3, idServiceCategory ,s.price"
                 + "FROM DetailShift ds "
                 + "JOIN Service s ON ds.idService = s.idService "
                 + "WHERE ds.idShifts = ?";
@@ -1036,7 +1034,8 @@ public class Dao {
                         rs.getString("img1"),
                         rs.getString("img2"),
                         rs.getString("img3"),
-                        serviceCategory
+                        serviceCategory,
+                        rs.getFloat("price")
                 );
                 services.add(service); // Add the service to the list
             }
@@ -1045,27 +1044,5 @@ public class Dao {
         }
 
         return services;
-    }
-
-    public WorkingHour getWorkingHourbyHours(int hour) {
-        WorkingHour workinghour = new WorkingHour();
-        try {
-            Connection con = DBContext.getConnection();
-            PreparedStatement cstmt = con.prepareStatement("SELECT TOP(1) *\n"
-                    + "FROM WorkingHour WHERE ? <= hours\n"
-                    + "ORDER BY hours");
-            cstmt.setInt(1, hour);
-            ResultSet rs = cstmt.executeQuery();
-            while (rs.next()) {
-                workinghour.setIdWorkingHour(rs.getInt(1));
-                workinghour.setHour(rs.getInt(2));
-                workinghour.setPricePerHour(rs.getDouble(3));
-            }
-            cstmt.close();
-            con.close();
-        } catch (Exception e) {
-            System.out.println("Error" + e);
-        }
-        return workinghour;
     }
 }

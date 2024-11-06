@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -26,7 +28,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.Order;
+import model.Service;
+import model.Shifts;
+import model.TypeShift;
+import model.User;
+import utils.CheckShift;
 import utils.VNPay.VnPayEncryption;
 
 /**
@@ -39,37 +47,53 @@ public class VNPayServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            int orderid = Integer.parseInt(request.getParameter("id"));
             Dao dao = new Dao();
-            Order order = dao.getOrder(orderid);
-            order.setStatusOrder("Completed");
-            dao.cancelOrder(order);
+            HttpSession session = request.getSession();
+            User user = (User) session.getAttribute("acc");
+            if (user == null) {
+                user = dao.getUser(1);
+            }
+            int idService = Integer.parseInt(request.getParameter("idService"));
+            String timeStart = request.getParameter("dateShift");
+            String notes = request.getParameter("notes");
+            Service service = dao.getService(idService);
+            DateTimeFormatter formatters = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+            LocalDateTime localDateTime = LocalDateTime.parse(timeStart, formatters);
+            Order order = new Order(user, service, notes, "Pending", localDateTime);
+            dao.addOrder(order);
+            order = dao.getOrder(dao.getAllOrders().getFirst().getIdOrder());
+            TypeShift typeShift = dao.getTypeShift(CheckShift.checkHoliday(order.getTimeStart()));
+            Shifts shift = new Shifts(typeShift);
+            dao.addShift(shift);
+            List<Shifts> shifts = dao.getAllShifts();
+            dao.insertDetailOrder(typeShift.getCoefficient() * service.getPrice(), order.getIdOrder(), shifts.getLast().getIdShift());
+            
             String vnp_Version = "2.1.0";
             String vnp_Command = "pay";
             String orderType = "other";
             float number = Float.parseFloat(request.getParameter("amount")) * 100;
-            int amount = (int) number * 1000;
+            int amount = (int) number;
             String bankCode = request.getParameter("bankCode");
-            
+
             String vnp_TxnRef = VnPayEncryption.getRandomNumber(8);
             String vnp_IpAddr = VnPayEncryption.getIpAddress(request);
-            
+
             String vnp_TmnCode = VnPayEncryption.vnp_TmnCode;
-            
+
             Map<String, String> vnp_Params = new HashMap<>();
             vnp_Params.put("vnp_Version", vnp_Version);
             vnp_Params.put("vnp_Command", vnp_Command);
             vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
             vnp_Params.put("vnp_Amount", String.valueOf(amount));
             vnp_Params.put("vnp_CurrCode", "VND");
-            
+
             if (bankCode != null && !bankCode.isEmpty()) {
                 vnp_Params.put("vnp_BankCode", bankCode);
             }
             vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
             vnp_Params.put("vnp_OrderInfo", "Nap tien vao vi FlexFood\nMa giao dich: " + vnp_TxnRef);
             vnp_Params.put("vnp_OrderType", orderType);
-            
+
             String locate = request.getParameter("language");
             if (locate != null && !locate.isEmpty()) {
                 vnp_Params.put("vnp_Locale", locate);
@@ -78,16 +102,16 @@ public class VNPayServlet extends HttpServlet {
             }
             vnp_Params.put("vnp_ReturnUrl", VnPayEncryption.vnp_ReturnUrl);
             vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
-            
+
             Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
             String vnp_CreateDate = formatter.format(cld.getTime());
             vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
-            
+
             cld.add(Calendar.MINUTE, 15);
             String vnp_ExpireDate = formatter.format(cld.getTime());
             vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
-            
+
             List fieldNames = new ArrayList(vnp_Params.keySet());
             Collections.sort(fieldNames);
             StringBuilder hashData = new StringBuilder();

@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -117,15 +118,7 @@
                                                             <td>${orderList.staff.fullname}</td>
                                                         </c:if>
                                                         <td>${orderList.service.nameService}</td>
-                                                        <c:if test="${order.statusOrder != 'Completed' && order.statusOrder != 'Check Out'}">
-                                                            <td>Giá tiền sẽ được cập nhập sau khi hoàn thành</td>
-                                                        </c:if>
-                                                        <c:if test="${orderList.statusOrder == 'Check Out'}">
-                                                            <td>${orderList.totalMoney}00 vnd</td>
-                                                        </c:if>
-                                                        <c:if test="${orderList.statusOrder == 'Completed'}">
-                                                            <td>${orderList.totalMoney}00 vnd</td>
-                                                        </c:if>
+                                                        <td><fmt:formatNumber value="${orderList.totalMoney}" type="number" groupingUsed="true" /><strong><span class="text-xs/sp14 font-medium mr-px">₫</span></strong></td>
                                                         <td>
                                                             <div class="btn-group" role="group">
                                                                 <form action="${pageContext.request.contextPath}/OrderServlet" method="POST" style="display: inline;">

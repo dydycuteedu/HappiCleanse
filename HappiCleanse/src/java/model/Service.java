@@ -15,8 +15,9 @@ public class Service {
     private String img2;
     private String img3;
     private ServiceCategory serviceCategory;
+    private double price;
 
-    public Service(int idService, String nameService, String description, String img1, String img2, String img3, ServiceCategory serviceCategory) {
+    public Service(int idService, String nameService, String description, String img1, String img2, String img3, ServiceCategory serviceCategory,double price) {
         this.idService = idService;
         this.nameService = nameService;
         this.description = description;
@@ -24,6 +25,7 @@ public class Service {
         this.img2 = img2;
         this.img3 = img3;
         this.serviceCategory = serviceCategory;
+        this.price = price;
     }
 
     public Service() {
@@ -77,7 +79,15 @@ public class Service {
         this.img3 = img3;
     }
 
-    
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+
 
     public ServiceCategory getServiceCategory() {
         return serviceCategory;

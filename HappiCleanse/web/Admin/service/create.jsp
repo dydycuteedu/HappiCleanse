@@ -58,19 +58,31 @@
 
                                                 <label for="example-text-input" class="col-sm-2 col-form-label">Mã Loại Dịch vụ</label>
                                                 <div class="col-sm-10">
-                                                    <input class="form-control" type="number" name="servicecategoryid" id="example-text-input" placeholder="${dish.dishCategoryID}">
+                                                    <input class="form-control" type="number" name="idServiceCategory" id="example-text-input" placeholder="Mã Loại Dịch Vụ">
                                                 </div>
                                                 <label for="example-text-input" class="col-sm-2 col-form-label">Tên Dịch vụ</label>
                                                 <div class="col-sm-10">
-                                                    <input class="form-control" type="text" name="name" id="example-text-input" placeholder="${dish.name}">
+                                                    <input class="form-control" type="text" name="nameService" id="example-text-input" placeholder="Tên Dịch Vụ">
                                                 </div>
                                                 <label for="example-text-input" class="col-sm-2 col-form-label">Mô tả Dịch vụ</label>
                                                 <div class="col-sm-10">
-                                                    <input class="form-control" type="text" name="description" id="example-text-input" placeholder="${dish.description}">
+                                                    <input class="form-control" type="text" name="description" id="example-text-input" placeholder="Mô Tả">
                                                 </div>
-                                                <label for="example-text-input" class="col-sm-2 col-form-label">Hình ảnh</label>
+                                                <label for="example-text-input" class="col-sm-2 col-form-label">Hình ảnh 1</label>
                                                 <div class="col-sm-10">
-                                                    <input class="form-control" type="text" name="imgurl" id="example-text-input" placeholder="${dish.imgURL}">
+                                                    <input class="form-control" type="text" name="img1" id="example-text-input" placeholder="Ảnh 1">
+                                                </div>
+                                                <label for="example-text-input" class="col-sm-2 col-form-label">Hình ảnh 2</label>
+                                                <div class="col-sm-10">
+                                                    <input class="form-control" type="text" name="img2" id="example-text-input" placeholder="Ảnh 2">
+                                                </div>
+                                                <label for="example-text-input" class="col-sm-2 col-form-label">Hình ảnh 3</label>
+                                                <div class="col-sm-10">
+                                                    <input class="form-control" type="text" name="img3" id="example-text-input" placeholder="Ảnh 3">
+                                                </div>
+                                                <label for="example-text-input" class="col-sm-2 col-form-label">Giá tiền</label>
+                                                <div class="col-sm-10">
+                                                    <input class="form-control" type="text" name="price" id="example-text-input" placeholder="Giá tiền">
                                                 </div>
                                             </div>
                                             <div class="mb-0">
