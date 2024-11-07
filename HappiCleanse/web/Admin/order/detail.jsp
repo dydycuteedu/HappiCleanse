@@ -162,7 +162,6 @@
                                                                         ${o.user.address}
                                                                         <br>
                                                                         ${o.user.phonenumber}
-
                                                                     </address>
                                                                 </div>
                                                             </div>

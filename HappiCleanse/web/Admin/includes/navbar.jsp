@@ -32,7 +32,7 @@
                         <span>Đơn Hàng</span>
                     </a>
                 </li>
-                <li><a href="email-inbox.html">FeedBack</a></li>
+                <li><a href="${pageContext.request.contextPath}/FbAdminServlet?action=management">Phản hồi</a></li>
                 <li><a href="${pageContext.request.contextPath}/RegisterServlet?action=management">Đơn đăng kí</a></li>
                 <li class="menu-title">Pages</li>
                 <li><a href="${pageContext.request.contextPath}/ServiceCategoryServlet?action=management">Danh Mục Dịch Vụ</a></li>

@@ -1,10 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
     <head>
         <meta charset="utf-8" />
-        <title>Data Tables | Upcube - Admin & Dashboard Template</title>
+        <title>ADMIN EDIT SERVICE</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
         <meta content="Themesdesign" name="author" />
@@ -51,37 +52,30 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="card-title">
-                                            <h4 >Thêm loại dịch vụ mới</h4>
+                                            <h4 >Chỉnh Sửa Dịch Vụ</h4>
                                         </div>
-                                        <form action="${pageContext.request.contextPath}/ServiceCategoryServlet" method="post" style="display: inline;">
+                                        <form action="${pageContext.request.contextPath}/ServiceServlet" method="post" style="display: inline;">
                                             <div class="row mb-3">
-                                                <label for="example-text-input" class="col-sm-2 col-form-label">Tên Loại Dịch vụ</label>
-                                                <div class="col-sm-10">
-                                                    <input class="form-control" type="text" name="nameServiceCategory" id="example-text-input" placeholder="${servicecategory.nameServiceCategory}">
-                                                </div>
-                                                <label for="example-text-input" class="col-sm-2 col-form-label">Tiêu đề</label>
-                                                <div class="col-sm-10">
-                                                    <input class="form-control" type="text" name="subDescription" id="example-text-input" placeholder="${servicecategory.subDescription}">
-                                                </div>
-                                                <label for="example-text-input" class="col-sm-2 col-form-label">Mô tả chi tiết</label>
-                                                <div class="col-sm-10">
-                                                    
-                                                    <textarea class="form-control" rows="10" cols="30" type="text" name="description" id="description" placeholder=""${servicecategory.description}"></textarea>
 
-                                                </div>
-                                                <label for="example-text-input" class="col-sm-2 col-form-label">Hình ảnh minh họa</label>
+                                                <input type="hidden" name="id" value="${service.idService}">
+
+                                                <label for="rolename" class="col-sm-2 col-form-label">Tên Dịch Vụ</label>
                                                 <div class="col-sm-10">
-                                                    <input class="form-control" type="text" name="imgURL" id="example-text-input" placeholder="${servicecategory.imgURL}">
+                                                    <input class="form-control" type="text" name="nameService" id="userid" value="${service.nameService}" >
                                                 </div>
-                                            </div>
-                                            <div class="mb-0">
-                                                <div>
-                                                    <input type="submit" class="btn btn-primary waves-effect waves-light me-1" name="action" value="Add">
-                                                    <a href="${pageContext.request.contextPath}/ServiceCategoryServlet?action=management" class="btn btn-secondary waves-effect">
-                                                        Quay trở lại
-                                                    </a>
+                                                <label for="rolename" class="col-sm-2 col-form-label">Mô tả dịch vụ</label>
+                                                <div class="col-sm-10">
+                                                    <input class="form-control" type="text" name="description" id="description" value="${service.description}" >
                                                 </div>
-                                            </div> 
+
+                                                <div class="mb-0">
+                                                    <div>
+                                                        <input type="submit" class="btn btn-primary waves-effect waves-light me-1" name="action" value="Save"/>
+                                                        <a href="${pageContext.request.contextPath}/ServiceServlet?action=management" class="btn btn-secondary waves-effect">
+                                                            Quay trở lại
+                                                        </a>
+                                                    </div>
+                                                </div>
                                         </form>
                                     </div>
                                 </div>

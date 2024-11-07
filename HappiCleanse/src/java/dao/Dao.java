@@ -229,7 +229,7 @@ public class Dao {
     }
 
     public boolean singup(String fullname, String username, String pass, String email) throws SQLException {
-        String sql = "INSERT INTO Users (fullname, username, password, email,isValid) VALUES (?, ?, ?, ?,1)";
+        String sql = "INSERT INTO Users (fullname, username, password, email,isValid,isCheck) VALUES (?, ?, ?, ?,1,1)";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, fullname);
             ps.setString(2, username);
@@ -244,7 +244,7 @@ public class Dao {
     }
 
     public boolean singupbyEmail(User user) throws SQLException {
-        String sql = "INSERT INTO Users (fullname, username, password, email,avatar) VALUES (?, ?, ?, ?,?)";
+        String sql = "INSERT INTO Users (fullname, username, password, email,avatar,isValid,isCheck) VALUES (?, ?, ?, ?,?,1,1)";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, user.getFullname());
             ps.setString(2, user.getUsername());
@@ -470,16 +470,20 @@ public class Dao {
         }
     }
 
-    public void cancelOrder(Order order) throws SQLException, Exception {
+    public boolean cancelOrder(Order order) throws SQLException, Exception {
         String sql = "UPDATE Orders SET statusOrder = ? WHERE idOrder = ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, order.getStatusOrder());
             ps.setInt(2, order.getIdOrder());
             ps.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
         }
+        return false;
     }
 
-    public void completeOrder(Order order) throws SQLException, Exception {
+    public boolean completeOrder(Order order) throws SQLException, Exception {
         String sql = "UPDATE Orders SET statusOrder = ?, timeEnd =? WHERE idOrder = ? ";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, order.getStatusOrder());
@@ -488,7 +492,11 @@ public class Dao {
             String dateServiceString = order.getTimeEnd().format(formatter);
             ps.setString(2, dateServiceString);
             ps.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
         }
+        return false;
     }
 
     // Type shifts 28/09
@@ -601,27 +609,27 @@ public class Dao {
     }
 //
 //    // Method to retrieve a Feedback by its ID
-//    public Feedback getFeedback(int id) throws SQLException, Exception {
-//        String sql = "SELECT * FROM Feedback WHERE idFeedback = ?";
-//        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-//            ps.setInt(1, id);
-//            try (ResultSet rs = ps.executeQuery()) {
-//                if (rs.next()) {
-//                    Shifts shift = getShift(rs.getInt("idShift"));
-//                    User user = getUser(rs.getInt("idUser"));
-//                    return new Feedback(
-//                            rs.getInt("idFeedback"),
-//                            rs.getString("contentFeedback"),
-//                            rs.getInt("ratings"),
-//                            rs.getTimestamp("editedTime").toLocalDateTime(),
-//                            shift,
-//                            user
-//                    );
-//                }
-//            }
-//        }
-//        return null;
-//    }
+
+    public Feedback getFeedbackbyOrderID(int id) throws SQLException, Exception {
+        String sql = "SELECT * FROM Feedback WHERE idOrder = ?";
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Order order = getOrder(rs.getInt("idOrder"));
+                    User user = getUser(rs.getInt("idUser"));
+                    return new Feedback(
+                            rs.getInt("idFeedback"),
+                            rs.getString("contentFeedback"),
+                            rs.getInt("ratings"),
+                            order,
+                            user
+                    );
+                }
+            }
+        }
+        return null;
+    }
     // Method to retrieve all Feedback entries
 
     public List<Feedback> getAllFeedbacks() throws SQLException, Exception {
@@ -713,11 +721,6 @@ public class Dao {
             stmt.setString(6, service.getImg3());
             stmt.setDouble(7, service.getPrice());
             stmt.executeUpdate();
-            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    service.setIdService(generatedKeys.getInt(1));
-                }
-            }
         }
     }
 
@@ -774,12 +777,18 @@ public class Dao {
         }
     }
 
-    public void deleteService(int idService) throws SQLException, Exception {
+    public int deleteService(int idService) throws SQLException, Exception {
+        int status = 0;
         String sql = "DELETE FROM Service WHERE idService = ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, idService);
             stmt.executeUpdate();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            System.out.println("Error" + e);
         }
+        return status;
     }
 
     private Service mapService(ResultSet rs) throws SQLException, Exception {
@@ -807,11 +816,6 @@ public class Dao {
             stmt.setString(3, servicecategory.getDescription());
             stmt.setString(4, servicecategory.getImgURL());
             stmt.executeUpdate();
-            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    servicecategory.setIdServiceCategory(generatedKeys.getInt(1));
-                }
-            }
         }
     }
 
@@ -822,17 +826,23 @@ public class Dao {
             stmt.setString(2, servicecategory.getSubDescription());
             stmt.setString(3, servicecategory.getDescription());
             stmt.setInt(4, servicecategory.getIdServiceCategory());
- 
+
             stmt.executeUpdate();
         }
     }
 
-    public void deleteServiceCategory(int idServiceCategory) throws SQLException, Exception {
+    public int deleteServiceCategory(int idServiceCategory) throws SQLException, Exception {
+        int status = 0;
         String sql = "DELETE FROM ServiceCategory WHERE idServiceCategory = ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, idServiceCategory);
             stmt.executeUpdate();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            System.out.println("Error" + e);
         }
+        return status;
     }
 
     public ServiceCategory getServiceCategory(int idServiceCategory) throws SQLException, Exception {
@@ -927,6 +937,7 @@ public class Dao {
                 User staff = getUser(rs.getInt("idStaff"));
                 Shifts shifts = getAllShiftByOrder(rs.getInt("idOrder"));
                 Service service = getService(rs.getInt("idService"));
+                Feedback feedback = getFeedbackbyOrderID(rs.getInt("idOrder"));
                 Order o = new Order();
                 o.setIdOrder(rs.getInt("idOrder"));
                 o.setUser(user);
@@ -942,6 +953,7 @@ public class Dao {
                 }
                 o.setShifts(shifts);
                 o.setTotalMoney(getTotalMoneyByIdOrder(rs.getInt("idOrder")));
+                o.setFeedback(feedback);
                 orders.add(o);
             }
         }

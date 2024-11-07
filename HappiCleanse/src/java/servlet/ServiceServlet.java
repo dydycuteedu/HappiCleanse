@@ -153,7 +153,6 @@ public class ServiceServlet extends HttpServlet {
     private void Save(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException, Exception {
         Dao dao = new Dao();
-
         int uid = Integer.parseInt(request.getParameter("id"));
         int idServiceCategory = Integer.parseInt(request.getParameter("idServiceCategory"));
         String name = request.getParameter("nameService");

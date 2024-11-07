@@ -98,6 +98,10 @@
         <servlet-name>DetailServiceCategoryServlet</servlet-name>
         <servlet-class>servlet.DetailServiceCategoryServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>FbAdminServlet</servlet-name>
+        <servlet-class>servlet.FbAdminServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/Logout</url-pattern>
@@ -165,6 +169,10 @@
     <servlet-mapping>
         <servlet-name>DetailServiceCategoryServlet</servlet-name>
         <url-pattern>/DetailServiceCategoryServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FbAdminServlet</servlet-name>
+        <url-pattern>/FbAdminServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

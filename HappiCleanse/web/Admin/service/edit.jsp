@@ -63,6 +63,10 @@
                                                 <div class="col-sm-10">
                                                     <input class="form-control" type="text" name="nameService" id="userid" value="${service.nameService}" >
                                                 </div>
+                                                <label for="rolename" class="col-sm-2 col-form-label">Mã loại dịch vụ</label>
+                                                <div class="col-sm-10">
+                                                    <input class="form-control" type="text" name="idServiceCategory" id="userid" value="${service.serviceCategory.idServiceCategory}" >
+                                                </div>
                                                 <label for="rolename" class="col-sm-2 col-form-label">Mô tả dịch vụ</label>
                                                 <div class="col-sm-10">
                                                     <input class="form-control" type="text" name="description" id="description" value="${service.description}" >

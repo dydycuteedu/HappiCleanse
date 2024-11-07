@@ -21,6 +21,7 @@ public class Order {
     private LocalDateTime timeEnd;
 
     private Shifts shifts;
+    private Feedback feedback;
 
     public Order(int idOrder, User user, Service service, String notes, String statusOrder, LocalDateTime timeStart, LocalDateTime timeEnd, Shifts shifts) {
         this.idOrder = idOrder;
@@ -136,5 +137,14 @@ public class Order {
     public void setTotalMoney(double totalMoney) {
         this.totalMoney = totalMoney;
     }
+
+    public Feedback getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(Feedback feedback) {
+        this.feedback = feedback;
+    }
+
     
 }

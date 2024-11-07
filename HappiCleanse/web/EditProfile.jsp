@@ -11,28 +11,20 @@
         <meta content="" name="keywords">
         <meta content="" name="description">
 
-        <!-- Favicon -->
+        <!--  icon -->
         <link href="img/favicon.ico" rel="icon">
 
         <!-- Google Web Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Roboto:wght@500;700&display=swap"
-              rel="stylesheet">
 
-        <!-- Icon Font Stylesheet -->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
-        <!-- Libraries Stylesheet -->
+        <!-- Libraries Style sheet -->
         <link href="lib/animate/animate.min.css" rel="stylesheet">
         <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
         <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
 
-        <!-- Customized Bootstrap Stylesheet -->
+        <!-- Customized Bootstrap Style sheet -->
         <link href="css/bootstrap.min.css" rel="stylesheet">
 
-        <!-- Template Stylesheet -->
+        <!-- Template Style sheet -->
         <link href="css/style.css" rel="stylesheet">
         <!-- Add your JavaScript here -->
         <style>
@@ -78,7 +70,7 @@
                 transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
             }
 
-           
+
         </style>
     </head>
 
@@ -102,7 +94,7 @@
         <!-- Page Header End -->
 
         <!-- Edit Profile Section Start -->
-      
+
         <div class="container-xxl py-5">
             <div class="container">
 
@@ -113,7 +105,7 @@
 
                                 <div class="mb-4 text-center">
                                     <!-- Clickable profile image -->
-                                    <img id="profileImage" src="${pageContext.request.contextPath}/${sessionScope.acc.avatar}" alt="Profile" class="avatar">
+                                    <img id="profileImage" src="${sessionScope.acc.avatar}" alt="Profile" class="avatar">
                                     <div class="input-group">
                                         <input type="file" class="form-control" name="avatar" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
                                         <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04">Save Avatar</button>
@@ -128,8 +120,7 @@
                         <div class="card mb-4">
                             <div class="card-header">Account Details</div>
                             <div class="card-body">
-                                <form action="editProfile" method="POST">
-
+                                <form action="editProfile" method="POST" accept-charset="UTF-8">
                                     <!-- Form Row-->
                                     <div class="row gx-3 mb-3">
 
@@ -152,7 +143,7 @@
                                         <label class="form-label" for="phone">Phone number</label>
                                         <input type="text" name="phoneNumber" class="form-control" id="phone" placeholder="Phone Number" value="${sessionScope.acc.phonenumber}">
                                     </div>
-                                    <!-- Form Group (addresss)-->
+                                    <!-- Form Group (address)-->
                                     <div class="md-3">
                                         <label class="form-label" for="address">Address</label>
                                         <input type="text" name="address" class="form-control" id="address" placeholder="Address" value="${sessionScope.acc.address}">
@@ -202,7 +193,7 @@
         <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
         <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
-        <!-- Template Javascript -->
+        <!-- Template Java script -->
         <script src="js/main.js"></script>
     </body>
 

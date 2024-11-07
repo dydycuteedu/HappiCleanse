@@ -77,6 +77,7 @@
                                                 <tr>
                                                     <th>Mã Loại Dịch Vụ</th>
                                                     <th>Tên Loại dịch vụ</th>
+                                                    <th>Mô tả loại dịch vụ</th>
                                                     <th>Hình ảnh minh họa</th>
                                                     <th>Hành Động</th>
                                                 </tr>
@@ -86,6 +87,7 @@
                                                     <tr>
                                                         <td>${servicecategory.idServiceCategory}</td>
                                                         <td>${servicecategory.nameServiceCategory}</td>
+                                                        <td>${servicecategory.subDescription}</td>
                                                         <td><img class="rounded-circle header-profile-user" src="${servicecategory.imgURL}" alt="anh minh hoa"/></td>
                                                         <td>
                                                             <div class="btn-group" role="group">

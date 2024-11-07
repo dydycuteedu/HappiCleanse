@@ -83,75 +83,97 @@
                                                     <th>Hành Động</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                <c:forEach var="orderList" items="${orderList}">
-                                                    <tr>
-                                                        <td>${orderList.idOrder}</td>
-                                                        <td>${orderList.user.fullname}</td>
-                                                        <td>${orderList.notes}</td>
-                                                        <c:if test="${orderList.statusOrder == 'Completed'}">
-                                                            <td><span class="badge bg-success">Completed</span></td>
-                                                        </c:if>
-                                                        <c:if test="${orderList.statusOrder == 'Pending'}">
-                                                            <td><span class="badge bg-warning">Pending</span></td>
-                                                        </c:if>
-                                                        <c:if test="${orderList.statusOrder == 'In Progress'}">
-                                                            <td><span class="badge bg-warning">In Progress</span></td>
-                                                        </c:if>
-                                                        <c:if test="${orderList.statusOrder == 'Cancelled'}">
-                                                            <td><span class="badge bg-danger">Cancelled</span></td>
-                                                        </c:if>
-                                                        <c:if test="${orderList.statusOrder == 'Check Out'}">
-                                                            <td><span class="badge bg-danger">Check Out</span></td>
-                                                        </c:if>
-                                                        <td>${orderList.timeStart}</td>
-                                                        <c:if test="${orderList.timeEnd != null}">
-                                                            <td>${orderList.timeEnd}</td>
-                                                        </c:if>
-                                                        <c:if test="${orderList.timeEnd == null}">
-                                                            <td>Waiting</td>
-                                                        </c:if>
-                                                        <c:if test="${orderList.staff.fullname == null}">
-                                                            <td>Chưa có nhân viên nhận việc</td>
-                                                        </c:if>
-                                                        <c:if test="${orderList.staff.fullname != null}">
-                                                            <td>${orderList.staff.fullname}</td>
-                                                        </c:if>
-                                                        <td>${orderList.service.nameService}</td>
-                                                        <td><fmt:formatNumber value="${orderList.totalMoney}" type="number" groupingUsed="true" /><strong><span class="text-xs/sp14 font-medium mr-px">₫</span></strong></td>
-                                                        <td>
-                                                            <div class="btn-group" role="group">
-                                                                <form action="${pageContext.request.contextPath}/OrderServlet" method="POST" style="display: inline;">
-                                                                    <input type="hidden" name="id" value="${orderList.idOrder}">
-                                                                    <input type="hidden" name="action" value="view">
 
-                                                                    <button type="submit" class="btn btn-sm btn-primary" style="margin-right: 5px;">
-                                                                        <i class="ri-profile-fill"></i>
+                                            <c:forEach var="orderList" items="${orderList}">
+                                                <tr>
+                                                    <td>${orderList.idOrder}</td>
+                                                    <td>${orderList.user.fullname}</td>
+                                                    <td>${orderList.notes}</td>
+                                                    <c:if test="${orderList.statusOrder == 'Completed'}">
+                                                        <td><span class="badge bg-success">Completed</span></td>
+                                                    </c:if>
+                                                    <c:if test="${orderList.statusOrder == 'Pending'}">
+                                                        <td><span class="badge bg-warning">Pending</span></td>
+                                                    </c:if>
+                                                    <c:if test="${orderList.statusOrder == 'In Progress'}">
+                                                        <td><span class="badge bg-warning">In Progress</span></td>
+                                                    </c:if>
+                                                    <c:if test="${orderList.statusOrder == 'Cancelled'}">
+                                                        <td><span class="badge bg-danger">Cancelled</span></td>
+                                                    </c:if>
+                                                    <c:if test="${orderList.statusOrder == 'Check Out'}">
+                                                        <td><span class="badge bg-danger">Check Out</span></td>
+                                                    </c:if>
+                                                    <td>${orderList.timeStart}</td>
+                                                    <c:if test="${orderList.timeEnd != null}">
+                                                        <td>${orderList.timeEnd}</td>
+                                                    </c:if>
+                                                    <c:if test="${orderList.timeEnd == null}">
+                                                        <td>Waiting</td>
+                                                    </c:if>
+                                                    <c:if test="${orderList.staff.fullname == null}">
+                                                        <td>Chưa có nhân viên nhận việc</td>
+                                                    </c:if>
+                                                    <c:if test="${orderList.staff.fullname != null}">
+                                                        <td>${orderList.staff.fullname}</td>
+                                                    </c:if>
+                                                    <td>${orderList.service.nameService}</td>
+                                                    <td><fmt:formatNumber value="${orderList.totalMoney}" type="number" groupingUsed="true" /><strong><span class="text-xs/sp14 font-medium mr-px">₫</span></strong></td>
+                                                    <td>
+                                                        <div class="btn-group" role="group">
+                                                            <form action="${pageContext.request.contextPath}/OrderServlet" method="POST" style="display: inline;">
+                                                                <input type="hidden" name="id" value="${orderList.idOrder}">
+                                                                <input type="hidden" name="action" value="view">
+
+                                                                <button type="submit" class="btn btn-sm btn-primary" style="margin-right: 5px;">
+                                                                    <i class="ri-profile-fill"></i>
+                                                                </button>
+                                                            </form>
+                                                            <c:if test="${orderList.statusOrder == 'Pending'}">
+                                                                <form action="${pageContext.request.contextPath}/OrderServlet" method="GET" style="display: inline;">
+                                                                    <input type="hidden" name="id" value="${orderList.idOrder}">
+                                                                    <input type="hidden" name="action" value="edit">
+
+                                                                    <button type="submit" class="btn btn-sm btn-warning" style="margin-right: 5px;" >
+                                                                        <i class="ri-pencil-fill"></i>
                                                                     </button>
                                                                 </form>
-                                                                <c:if test="${orderList.statusOrder == 'Pending'}">
-                                                                    <form action="${pageContext.request.contextPath}/OrderServlet" method="GET" style="display: inline;">
-                                                                        <input type="hidden" name="id" value="${orderList.idOrder}">
-                                                                        <input type="hidden" name="action" value="edit">
-
-                                                                        <button type="submit" class="btn btn-sm btn-warning" style="margin-right: 5px;" >
-                                                                            <i class="ri-pencil-fill"></i>
-                                                                        </button>
-                                                                    </form>
-                                                                    <form action="${pageContext.request.contextPath}/OrderServlet" method="GET" style="display: inline;">
-                                                                        <input type="hidden" name="id" value="${orderList.idOrder}">
-                                                                        <input type="hidden" name="action" value="delete">
-
-                                                                        <button type="submit" class="btn btn-sm btn-danger">
-                                                                            <i class="ri-delete-bin-fill"></i>
-                                                                        </button>
-                                                                    </form>
-                                                                </c:if>
+                                                                <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#CancelOrder-${orderList.idOrder}">
+                                                                    <i class="ri-delete-bin-fill"></i>
+                                                                </button>
+                                                            </c:if>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <div class="modal fade" id="CancelOrder-${orderList.idOrder}" tabindex="10000" aria-hidden="true" style="top: 250px">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="swal2-header">
+                                                                <div class="swal2-icon swal2-warning swal2-icon-show" style="display: flex;">
+                                                                    <div class="swal2-icon-content">!</div>
+                                                                </div>
+                                                                <h2 class="swal2-title" id="swal2-title" style="display: flex;">Bạn có chắc muốn hủy đơn hàng?</h2>
                                                             </div>
-                                                        </td>
-                                                    </tr>
-                                                </c:forEach>
-                                            </tbody>
+                                                            <div class="swal2-content">
+                                                                <div id="swal2-content" class="swal2-html-container" style="display: block;">Bạn sẽ không hoàn tác được hành động này!</div>
+                                                            </div>
+                                                            <div class="swal2-actions">
+                                                                <div class="swal2-loader"></div>
+                                                                <form action="${pageContext.request.contextPath}/OrderServlet" method="GET" style="display: inline;">
+                                                                    <input type="hidden" name="id" value="${orderList.idOrder}">
+                                                                    <input type="hidden" name="action" value="delete">
+                                                                    <button type="submit" class="swal2-confirm swal2-styled" aria-label=""
+                                                                            style="display: inline-block; background-color: rgb(28, 187, 140);">Có, hủy đơn hàng!</button>
+                                                                </form>
+                                                                <button
+                                                                    type="button" class="swal2-cancel swal2-styled" data-bs-dismiss="modal" aria-label="Close"
+                                                                    style="display: inline-block; background-color: rgb(243, 47, 83);">Không</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </c:forEach>
+
                                         </table>
 
                                     </div>

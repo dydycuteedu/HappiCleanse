@@ -5,7 +5,7 @@
 
     <head>
         <meta charset="utf-8" />
-        <title>ADMIN- QUẢN LÝ DỊCH VỤ</title>
+        <title>ADMIN- QUẢN LÝ ĐÁNH GIÁ</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
         <meta content="Themesdesign" name="author" />
@@ -39,6 +39,11 @@
                 padding: 5px; /* Tạo khoảng cách giữa nội dung và viền ô */
                 box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước ô */
             }
+            .star {
+                cursor: pointer;
+                color: gold;
+                transition: color 0.3s;
+            }
         </style>
     </head>
     <body data-topbar="dark">
@@ -67,65 +72,62 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="card-title">
-                                            <h4 >Quản Lí Dịch Vụ</h4>
-                                            <a href="${pageContext.request.contextPath}/ServiceServlet?action=create" id="editable-sample_new" class="btn btn-primary">
-                                                Tạo mới <i class="fa fa-plus"></i>
-                                            </a>
+                                            <h4 >Đánh giá</h4>
                                         </div>
 
 
                                         <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                             <thead>
                                                 <tr>
-                                                    <th>Mã Dịch vụ</th>
+                                                    <th>Mã đơn hàng</th>
+                                                    <th>Tên Khách hàng</th>
                                                     <th>Tên Dịch vụ</th>
-                                                    <th>Mô Tả Dịch vụ</th>
-                                                    <th>Loại Dịch vụ</th>
-                                                    <th>Ảnh Dịch vụ</th>
-                                                    
+                                                    <th>Nội dung đánh giá</th>
+                                                    <th>Đánh giá</th>                                                    
                                                     <th>Hành Động</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <c:forEach var="service" items="${list}">
+                                                <c:forEach var="feedback" items="${list}">
                                                     <tr>
-                                                        <td>${service.idService}</td>
-                                                        <td>${service.nameService}</td>
-                                                        <td>${service.description}</td>
-                                                        <td>${service.serviceCategory.nameServiceCategory}</td>
-                                                        <td><img class="rounded-circle header-profile-user" src="${service.img1}" alt="alt"/>
-                                                            <img class="rounded-circle header-profile-user" src="${service.img2}" alt="alt"/>
-                                                            <img class="rounded-circle header-profile-user" src="${service.img3}" alt="alt"/>
-                                                        </td>
+                                                        <td>${feedback.order.idOrder}</td>
+                                                        <td>${feedback.user.fullname}</td>
+                                                        <td>${feedback.order.service.nameService}</td>
+                                                        <td>${feedback.contentFeedback}</td>
+                                                        <td>${feedback.ratings}<span class="star">&#9733;</span></td>
                                                         <td>
-                                                            <div class="btn-group" role="group">
-
-                                                                <form action="${pageContext.request.contextPath}/ServiceServlet" method="GET" style="display: inline;">
-                                                                    <input type="hidden" name="id" value="${service.idService}">
-                                                                    <input type="hidden" name="action" value="view">
-                                                                    <button type="submit" class="btn btn-sm btn-primary" style="margin-right: 5px;">
-                                                                        <i class="ri-profile-fill"></i>
-                                                                    </button>
-                                                                </form>
-
-                                                                <form action="${pageContext.request.contextPath}/ServiceServlet" method="GET" style="display: inline;">
-                                                                    <input type="hidden" name="id" value="${service.idService}">
-                                                                    <input type="hidden" name="action" value="edit">
-                                                                    <button type="submit" class="btn btn-sm btn-warning" style="margin-right: 5px;">
-                                                                        <i class="ri-pencil-fill"></i>
-                                                                    </button>
-                                                                </form>
-
-                                                                <form action="${pageContext.request.contextPath}/ServiceServlet" method="GET" style="display: inline;">
-                                                                    <input type="hidden" name="id" value="${service.idService}">
-                                                                    <input type="hidden" name="action" value="delete">
-                                                                    <button type="submit" class="btn btn-sm btn-danger" id="sa-params">
-                                                                        <i class="ri-delete-bin-fill"></i>
-                                                                    </button>
-                                                                </form>
-                                                            </div>
+                                                            <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#DeleteFeedback-${feedback.idFeedback}">
+                                                                    <i class="ri-delete-bin-fill"></i>
+                                                                </button>
                                                         </td>
                                                     </tr>
+                                                    <div class="modal fade" id="DeleteFeedback-${feedback.idFeedback}" tabindex="10000" aria-hidden="true" style="top: 250px">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="swal2-header">
+                                                                <div class="swal2-icon swal2-warning swal2-icon-show" style="display: flex;">
+                                                                    <div class="swal2-icon-content">!</div>
+                                                                </div>
+                                                                <h2 class="swal2-title" id="swal2-title" style="display: flex;">Bạn có chắc muốn xóa đánh giá?</h2>
+                                                            </div>
+                                                            <div class="swal2-content">
+                                                                <div id="swal2-content" class="swal2-html-container" style="display: block;">Bạn sẽ không hoàn tác được hành động này!</div>
+                                                            </div>
+                                                            <div class="swal2-actions">
+                                                                <div class="swal2-loader"></div>
+                                                                <form action="${pageContext.request.contextPath}/FbAdminServlet" method="GET" style="display: inline;">
+                                                                    <input type="hidden" name="id" value="${feedback.idFeedback}">
+                                                                    <input type="hidden" name="action" value="delete">
+                                                                    <button type="submit" class="swal2-confirm swal2-styled" aria-label=""
+                                                                            style="display: inline-block; background-color: rgb(28, 187, 140);">Có!</button>
+                                                                </form>
+                                                                <button
+                                                                    type="button" class="swal2-cancel swal2-styled" data-bs-dismiss="modal" aria-label="Close"
+                                                                    style="display: inline-block; background-color: rgb(243, 47, 83);">Không</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 </c:forEach>
                                             </tbody>
                                         </table>

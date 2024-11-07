@@ -7,29 +7,18 @@ package servlet;
 import dao.Dao;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import model.Email;
-import model.EmailUtils;
-import model.Order;
-import model.Shifts;
-import model.TypeShift;
-import model.User;
-import utils.CheckShift;
+import model.Feedback;
+import model.ServiceCategory;
 
-/**
- *
- * @author CHUC DY
- */
-public class StaffWorkingServlet extends HttpServlet {
+public class FbAdminServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -48,10 +37,10 @@ public class StaffWorkingServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet StaffWorkingServlet</title>");
+            out.println("<title>Servlet FbAdminServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet StaffWorkingServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet FbAdminServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -69,15 +58,18 @@ public class StaffWorkingServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            Dao dao = new Dao();
-            HttpSession session = request.getSession();
-            User a = (User) session.getAttribute("acc");
-            List<Order> orderList = dao.getOrderByStaffId(a.getIdUser());
-            request.setAttribute("orderList", orderList);
-            request.getRequestDispatcher("StaffWorkingList.jsp").forward(request, response);
+         try {
+            String action = request.getParameter("action");
+            switch (action) {
+                case "management":
+                    Management(request, response);
+                    break;
+                case "delete":
+                    Delete(request, response);
+                    break;
+            }
         } catch (Exception ex) {
-            Logger.getLogger(StaffWorkingServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrderServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -92,30 +84,18 @@ public class StaffWorkingServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            int idOrder = Integer.parseInt(request.getParameter("id"));
-            Dao dao = new Dao();
-            Order order = dao.getOrder(idOrder);
-            order.setTimeEnd(LocalDateTime.now());
-            order.setStatusOrder("Completed");
-            if (dao.completeOrder(order)) {
-                Email email = new Email();
-                email.setFrom("trantrucvy265@gmail.com");
-                email.setFromPassword("igww uwrd ytua jmja");
-                email.setTo(order.getUser().getEmail());
-                email.setSubject("Your Booking was Completed");
-                StringBuilder sb = new StringBuilder();
-                sb.append("Dear ").append(order.getUser().getFullname()).append("<br>");
-                sb.append("Your Booking have just been Completed. <br> ");
-                sb.append("Please give a feeedback about our Service. <br> ");
-                sb.append("Regards<br>");
-                sb.append("Administrator");
-                email.setContent(sb.toString());
-                EmailUtils.send(email);
+         try {
+            String action = request.getParameter("action");
+            switch (action) {
+                case "management":
+                    Management(request, response);
+                    break;
+                case "delete":
+                    Delete(request, response);
+                    break;
             }
-            doGet(request, response);
         } catch (Exception ex) {
-            Logger.getLogger(StaffWorkingServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrderServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -128,5 +108,22 @@ public class StaffWorkingServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
+    private void Management(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException, Exception {
+        Dao dao = new Dao();
+        List<Feedback> list = dao.getAllFeedbacks();
+        request.setAttribute("list", list);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("Admin/feedback/index.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void Delete(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException, Exception {
+        int id = Integer.parseInt(request.getParameter("id"));
+        Dao dao = new Dao();
+        dao.deleteFeedback(id);
+        Management(request, response);
+    }
 
 }

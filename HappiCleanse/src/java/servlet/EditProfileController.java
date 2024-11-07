@@ -32,8 +32,8 @@ public class EditProfileController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html; charset=UTF-8");
         try {
+            response.setContentType("text/html;charset=UTF-8");
             HttpSession session = request.getSession();
             User a = (User) session.getAttribute("acc");
             Dao dao = new Dao();
@@ -49,6 +49,7 @@ public class EditProfileController extends HttpServlet {
             a.setGender(gender);
             a.setPhonenumber(phoneNumber);
             a.setFullname(fullname);
+            a.setIsValid(1);
             dao.editProfile(a);
 
             request.setAttribute("mess", "Cap nhat tai khoan thanh cong!");

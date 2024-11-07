@@ -20,7 +20,8 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Roboto:wght@500;700&display=swap"
               rel="stylesheet">
-
+         <!-- Sweet Alert-->
+        <link href="Admin\assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
         <!-- Icon Font Stylesheet -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -134,23 +135,49 @@
                                             <td><fmt:formatNumber value="${order.totalMoney}" type="number" groupingUsed="true" /><strong><span class="text-xs/sp14 font-medium mr-px">₫</span></strong></td>
                                             <c:if test="${order.statusOrder == 'Pending'}">
                                                 <td>
-                                                    <form action="BookingServlet" method="post" style="display: inline;">
-                                                        <input type="hidden" name="id" value="${order.idOrder}">
-                                                        <button type="submit" class="btn btn-sm btn-danger">
-                                                            <i class="ri-delete-bin-fill">Cancel</i>
-                                                        </button>
-                                                    </form>
-                                                </td>
-                                            </c:if>
-                                            <c:if test="${order.statusOrder == 'Completed'}">
-                                                <td>
-                                                    <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#createDishModal">
-                                                        <i class="ri-delete-bin-fill">Feedback</i>
+                                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#CancelOrder-${order.idOrder}">
+                                                        <i class="ri-delete-bin-fill">Cancel</i>
                                                     </button>
                                                 </td>
                                             </c:if>
+                                            <c:if test="${order.statusOrder == 'Completed'}">
+                                                <c:if test="${order.feedback == null}">
+                                                    <td>
+                                                        <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#feedbackOrder-${order.idOrder}">
+                                                            <i class="ri-delete-bin-fill">Feedback</i>
+                                                        </button>
+                                                    </td>
+                                                </c:if>
+                                            </c:if>
                                         </tr>
-                                    <div class="modal fade" id="createDishModal" tabindex="10000" aria-hidden="true">
+                                    <div class="modal fade" id="CancelOrder-${order.idOrder}" tabindex="10000" aria-hidden="true" style="top: 250px">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="swal2-header">
+                                                    <div class="swal2-icon swal2-warning swal2-icon-show" style="display: flex;">
+                                                        <div class="swal2-icon-content">!</div>
+                                                    </div>
+                                                    <h2 class="swal2-title" id="swal2-title" style="display: flex;">Bạn có chắc muốn hủy đơn hàng?</h2>
+                                                </div>
+                                                <div class="swal2-content">
+                                                    <div id="swal2-content" class="swal2-html-container" style="display: block;">Bạn sẽ không hoàn tác được hành động này!</div>
+                                                </div>
+                                                <div class="swal2-actions">
+                                                    <div class="swal2-loader"></div>
+                                                    <form action="${pageContext.request.contextPath}/BookingServlet" method="post" style="display: inline;">
+                                                        <input type="hidden" name="id" value="${order.idOrder}">
+                                                        <input type="hidden" name="action" value="delete">
+                                                        <button type="submit" class="swal2-confirm swal2-styled" aria-label=""
+                                                                style="display: inline-block; background-color: rgb(28, 187, 140);">Có, hủy đơn hàng!</button>
+                                                    </form>
+                                                    <button
+                                                        type="button" class="swal2-cancel swal2-styled" data-bs-dismiss="modal" aria-label="Close"
+                                                        style="display: inline-block; background-color: rgb(243, 47, 83);">Không</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal fade" id="feedbackOrder-${order.idOrder}" tabindex="10000" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">

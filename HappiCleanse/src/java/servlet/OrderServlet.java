@@ -17,6 +17,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Email;
+import model.EmailUtils;
 import model.Order;
 import model.User;
 
@@ -192,7 +194,21 @@ public class OrderServlet extends HttpServlet {
             Dao dao = new Dao();
             Order order = dao.getOrder(idOrder);
             order.setStatusOrder("Cancelled");
-            dao.cancelOrder(order);
+            if (dao.cancelOrder(order)) {
+                Email email = new Email();
+                email.setFrom("trantrucvy265@gmail.com");
+                email.setFromPassword("igww uwrd ytua jmja");
+                email.setTo(order.getUser().getEmail());
+                email.setSubject("Your Booking was Cancelled");
+                StringBuilder sb = new StringBuilder();
+                sb.append("Dear ").append(order.getUser().getFullname()).append("<br>");
+                sb.append("Your Booking have just been Cancelled. <br> ");
+                sb.append("Sorry for this inconvenience. <br> ");
+                sb.append("Regards<br>");
+                sb.append("Administrator");
+                email.setContent(sb.toString());
+                EmailUtils.send(email);
+            }
             RequestDispatcher dispatcher = request.getRequestDispatcher("AdminServlet");
             dispatcher.forward(request, response);
         } catch (Exception ex) {
