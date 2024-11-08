@@ -9,8 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +18,6 @@ import java.util.logging.Logger;
 import model.Feedback;
 import model.Order;
 import model.Service;
-import model.Shifts;
 import model.ServiceCategory;
 import model.TypeShift;
 import model.User;
@@ -353,7 +350,7 @@ public class Dao {
                 if (rs.next()) {
                     User user = getUser(rs.getInt("idUser"));
                     User staff = getUser(rs.getInt("idStaff"));
-                    Shifts shifts = getAllShiftByOrder(rs.getInt("idOrder"));
+                    TypeShift typeShift = getTypeShiftByOrder(rs.getInt("idOrder"));
                     Service service = getService(rs.getInt("idService"));
                     Order o = new Order();
                     o.setIdOrder(rs.getInt("idOrder"));
@@ -368,7 +365,7 @@ public class Dao {
                     } else {
                         o.setTimeEnd(ConvertConstant.convertStringtoLocalDateTime(rs.getString("timeEnd")));
                     }
-                    o.setShifts(shifts);
+                    o.setTypeshifts(typeShift);
                     o.setTotalMoney(getTotalMoneyByIdOrder(rs.getInt("idOrder")));
                     return o;
                 }
@@ -386,7 +383,7 @@ public class Dao {
                 while (rs.next()) {
                     User user = getUser(rs.getInt("idUser"));
                     User staff = getUser(rs.getInt("idStaff"));
-                    Shifts shifts = getAllShiftByOrder(rs.getInt("idOrder"));
+                    TypeShift typeShift = getTypeShiftByOrder(rs.getInt("idOrder"));
                     Service service = getService(rs.getInt("idService"));
                     Order o = new Order();
                     o.setIdOrder(rs.getInt("idOrder"));
@@ -401,7 +398,7 @@ public class Dao {
                     } else {
                         o.setTimeEnd(ConvertConstant.convertStringtoLocalDateTime(rs.getString("timeEnd")));
                     }
-                    o.setShifts(shifts);
+                    o.setTypeshifts(typeShift);
                     o.setTotalMoney(getTotalMoneyByIdOrder(rs.getInt("idOrder")));
                     orders.add(o);
                 }
@@ -418,7 +415,7 @@ public class Dao {
 
                 User user = getUser(rs.getInt("idUser"));
                 User staff = getUser(rs.getInt("idStaff"));
-                Shifts shifts = getAllShiftByOrder(rs.getInt("idOrder"));
+                TypeShift typeShift = getTypeShiftByOrder(rs.getInt("idOrder"));
                 Service service = getService(rs.getInt("idService"));
                 Order o = new Order();
                 o.setIdOrder(rs.getInt("idOrder"));
@@ -433,7 +430,7 @@ public class Dao {
                 } else {
                     o.setTimeEnd(ConvertConstant.convertStringtoLocalDateTime(rs.getString("timeEnd")));
                 }
-                o.setShifts(shifts);
+                o.setTypeshifts(typeShift);
                 o.setTotalMoney(getTotalMoneyByIdOrder(rs.getInt("idOrder")));
                 orders.add(o);
             }
@@ -524,68 +521,24 @@ public class Dao {
         return typeShifts;
     }
 
-    // Shift 28/09
-    public void addShift(Shifts shift) throws SQLException, Exception {
-        String sql = "INSERT INTO Shifts (idTypeShift) VALUES (?)";
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, shift.getTypeShift().getIdTypeShift());
-            ps.executeUpdate();
-        }
-    }
 
-    public Shifts getAllShiftByOrder(int orderId) {
+    public TypeShift getTypeShiftByOrder(int orderId) {
         String sql = "SELECT s.*\n"
-                + "FROM Shifts s\n"
-                + "JOIN DetailOrder d ON s.idShift = d.idShift\n"
+                + "FROM TypeShift s\n"
+                + "JOIN DetailOrder d ON s.idTypeShift = d.idTypeShift\n"
                 + "WHERE d.idOrder = ?";
-        Shifts shifts = new Shifts();
+        TypeShift typeShift = new TypeShift();
         try (Connection conn = DBContext.getConnection();) {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, orderId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                TypeShift typeShift = getTypeShift(rs.getInt("idTypeShift"));
-                shifts = new Shifts(rs.getInt("idShift"), typeShift);
+                typeShift = new TypeShift(rs.getInt("idTypeShift"), rs.getDouble("coefficient"));
             }
         } catch (Exception ex) {
             Logger.getLogger(Dao.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return shifts;
-    }
-
-    public Shifts getShift(int id) throws SQLException, Exception {
-        String sql = "SELECT * FROM Shifts WHERE idShift = ?";
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    TypeShift typeShift = getTypeShift(rs.getInt("idTypeShift"));
-                    return new Shifts(rs.getInt("idShift"), typeShift);
-                }
-            }
-        }
-        return null;
-    }
-
-    public List<Shifts> getAllShifts() throws SQLException, Exception {
-        String sql = "SELECT * FROM Shifts";
-        List<Shifts> shifts = new ArrayList<>();
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                TypeShift typeShift = getTypeShift(rs.getInt("idTypeShift"));
-                shifts.add(new Shifts(rs.getInt("idShift"), typeShift));
-            }
-        }
-        return shifts;
-    }
-
-    public void updateShift(Shifts shift) throws SQLException, Exception {
-        String sql = "UPDATE Shifts SET idTypeShift = ? WHERE idShift = ?";
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, shift.getTypeShift().getIdTypeShift());
-            ps.setInt(2, shift.getIdShift());
-            ps.executeUpdate();
-        }
+        return typeShift;
     }
 
     public void deleteShift(int id) throws SQLException, Exception {
@@ -935,7 +888,7 @@ public class Dao {
             while (rs.next()) {
                 User user = getUser(rs.getInt("idUser"));
                 User staff = getUser(rs.getInt("idStaff"));
-                Shifts shifts = getAllShiftByOrder(rs.getInt("idOrder"));
+                TypeShift typeShift = getTypeShiftByOrder(rs.getInt("idOrder"));
                 Service service = getService(rs.getInt("idService"));
                 Feedback feedback = getFeedbackbyOrderID(rs.getInt("idOrder"));
                 Order o = new Order();
@@ -951,7 +904,7 @@ public class Dao {
                 } else {
                     o.setTimeEnd(ConvertConstant.convertStringtoLocalDateTime(rs.getString("timeEnd")));
                 }
-                o.setShifts(shifts);
+                o.setTypeshifts(typeShift);
                 o.setTotalMoney(getTotalMoneyByIdOrder(rs.getInt("idOrder")));
                 o.setFeedback(feedback);
                 orders.add(o);
@@ -969,7 +922,7 @@ public class Dao {
             while (rs.next()) {
                 User user = getUser(rs.getInt("idUser"));
                 User staff = getUser(rs.getInt("idStaff"));
-                Shifts shifts = getAllShiftByOrder(rs.getInt("idOrder"));
+                TypeShift typeShift = getTypeShiftByOrder(rs.getInt("idOrder"));
                 Service service = getService(rs.getInt("idService"));
                 Order o = new Order();
                 o.setIdOrder(rs.getInt("idOrder"));
@@ -984,7 +937,7 @@ public class Dao {
                 } else {
                     o.setTimeEnd(ConvertConstant.convertStringtoLocalDateTime(rs.getString("timeEnd")));
                 }
-                o.setShifts(shifts);
+                o.setTypeshifts(typeShift);
                 o.setTotalMoney(getTotalMoneyByIdOrder(rs.getInt("idOrder")));
                 orders.add(o);
             }
@@ -993,13 +946,13 @@ public class Dao {
     }
 
     // INSERT DETAIL ORDER
-    public void insertDetailOrder(double totalMoney, int idOrder, int idShifts) throws Exception {
-        String sql = "INSERT INTO DetailOrder (totalMoney, idOrder, idShift) VALUES (?, ?, ?)";
+    public void insertDetailOrder(double totalMoney, int idOrder, int idTypeShift) throws Exception {
+        String sql = "INSERT INTO DetailOrder (totalMoney, idOrder, idTypeShift) VALUES (?, ?, ?)";
 
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql);) {
             ps.setDouble(1, totalMoney);
             ps.setInt(2, idOrder);
-            ps.setInt(3, idShifts);
+            ps.setInt(3, idTypeShift);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

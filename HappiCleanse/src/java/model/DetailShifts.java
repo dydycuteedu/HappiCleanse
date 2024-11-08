@@ -7,12 +7,12 @@ package model;
 
 public class DetailShifts {
 
-    private Shifts shifts;
+    private TypeShift typeshifts;
     private User user;
     private Service service;
 
-    public DetailShifts(Shifts shifts, User user, Service service) {
-        this.shifts = shifts;
+    public DetailShifts(TypeShift typeshifts, User user, Service service) {
+        this.typeshifts = typeshifts;
         this.user = user;
         this.service = service;
     }
@@ -20,12 +20,12 @@ public class DetailShifts {
     public DetailShifts() {
     }
 
-    public Shifts getShifts() {
-        return shifts;
+    public TypeShift getTypeshifts() {
+        return typeshifts;
     }
 
-    public void setShifts(Shifts shifts) {
-        this.shifts = shifts;
+    public void setTypeshifts(TypeShift typeshifts) {
+        this.typeshifts = typeshifts;
     }
 
     public User getUser() {
@@ -42,11 +42,6 @@ public class DetailShifts {
 
     public void setService(Service service) {
         this.service = service;
-    }
-
-    @Override
-    public String toString() {
-        return "DetailShifts{" + "shifts=" + shifts + ", user=" + user + ", service=" + service + '}';
     }
     
 }

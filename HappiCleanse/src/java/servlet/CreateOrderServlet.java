@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -17,14 +16,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import model.Order;
 import model.Service;
-import model.Shifts;
 import model.TypeShift;
-import model.User;
 import utils.CheckShift;
-
 
 @WebServlet(name = "CreateOrderServlet", urlPatterns = {"/CreateOrderServlet"})
 public class CreateOrderServlet extends HttpServlet {
@@ -91,7 +85,9 @@ public class CreateOrderServlet extends HttpServlet {
             LocalDateTime localDateTime = LocalDateTime.parse(timeStart, formatter);
             TypeShift typeShift = dao.getTypeShift(CheckShift.checkHoliday(localDateTime));
             double totalMoney = service.getPrice() * typeShift.getCoefficient();
+            String extramoney = CheckShift.checkHolidayString(localDateTime);
             request.setAttribute("idService", idService);
+            request.setAttribute("extramoney", extramoney);
             request.setAttribute("timeStart", timeStart);
             request.setAttribute("notes", notes);
             request.setAttribute("service", service);

@@ -4,7 +4,7 @@
     Author     : CHUC DY
 --%>
 
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -90,17 +90,17 @@
                 <!-- Service Details Section -->
                 <div class="row mb-5">
                     <div class="col-lg-12">
-                        <h2 class="mb-4">About Our Drain Repair Service</h2>
+                        <h2 class="mb-4">Về dịch vụ của chúng tôi</h2>
                         <p>${service.description}</p>
-
-                        <h3 class="mt-5">Why Choose Us?</h3>
+                        <h2 class="mb-4">Giá dịch vụ: <fmt:formatNumber value="${service.price}" type="number" groupingUsed="true" /><strong><span class="text-xs/sp14 font-medium mr-px">₫</span></strong></h2>
+                        <h3 class="mt-5">Tại Sao Chọn Chúng Tôi?</h3>
                         <ul>
-                            <li>Over 15 years of experience in the plumbing industry.</li>
-                            <li>Certified and skilled technicians with extensive training.</li>
-                            <li>Fast, reliable, and affordable services.</li>
-                            <li>Use of state-of-the-art equipment to diagnose and fix issues.</li>
-                            <li>24/7 emergency services available.</li>
+                            <li>Kỹ thuật viên có chứng chỉ và tay nghề cao, được đào tạo chuyên sâu.</li>
+                            <li>Dịch vụ nhanh chóng, đáng tin cậy và giá cả phải chăng.</li>
+                            <li>Sử dụng thiết bị hiện đại để chẩn đoán và khắc phục sự cố.</li>
+                            <li>Có dịch vụ khẩn cấp 24/7.</li>
                         </ul>
+
                     </div>
                 </div>
 

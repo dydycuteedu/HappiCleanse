@@ -112,7 +112,7 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td colspan="2">Phí dịch vụ</td>
-                                                                        <td class="text-end"><fmt:formatNumber value="${o.service.price}" type="number" groupingUsed="true" /><strong><span class="text-xs/sp14 font-medium mr-px">₫</span></strong> * ${o.shifts.typeShift.coefficient}</td>
+                                                                        <td class="text-end"><fmt:formatNumber value="${o.service.price}" type="number" groupingUsed="true" /><strong><span class="text-xs/sp14 font-medium mr-px">₫</span></strong> * ${o.typeshifts.coefficient} (${extramoney})</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td colspan="2">Tổng thời gian hoàn thành dịch vụ</td>

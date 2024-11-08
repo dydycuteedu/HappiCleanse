@@ -65,23 +65,18 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="card-title">
-                                            <h4 >Quản Lí Staff</h4>
-                                            <a href="${pageContext.request.contextPath}/StaffServlet?action=create" id="editable-sample_new" class="btn btn-primary">
-                                                Tạo mới <i class="fa fa-plus"></i>
-                                            </a>
+                                            <h4 >Quản Lí Nhân Viên</h4>
                                         </div>
 
 
                                         <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                             <thead>
                                                 <tr>
-
+                                                    <th>Họ và tên</th>
                                                     <th>Username</th>
-
                                                     <th>Email</th>
-
                                                     <th>Giới tính</th>
-                                                    <th>Vai Trò</th>
+                                                    <th>Số điện thoại</th>
                                                     <th>Trạng Thái</th>
                                                     <th>Hành Động</th>
                                                 </tr>
@@ -89,20 +84,13 @@
                                             <tbody>
                                                 <c:forEach var="user" items="${list}">
                                                     <tr>
-
-                                                        <td>${user.username}</td>
-
-
-
+                                                        <td>${user.fullname}</td>
+                                                        <td><img class="rounded-circle header-profile-user" src="${user.avatar}" alt="avatar"/> ${user.username}</td>
                                                         <td>${user.email}</td>
-
                                                         <td>${user.gender}</td>
-                                                        <td>${user.role}</td>
-                                                        <td>
-                                                            <input type="checkbox" id="switch" switch="none" name="status" disabled
-                                                                   <c:if test="${user.isValid == 1}">checked</c:if> />
-                                                                   <label for="switch" data-on-label="On" data-off-label="Off"></label>
-                                                            </td>
+                                                        <td>${user.phonenumber}</td>
+                                                        <c:if test="${user.isValid == 1}"><td>Available</td></c:if>
+                                                        <c:if test="${user.isValid == 0}"><td>Fired</td></c:if>
                                                             <td>
                                                                 <div class="btn-group" role="group">
 
@@ -114,28 +102,74 @@
                                                                         <i class="ri-profile-fill"></i>
                                                                     </button>
                                                                 </form>
-
-                                                                <form action="${pageContext.request.contextPath}/StaffServlet" method="GET" style="display: inline;">
-                                                                    <input type="hidden" name="id" value="${user.idUser}">
-                                                                    <input type="hidden" name="action" value="edit">
-                                                                    <input type="hidden" name="actor" value="admin">
-                                                                    <button type="submit" class="btn btn-sm btn-warning" style="margin-right: 5px;" >
-                                                                        <i class="ri-pencil-fill"></i>
-                                                                    </button>
-                                                                </form>
-
-                                                                <form action="${pageContext.request.contextPath}/StaffServlet" method="GET" style="display: inline;">
-                                                                    <input type="hidden" name="id" value="${user.idUser}">
-                                                                    <input type="hidden" name="action" value="delete">
-                                                                  
-                                                                    <button type="submit" class="btn btn-sm btn-danger">
+                                                                <c:if test="${user.isValid == 1}">
+                                                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#BanStaff-${user.idUser}">
                                                                         <i class="ri-delete-bin-fill"></i>
                                                                     </button>
-                                                                </form>
+                                                                </c:if>
+                                                                <c:if test="${user.isValid == 0}">
+                                                                    <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#UnbanStaff-${user.idUser}">
+                                                                        <i class="ri-checkbox-circle-fill"></i>
+                                                                    </button>
+                                                                </c:if>
                                                             </div>
                                                         </td>
                                                     </tr>
-                                                </c:forEach>
+                                                <div class="modal fade" id="UnbanStaff-${user.idUser}" tabindex="10000" aria-hidden="true" style="top: 250px">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="swal2-header">
+                                                                <div class="swal2-icon swal2-warning swal2-icon-show" style="display: flex;">
+                                                                    <div class="swal2-icon-content">!</div>
+                                                                </div>
+                                                                <h2 class="swal2-title" id="swal2-title" style="display: flex;">Bạn có chắc muốn mở chặn nhân viên này?</h2>
+                                                            </div>
+                                                            <div class="swal2-content">
+                                                                <div id="swal2-content" class="swal2-html-container" style="display: block;">Bạn sẽ không hoàn tác được hành động này!</div>
+                                                            </div>
+                                                            <div class="swal2-actions">
+                                                                <div class="swal2-loader"></div>
+                                                                <form action="${pageContext.request.contextPath}/StaffServlet" method="GET" style="display: inline;">
+                                                                    <input type="hidden" name="id" value="${user.idUser}">
+                                                                    <input type="hidden" name="action" value="unban">
+                                                                    <button type="submit" class="swal2-confirm swal2-styled" aria-label=""
+                                                                            style="display: inline-block; background-color: rgb(28, 187, 140);">Có!</button>
+                                                                </form>
+                                                                <button
+                                                                    type="button" class="swal2-cancel swal2-styled" data-bs-dismiss="modal" aria-label="Close"
+                                                                    style="display: inline-block; background-color: rgb(243, 47, 83);">Không</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal fade" id="BanStaff-${user.idUser}" tabindex="10000" aria-hidden="true" style="top: 250px">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="swal2-header">
+                                                                <div class="swal2-icon swal2-warning swal2-icon-show" style="display: flex;">
+                                                                    <div class="swal2-icon-content">!</div>
+                                                                </div>
+                                                                <h2 class="swal2-title" id="swal2-title" style="display: flex;">Bạn có chắc muốn chặn nhân viên này?</h2>
+                                                            </div>
+                                                            <div class="swal2-content">
+                                                                <div id="swal2-content" class="swal2-html-container" style="display: block;">Bạn sẽ không hoàn tác được hành động này!</div>
+                                                            </div>
+                                                            <div class="swal2-actions">
+                                                                <div class="swal2-loader"></div>
+                                                                <form action="${pageContext.request.contextPath}/StaffServlet" method="GET" style="display: inline;">
+                                                                    <input type="hidden" name="id" value="${user.idUser}">
+                                                                    <input type="hidden" name="action" value="delete">
+                                                                    <button type="submit" class="swal2-confirm swal2-styled" aria-label=""
+                                                                            style="display: inline-block; background-color: rgb(28, 187, 140);">Có!</button>
+                                                                </form>
+                                                                <button
+                                                                    type="button" class="swal2-cancel swal2-styled" data-bs-dismiss="modal" aria-label="Close"
+                                                                    style="display: inline-block; background-color: rgb(243, 47, 83);">Không</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </c:forEach>
                                             </tbody>
                                         </table>
 

@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -20,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Order;
 import model.Service;
-import model.Shifts;
 import model.TypeShift;
 import model.User;
 import utils.CheckShift;
@@ -83,10 +81,7 @@ public class PaymentServlet extends HttpServlet {
             dao.addOrder(order);
             order = dao.getOrder(dao.getAllOrders().getFirst().getIdOrder());
             TypeShift typeShift = dao.getTypeShift(CheckShift.checkHoliday(order.getTimeStart()));
-            Shifts shift = new Shifts(typeShift);
-            dao.addShift(shift);
-            List<Shifts> shifts = dao.getAllShifts();
-            dao.insertDetailOrder(typeShift.getCoefficient() * service.getPrice(), order.getIdOrder(), shifts.getLast().getIdShift());
+            dao.insertDetailOrder(typeShift.getCoefficient() * service.getPrice(), order.getIdOrder(), typeShift.getIdTypeShift());
             request.getRequestDispatcher("BookingServlet").forward(request, response);
         } catch (Exception ex) {
             Logger.getLogger(PaymentServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -121,10 +116,7 @@ public class PaymentServlet extends HttpServlet {
             dao.addOrder(order);
             order = dao.getOrder(dao.getAllOrders().getFirst().getIdOrder());
             TypeShift typeShift = dao.getTypeShift(CheckShift.checkHoliday(order.getTimeStart()));
-            Shifts shift = new Shifts(typeShift);
-            dao.addShift(shift);
-            List<Shifts> shifts = dao.getAllShifts();
-            dao.insertDetailOrder(typeShift.getCoefficient() * service.getPrice(), order.getIdOrder(), shifts.getLast().getIdShift());
+            dao.insertDetailOrder(typeShift.getCoefficient() * service.getPrice(), order.getIdOrder(), typeShift.getIdTypeShift());
             request.getRequestDispatcher("BookingServlet").forward(request, response);
         } catch (Exception ex) {
             Logger.getLogger(PaymentServlet.class.getName()).log(Level.SEVERE, null, ex);

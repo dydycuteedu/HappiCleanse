@@ -69,20 +69,8 @@ public class CustomerServlet extends HttpServlet {
             case "view":
                 View(request, response);
                 break;
-            case "edit":
-                Edit(request, response);
-                break;
             case "delete":
                 Delete(request, response);
-                break;
-//            case "Save":
-//                Save(request, response);
-//                break;
-//            case "Add":
-//                Add(request, response);
-//                break;
-            case "create":
-                Create(request, response);
                 break;
             case "unban":
                 Unban(request, response);
@@ -110,20 +98,8 @@ public class CustomerServlet extends HttpServlet {
                 case "view":
                     View(request, response);
                     break;
-                case "edit":
-                    Edit(request, response);
-                    break;
                 case "delete":
                     Delete(request, response);
-                    break;
-                case "Save":
-                    Save(request, response);
-                    break;
-//                case "Add":
-//                    Add(request, response);
-//                    break;
-                case "create":
-                    Create(request, response);
                     break;
                 case "unban":
                     Unban(request, response);
@@ -158,13 +134,6 @@ public class CustomerServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    private void Create(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("Admin/customer/create.jsp");
-        dispatcher.forward(request, response);
-    }
-//
-
     private void View(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
         Dao dao = new Dao();
@@ -176,35 +145,6 @@ public class CustomerServlet extends HttpServlet {
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("Admin/customer/detail.jsp");
         dispatcher.forward(request, response);
-    }
-//
-//  
-
-    private void Edit(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException {
-        int uid = Integer.parseInt(request.getParameter("id"));
-        Dao dao = new Dao();
-        User user = dao.getUser(uid);
-        request.setAttribute("user", user);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("Admin/customer/edit.jsp");
-        dispatcher.forward(request, response);
-    }
-
-    private void Save(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException, Exception {
-        int uid = Integer.parseInt(request.getParameter("id"));
-        String uname = request.getParameter("name");
-        boolean status = request.getParameter("status") != null;
-        int isValid = 0;
-        if (status) {
-            isValid = 1;
-        }
-        Dao dao = new Dao();
-        User user = dao.getUser(uid);
-        user.setUsername(uname);
-        user.setIsValid(isValid);
-        dao.editProfile(user);
-        Management(request, response);
     }
 
     private void Delete(HttpServletRequest request, HttpServletResponse response)

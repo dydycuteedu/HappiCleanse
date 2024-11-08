@@ -36,8 +36,8 @@
                 <li><a href="${pageContext.request.contextPath}/RegisterServlet?action=management">Đơn đăng kí</a></li>
                 <li class="menu-title">Pages</li>
                 <li><a href="${pageContext.request.contextPath}/ServiceCategoryServlet?action=management">Danh Mục Dịch Vụ</a></li>
-                <li><a href="${pageContext.request.contextPath}/CustomerServlet?action=management">Danh sách Customer</a></li>
-                <li><a href="${pageContext.request.contextPath}/StaffServlet?action=management">Quản Lý Staff</a></li>
+                <li><a href="${pageContext.request.contextPath}/CustomerServlet?action=management">Danh sách Khách Hàng</a></li>
+                <li><a href="${pageContext.request.contextPath}/StaffServlet?action=management">Quản Lý Nhân Viên</a></li>
                 <li><a href="${pageContext.request.contextPath}/ServiceServlet?action=management">Quản Lý Dịch Vụ</a></li>
 
             </ul>

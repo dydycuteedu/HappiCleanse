@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Order;
 import model.Service;
-import model.Shifts;
 import model.TypeShift;
 import model.User;
 import utils.CheckShift;
@@ -63,10 +62,7 @@ public class VNPayServlet extends HttpServlet {
             dao.addOrder(order);
             order = dao.getOrder(dao.getAllOrders().getFirst().getIdOrder());
             TypeShift typeShift = dao.getTypeShift(CheckShift.checkHoliday(order.getTimeStart()));
-            Shifts shift = new Shifts(typeShift);
-            dao.addShift(shift);
-            List<Shifts> shifts = dao.getAllShifts();
-            dao.insertDetailOrder(typeShift.getCoefficient() * service.getPrice(), order.getIdOrder(), shifts.getLast().getIdShift());
+            dao.insertDetailOrder(typeShift.getCoefficient() * service.getPrice(), order.getIdOrder(), typeShift.getIdTypeShift());
             
             String vnp_Version = "2.1.0";
             String vnp_Command = "pay";

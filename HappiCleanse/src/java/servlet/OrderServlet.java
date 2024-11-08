@@ -21,6 +21,7 @@ import model.Email;
 import model.EmailUtils;
 import model.Order;
 import model.User;
+import utils.CheckShift;
 
 /**
  *
@@ -139,6 +140,8 @@ public class OrderServlet extends HttpServlet {
             if (o.getTimeEnd() != null) {
                 hoursDifference = (int) Duration.between(o.getTimeStart(), o.getTimeEnd()).toHours();
             }
+            String extramoney = CheckShift.checkHolidayString(o.getTimeStart());
+            request.setAttribute("extramoney", extramoney);
             request.setAttribute("o", o);
             request.setAttribute("hoursDifference", hoursDifference);
             RequestDispatcher dispatcher = request.getRequestDispatcher("Admin/order/detail.jsp");

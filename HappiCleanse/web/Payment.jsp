@@ -59,32 +59,26 @@
         <!-- Payment Selection Page Start -->
         <div class="container-fluid py-5">
             <div class="container">
-                <!-- Page Header -->
-                <div class="row mb-5">
-                    <div class="col-md-12 text-center">
-                        <h1 class="mb-4">Choose Your Payment Method</h1>
-                        <p class="text-center">You are about to pay for the service: <strong>${service.nameService}</strong></p>
-                        <p class="text-center">Amount to be paid: <fmt:formatNumber value="${totalMoney}" type="number" groupingUsed="true" /><strong><span class="text-xs/sp14 font-medium mr-px">₫</span></strong></p> <!-- Replace with the actual amount -->
-                    </div>
-                </div>
 
                 <!-- Payment Method Selection Form -->
                 <div class="row justify-content-center">
                     <div class="col-lg-6">
                         <div class="bg-light text-center p-5">
                             <form action="PaymentServlet" method="GET">
-                                <h2 class="mb-4">Select Payment Option</h2>
+                                <h2 class="mb-4">Vui lòng chọn phương thức thanh toán</h2>
                                 <input type="hidden" name="idService" value="${idService}">
                                 <input type="hidden" name="dateShift" value="${timeStart}">
                                 <input type="hidden" name="notes" value="${notes}">
                                 <!-- Service Summary -->
                                 <div class="row g-3 mb-4">
                                     <div class="col-12">
-                                        <p><strong>Service:</strong> ${service.nameService}</p>
-                                        <p><strong>Description:</strong> ${service.description}</p>
-                                        <p><strong>Time Working:</strong> ${timeStart}</p>
-                                        <p><strong>Notes:</strong> ${notes}</p>
-                                        <p><strong>Amount:</strong><fmt:formatNumber value="${totalMoney}" type="number" groupingUsed="true" /><strong><span class="text-xs/sp14 font-medium mr-px">₫</span></strong></p>
+                                        <p><strong>Dịch vụ:</strong> ${service.nameService}</p>
+                                        <p><strong>Nội dung dịch vụ:</strong> ${service.description}</p>
+                                        <p><strong>Thời gian làm việc:</strong> ${timeStart}</p>
+                                        <p><strong>Ghi chú:</strong> ${notes}</p>
+                                        <p><strong>Chi phí dịch vụ:</strong> <fmt:formatNumber value="${service.price}" type="number" groupingUsed="true" /><strong><span class="text-xs/sp14 font-medium mr-px">₫</span></strong></p>
+                                        <p><strong>Chi phí phát sinh:</strong> ${extramoney} </p>
+                                        <p><strong>Tổng tiền:</strong> <fmt:formatNumber value="${totalMoney}" type="number" groupingUsed="true" /><strong><span class="text-xs/sp14 font-medium mr-px">₫</span></strong></p>
                                     </div>
                                 </div>
                                 <button class="btn btn-primary w-100 py-3" style="border-radius: 5px; font-size: 14px; margin-bottom: 20px" type="submit">

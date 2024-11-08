@@ -89,6 +89,9 @@ public class StaffServlet extends HttpServlet {
                 case "create":
                     Create(request, response);
                     break;
+                case "unban":
+                    Unban(request, response);
+                    break;
             }
         } catch (Exception ex) {
             Logger.getLogger(StaffServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -129,6 +132,9 @@ public class StaffServlet extends HttpServlet {
                     break;
                 case "create":
                     Create(request, response);
+                    break;
+                case "unban":
+                    Unban(request, response);
                     break;
             }
         } catch (Exception ex) {
@@ -179,8 +185,6 @@ public class StaffServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("Admin/staff/detail.jsp");
         dispatcher.forward(request, response);
     }
-//
-//  
 
     private void Delete(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException, Exception {
@@ -193,6 +197,18 @@ public class StaffServlet extends HttpServlet {
             dao.deleteStaff(rid);
         }
         Management(request, response);
+    }
+
+    private void Unban(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Dao dao = new Dao();
+            dao.unbanUser(id);
+            Management(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void Edit(HttpServletRequest request, HttpServletResponse response)

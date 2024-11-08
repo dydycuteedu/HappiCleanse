@@ -37,4 +37,18 @@ public class CheckShift {
         }
         return 1;
     }
+    public static String checkHolidayString(LocalDateTime shiftDate) {
+        if (shiftDate.getDayOfWeek() == DayOfWeek.SATURDAY) {
+            return "Cuối tuần (Thứ bảy)";
+        }
+        if (shiftDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
+            return "Cuối tuần (Chủ nhật)";
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String foramtterdDate = shiftDate.format(formatter);
+        if (holidays.contains(foramtterdDate)) {
+            return "Ngày lễ";
+        }
+        return "Ngày trong tuần";
+    }
 }

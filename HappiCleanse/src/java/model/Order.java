@@ -20,10 +20,10 @@ public class Order {
     private LocalDateTime timeStart;
     private LocalDateTime timeEnd;
 
-    private Shifts shifts;
+    private TypeShift typeshifts;
     private Feedback feedback;
 
-    public Order(int idOrder, User user, Service service, String notes, String statusOrder, LocalDateTime timeStart, LocalDateTime timeEnd, Shifts shifts) {
+    public Order(int idOrder, User user, Service service, String notes, String statusOrder, LocalDateTime timeStart, LocalDateTime timeEnd, TypeShift typeshifts) {
         this.idOrder = idOrder;
         this.user = user;
         this.service = service;
@@ -31,10 +31,10 @@ public class Order {
         this.statusOrder = statusOrder;
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
-        this.shifts = shifts;
+        this.typeshifts = typeshifts;
     }
 
-    public Order(int idOrder, User user, User staff, Service service, String notes, String statusOrder, LocalDateTime timeStart, LocalDateTime timeEnd, Shifts shifts) {
+    public Order(int idOrder, User user, User staff, Service service, String notes, String statusOrder, LocalDateTime timeStart, LocalDateTime timeEnd, TypeShift typeshifts) {
         this.idOrder = idOrder;
         this.user = user;
         this.staff = staff;
@@ -43,7 +43,7 @@ public class Order {
         this.statusOrder = statusOrder;
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
-        this.shifts = shifts;
+        this.typeshifts = typeshifts;
     }
 
     public Order(User user, Service service, String notes, String statusOrder, LocalDateTime timeStart) {
@@ -114,12 +114,12 @@ public class Order {
         this.timeEnd = timeEnd;
     }
 
-    public Shifts getShifts() {
-        return shifts;
+    public TypeShift getTypeshifts() {
+        return typeshifts;
     }
 
-    public void setShifts(Shifts shifts) {
-        this.shifts = shifts;
+    public void setTypeshifts(TypeShift typeshifts) {
+        this.typeshifts = typeshifts;
     }
 
     public User getStaff() {

@@ -95,7 +95,7 @@
                                                         <c:if test="${user.isValid == 0}"><td>Banned</td></c:if>
                                                             <td>
                                                                 <div class="btn-group" role="group">
-                                                                <form action="${pageContext.request.contextPath}/CustomerServlet" method="POST" style="display: inline;">
+                                                                    <form action="${pageContext.request.contextPath}/CustomerServlet" method="POST" style="display: inline;">
                                                                     <input type="hidden" name="id" value="${user.idUser}">
                                                                     <input type="hidden" name="action" value="view">
                                                                     <button type="submit" class="btn btn-sm btn-primary" style="margin-right: 5px;">
@@ -104,27 +104,73 @@
                                                                 </form>
 
                                                                 <c:if test="${user.isValid == 1}">
-                                                                    <form action="${pageContext.request.contextPath}/CustomerServlet" method="GET" style="display: inline;">
-                                                                        <input type="hidden" name="id" value="${user.idUser}">
-                                                                        <input type="hidden" name="action" value="delete">
-                                                                        <button type="submit" class="btn btn-sm btn-danger">
-                                                                            <i class="ri-indeterminate-circle-fill"></i>
-                                                                        </button>
-                                                                    </form>
+                                                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#BanStaff-${user.idUser}">
+                                                                        <i class="ri-delete-bin-fill"></i>
+                                                                    </button>
                                                                 </c:if>
                                                                 <c:if test="${user.isValid == 0}">
-                                                                    <form action="${pageContext.request.contextPath}/CustomerServlet" method="GET" style="display: inline;">
-                                                                        <input type="hidden" name="id" value="${user.idUser}">
-                                                                        <input type="hidden" name="action" value="unban">
-                                                                        <button type="submit" class="btn btn-sm btn-success">
-                                                                            <i class="ri-checkbox-circle-fill"></i>
-                                                                        </button>
-                                                                    </form>
+                                                                    <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#UnbanStaff-${user.idUser}">
+                                                                        <i class="ri-checkbox-circle-fill"></i>
+                                                                    </button>
                                                                 </c:if>
                                                             </div>
                                                         </td>
                                                     </tr>
-                                                </c:forEach>
+                                                <div class="modal fade" id="UnbanStaff-${user.idUser}" tabindex="10000" aria-hidden="true" style="top: 250px">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="swal2-header">
+                                                                <div class="swal2-icon swal2-warning swal2-icon-show" style="display: flex;">
+                                                                    <div class="swal2-icon-content">!</div>
+                                                                </div>
+                                                                <h2 class="swal2-title" id="swal2-title" style="display: flex;">Bạn có chắc muốn mở chặn khách hàng này?</h2>
+                                                            </div>
+                                                            <div class="swal2-content">
+                                                                <div id="swal2-content" class="swal2-html-container" style="display: block;">Bạn sẽ không hoàn tác được hành động này!</div>
+                                                            </div>
+                                                            <div class="swal2-actions">
+                                                                <div class="swal2-loader"></div>
+                                                                <form action="${pageContext.request.contextPath}/CustomerServlet" method="GET" style="display: inline;">
+                                                                    <input type="hidden" name="id" value="${user.idUser}">
+                                                                    <input type="hidden" name="action" value="unban">
+                                                                    <button type="submit" class="swal2-confirm swal2-styled" aria-label=""
+                                                                            style="display: inline-block; background-color: rgb(28, 187, 140);">Có!</button>
+                                                                </form>
+                                                                <button
+                                                                    type="button" class="swal2-cancel swal2-styled" data-bs-dismiss="modal" aria-label="Close"
+                                                                    style="display: inline-block; background-color: rgb(243, 47, 83);">Không</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal fade" id="BanStaff-${user.idUser}" tabindex="10000" aria-hidden="true" style="top: 250px">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="swal2-header">
+                                                                <div class="swal2-icon swal2-warning swal2-icon-show" style="display: flex;">
+                                                                    <div class="swal2-icon-content">!</div>
+                                                                </div>
+                                                                <h2 class="swal2-title" id="swal2-title" style="display: flex;">Bạn có chắc muốn chặn khách hàng này?</h2>
+                                                            </div>
+                                                            <div class="swal2-content">
+                                                                <div id="swal2-content" class="swal2-html-container" style="display: block;">Bạn sẽ không hoàn tác được hành động này!</div>
+                                                            </div>
+                                                            <div class="swal2-actions">
+                                                                <div class="swal2-loader"></div>
+                                                                <form action="${pageContext.request.contextPath}/CustomerServlet" method="GET" style="display: inline;">
+                                                                    <input type="hidden" name="id" value="${user.idUser}">
+                                                                    <input type="hidden" name="action" value="delete">
+                                                                    <button type="submit" class="swal2-confirm swal2-styled" aria-label=""
+                                                                            style="display: inline-block; background-color: rgb(28, 187, 140);">Có!</button>
+                                                                </form>
+                                                                <button
+                                                                    type="button" class="swal2-cancel swal2-styled" data-bs-dismiss="modal" aria-label="Close"
+                                                                    style="display: inline-block; background-color: rgb(243, 47, 83);">Không</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </c:forEach>
                                             </tbody>
                                         </table>
 

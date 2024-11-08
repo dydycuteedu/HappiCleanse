@@ -7,7 +7,6 @@ package servlet;
 import dao.Dao;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Level;
@@ -20,10 +19,7 @@ import javax.servlet.http.HttpSession;
 import model.Email;
 import model.EmailUtils;
 import model.Order;
-import model.Shifts;
-import model.TypeShift;
 import model.User;
-import utils.CheckShift;
 
 /**
  *

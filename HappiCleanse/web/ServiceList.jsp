@@ -1,4 +1,4 @@
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -77,6 +77,7 @@
                                     </div>
                                     <h4 class="mb-3">${service.nameService}</h4>
                                     <p>${service.description}</p>
+                                    <p>Giá dịch vụ: <fmt:formatNumber value="${service.price}" type="number" groupingUsed="true" /><strong><span class="text-xs/sp14 font-medium mr-px">₫</span></strong></p>
                                     <p class="text-primary fw-medium"><i class="fa fa-check text-success me-2"></i>Quality Service</p>
                                     <p class="text-primary fw-medium"><i class="fa fa-check text-success me-2"></i>Customer Satisfaction</p>
                                     <p class="text-primary fw-medium"><i class="fa fa-check text-success me-2"></i>Support 24/7</p>
