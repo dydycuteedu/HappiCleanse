@@ -98,6 +98,7 @@
                                         <th>Thời gian hoàn thành</th> 
                                         <th>Tên khách hàng</th>
                                         <th>Địa chỉ</th>
+                                        <th>Số điện thoại</th>
                                         <th>Tổng tiền</th>
                                         <th>Hành động</th>
                                     </tr>
@@ -128,6 +129,7 @@
                                             </c:if>
                                             <td>${order.user.fullname}</td>
                                             <td>${order.user.address}</td>
+                                            <td>${order.user.phonenumber}</td>
                                             <td><fmt:formatNumber value="${order.totalMoney}" type="number" groupingUsed="true" /><strong><span class="text-xs/sp14 font-medium mr-px">₫</span></strong></td>
                                             <c:if test="${order.statusOrder == 'In Progress'}">
                                                 <td>

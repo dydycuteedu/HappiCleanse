@@ -101,7 +101,7 @@
                                                                 </button>
                                                         </td>
                                                     </tr>
-                                                    <div class="modal fade" id="DeleteFeedback-${feedback.idFeedback}" tabindex="10000" aria-hidden="true" style="top: 250px">
+                                                <div class="modal fade" id="DeleteFeedback-${feedback.idFeedback}" tabindex="10000" aria-hidden="true" style="top: 250px">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="swal2-header">

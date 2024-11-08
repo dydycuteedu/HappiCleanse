@@ -109,18 +109,39 @@
                                                                         <i class="ri-pencil-fill"></i>
                                                                     </button>
                                                                 </form>
-
-                                                                <form action="${pageContext.request.contextPath}/ServiceCategoryServlet" method="GET" style="display: inline;">
-                                                                    <input type="hidden" name="id" value="${servicecategory.idServiceCategory}">
-                                                                    <input type="hidden" name="action" value="delete">
-
-                                                                    <button type="submit" class="btn btn-sm btn-danger">
-                                                                        <i class="ri-delete-bin-fill"></i>
-                                                                    </button>
-                                                                </form>
+                                                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#DeleteService-${servicecategory.idServiceCategory}">
+                                                                    <i class="ri-delete-bin-fill"></i>
+                                                                </button>
                                                             </div>
                                                         </td>
                                                     </tr>
+                                                <div class="modal fade" id="DeleteService-${servicecategory.idServiceCategory}" tabindex="10000" aria-hidden="true" style="top: 250px">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="swal2-header">
+                                                                <div class="swal2-icon swal2-warning swal2-icon-show" style="display: flex;">
+                                                                    <div class="swal2-icon-content">!</div>
+                                                                </div>
+                                                                <h2 class="swal2-title" id="swal2-title" style="display: flex;">Bạn có chắc muốn xóa loại dịch vụ này?</h2>
+                                                            </div>
+                                                            <div class="swal2-content">
+                                                                <div id="swal2-content" class="swal2-html-container" style="display: block;">Bạn sẽ không hoàn tác được hành động này!</div>
+                                                            </div>
+                                                            <div class="swal2-actions">
+                                                                <div class="swal2-loader"></div>
+                                                                <form action="${pageContext.request.contextPath}/ServiceCategoryServlet" method="GET" style="display: inline;">
+                                                                    <input type="hidden" name="id" value="${servicecategory.idServiceCategory}">
+                                                                    <input type="hidden" name="action" value="delete">
+                                                                    <button type="submit" class="swal2-confirm swal2-styled" aria-label=""
+                                                                            style="display: inline-block; background-color: rgb(28, 187, 140);">Có!</button>
+                                                                </form>
+                                                                <button
+                                                                    type="button" class="swal2-cancel swal2-styled" data-bs-dismiss="modal" aria-label="Close"
+                                                                    style="display: inline-block; background-color: rgb(243, 47, 83);">Không</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 </c:forEach>
                                             </tbody>
                                         </table>
