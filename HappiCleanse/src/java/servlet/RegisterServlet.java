@@ -126,7 +126,7 @@ public class RegisterServlet extends HttpServlet {
         ArrayList<User> allUsers = dao.getAllUsers();
         ArrayList<User> customerList = new ArrayList<>();
         for (User user : allUsers) {
-            if ("Staff".equals(user.getRole()) && user.getIsCheck() == 0 && user.getIsValid()==1) {
+            if ("Staff".equals(user.getRole()) && user.getIsCheck() == 0 && user.getIsValid() == 1) {
                 customerList.add(user);
             }
         }

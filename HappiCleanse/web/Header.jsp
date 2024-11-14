@@ -89,7 +89,7 @@
                                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/AdminServlet">Admin Management</a></li>
                                     </c:if>
                                 <li><a class="dropdown-item" href="editProfile">Profile</a></li>
-                                <li><a class="dropdown-item" href="#">Settings</a></li>
+                                
                                 <li><a class="dropdown-item" href="/HappiCleanse/Logout">Logout</a></li>
                             </ul>
                         </div>

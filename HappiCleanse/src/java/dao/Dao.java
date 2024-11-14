@@ -226,12 +226,13 @@ public class Dao {
     }
 
     public boolean singup(String fullname, String username, String pass, String email) throws SQLException {
-        String sql = "INSERT INTO Users (fullname, username, password, email,isValid,isCheck) VALUES (?, ?, ?, ?,1,1)";
+        String sql = "INSERT INTO Users (fullname, username, password, email,isValid,isCheck,avatar) VALUES (?, ?, ?, ?,1,1,?)";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, fullname);
             ps.setString(2, username);
             ps.setString(3, BCryptPassword.hash(pass));
             ps.setString(4, email);
+            ps.setString(5, "img/avatar.png");
             ps.executeUpdate();
             return true;
         } catch (Exception e) {

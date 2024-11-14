@@ -157,10 +157,9 @@ public class OrderServlet extends HttpServlet {
             Dao dao = new Dao();
             int id = Integer.parseInt(request.getParameter("id"));
             Order o = dao.getOrder(id);
-            //DetailShifts detailshift = dao.getDetailShift(shift.getIdShift());
             ArrayList<User> allUsers = dao.getAllUsers();
 
-            // Filter users with role 'customer'
+            // Filter users with role 'staff'
             ArrayList<User> allStaff = new ArrayList<>();
             for (User user : allUsers) {
                 if ("Staff".equals(user.getRole()) && user.getIsCheck() == 1) {

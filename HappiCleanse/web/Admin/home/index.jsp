@@ -105,6 +105,7 @@
                                                         <td><span class="badge bg-danger">Check Out</span></td>
                                                     </c:if>
                                                     <td>${orderList.timeStart}</td>
+                                                    
                                                     <c:if test="${orderList.timeEnd != null}">
                                                         <td>${orderList.timeEnd}</td>
                                                     </c:if>

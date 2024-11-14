@@ -49,6 +49,6 @@ public class CheckShift {
         if (holidays.contains(foramtterdDate)) {
             return "Ngày lễ";
         }
-        return "Ngày trong tuần";
+        return "Ngày trong tuần (Không phụ thu)";
     }
 }
