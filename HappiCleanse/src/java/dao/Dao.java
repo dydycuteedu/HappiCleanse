@@ -259,7 +259,7 @@ public class Dao {
 //sign up staff with full profile
 
     public boolean registerStaff(User user) throws SQLException {
-        String sql = "INSERT INTO Users (fullname, username, password, email,phonenumber,gender,isValid,isCheck,Role,CVURL) VALUES (?, ?, ?, ?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO Users (fullname, username, password, email,phonenumber,gender,isValid,isCheck,Role,CVURL,avatar) VALUES (?, ?, ?, ?,?,?,?,?,?,?,?)";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, user.getFullname());
             ps.setString(2, user.getUsername());
@@ -271,6 +271,7 @@ public class Dao {
             ps.setInt(8, user.getIsCheck());
             ps.setString(9, user.getRole());
             ps.setString(10, user.getCvUrl());
+            ps.setString(11, "img/avatar.png");
             ps.executeUpdate();
             return true;
         } catch (Exception e) {

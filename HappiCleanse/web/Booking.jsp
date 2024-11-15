@@ -124,7 +124,7 @@
                                                 <td>${order.timeEnd}</td>
                                             </c:if>
                                             <c:if test="${order.timeEnd == null}">
-                                                <td>Waiting for working</td>
+                                                <td>Vui lòng chờ nhân viên hoàn thành công việc</td>
                                             </c:if>
                                             <c:if test="${order.staff.fullname == null}">
                                                 <td>Chưa có nhân viên nhận việc</td>
